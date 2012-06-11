@@ -1,0 +1,308 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		150CC5D31554468200570ACC /* DrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = 150CC5D21554468200570ACC /* DrawView.m */; };
+		150CC5DA1554503000570ACC /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 150CC5D91554503000570ACC /* AVFoundation.framework */; };
+		150CC5DC155450DD00570ACC /* ComeAway.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 150CC5DB155450DD00570ACC /* ComeAway.mp3 */; };
+		151A42E315538F9D003BF64A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 151A42E215538F9D003BF64A /* UIKit.framework */; };
+		151A42E515538F9D003BF64A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 151A42E415538F9D003BF64A /* Foundation.framework */; };
+		151A42E715538F9D003BF64A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 151A42E615538F9D003BF64A /* CoreGraphics.framework */; };
+		151A42ED15538F9D003BF64A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 151A42EB15538F9D003BF64A /* InfoPlist.strings */; };
+		151A42EF15538F9D003BF64A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 151A42EE15538F9D003BF64A /* main.m */; };
+		151A42F315538F9D003BF64A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 151A42F215538F9D003BF64A /* AppDelegate.m */; };
+		151A42F615538F9D003BF64A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 151A42F515538F9D003BF64A /* ViewController.m */; };
+		151A42F915538F9D003BF64A /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 151A42F715538F9D003BF64A /* ViewController.xib */; };
+		1533A54315853ED200E27069 /* handle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1533A54215853ED200E27069 /* handle@2x.png */; };
+		1533A5471585D37E00E27069 /* SpiralControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 1533A5461585D37E00E27069 /* SpiralControl.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		150CC5D11554468200570ACC /* DrawView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawView.h; sourceTree = "<group>"; };
+		150CC5D21554468200570ACC /* DrawView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawView.m; sourceTree = "<group>"; };
+		150CC5D91554503000570ACC /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		150CC5DB155450DD00570ACC /* ComeAway.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ComeAway.mp3; sourceTree = "<group>"; };
+		151A42DE15538F9D003BF64A /* SpiralPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpiralPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		151A42E215538F9D003BF64A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		151A42E415538F9D003BF64A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		151A42E615538F9D003BF64A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		151A42EA15538F9D003BF64A /* SpiralPlayer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpiralPlayer-Info.plist"; sourceTree = "<group>"; };
+		151A42EC15538F9D003BF64A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		151A42EE15538F9D003BF64A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		151A42F015538F9D003BF64A /* SpiralPlayer-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SpiralPlayer-Prefix.pch"; sourceTree = "<group>"; };
+		151A42F115538F9D003BF64A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		151A42F215538F9D003BF64A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		151A42F415538F9D003BF64A /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		151A42F515538F9D003BF64A /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		151A42F815538F9D003BF64A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
+		1533A54215853ED200E27069 /* handle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "handle@2x.png"; sourceTree = "<group>"; };
+		1533A5451585D37D00E27069 /* SpiralControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpiralControl.h; sourceTree = "<group>"; };
+		1533A5461585D37E00E27069 /* SpiralControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpiralControl.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		151A42DB15538F9D003BF64A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				150CC5DA1554503000570ACC /* AVFoundation.framework in Frameworks */,
+				151A42E315538F9D003BF64A /* UIKit.framework in Frameworks */,
+				151A42E515538F9D003BF64A /* Foundation.framework in Frameworks */,
+				151A42E715538F9D003BF64A /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		151A42D315538F9D003BF64A = {
+			isa = PBXGroup;
+			children = (
+				151A42E815538F9D003BF64A /* SpiralPlayer */,
+				151A42E115538F9D003BF64A /* Frameworks */,
+				151A42DF15538F9D003BF64A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		151A42DF15538F9D003BF64A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				151A42DE15538F9D003BF64A /* SpiralPlayer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		151A42E115538F9D003BF64A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				150CC5D91554503000570ACC /* AVFoundation.framework */,
+				151A42E215538F9D003BF64A /* UIKit.framework */,
+				151A42E415538F9D003BF64A /* Foundation.framework */,
+				151A42E615538F9D003BF64A /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		151A42E815538F9D003BF64A /* SpiralPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				1533A54215853ED200E27069 /* handle@2x.png */,
+				150CC5DB155450DD00570ACC /* ComeAway.mp3 */,
+				151A42F115538F9D003BF64A /* AppDelegate.h */,
+				151A42F215538F9D003BF64A /* AppDelegate.m */,
+				151A42F415538F9D003BF64A /* ViewController.h */,
+				151A42F515538F9D003BF64A /* ViewController.m */,
+				150CC5D11554468200570ACC /* DrawView.h */,
+				150CC5D21554468200570ACC /* DrawView.m */,
+				1533A5451585D37D00E27069 /* SpiralControl.h */,
+				1533A5461585D37E00E27069 /* SpiralControl.m */,
+				151A42F715538F9D003BF64A /* ViewController.xib */,
+				151A42E915538F9D003BF64A /* Supporting Files */,
+			);
+			path = SpiralPlayer;
+			sourceTree = "<group>";
+		};
+		151A42E915538F9D003BF64A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				151A42EA15538F9D003BF64A /* SpiralPlayer-Info.plist */,
+				151A42EB15538F9D003BF64A /* InfoPlist.strings */,
+				151A42EE15538F9D003BF64A /* main.m */,
+				151A42F015538F9D003BF64A /* SpiralPlayer-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		151A42DD15538F9D003BF64A /* SpiralPlayer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 151A42FC15538F9D003BF64A /* Build configuration list for PBXNativeTarget "SpiralPlayer" */;
+			buildPhases = (
+				151A42DA15538F9D003BF64A /* Sources */,
+				151A42DB15538F9D003BF64A /* Frameworks */,
+				151A42DC15538F9D003BF64A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SpiralPlayer;
+			productName = SpiralPlayer;
+			productReference = 151A42DE15538F9D003BF64A /* SpiralPlayer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		151A42D515538F9D003BF64A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 151A42D815538F9D003BF64A /* Build configuration list for PBXProject "SpiralPlayer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 151A42D315538F9D003BF64A;
+			productRefGroup = 151A42DF15538F9D003BF64A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				151A42DD15538F9D003BF64A /* SpiralPlayer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		151A42DC15538F9D003BF64A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				151A42ED15538F9D003BF64A /* InfoPlist.strings in Resources */,
+				151A42F915538F9D003BF64A /* ViewController.xib in Resources */,
+				150CC5DC155450DD00570ACC /* ComeAway.mp3 in Resources */,
+				1533A54315853ED200E27069 /* handle@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		151A42DA15538F9D003BF64A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				151A42EF15538F9D003BF64A /* main.m in Sources */,
+				151A42F315538F9D003BF64A /* AppDelegate.m in Sources */,
+				151A42F615538F9D003BF64A /* ViewController.m in Sources */,
+				150CC5D31554468200570ACC /* DrawView.m in Sources */,
+				1533A5471585D37E00E27069 /* SpiralControl.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		151A42EB15538F9D003BF64A /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				151A42EC15538F9D003BF64A /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		151A42F715538F9D003BF64A /* ViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				151A42F815538F9D003BF64A /* en */,
+			);
+			name = ViewController.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		151A42FA15538F9D003BF64A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		151A42FB15538F9D003BF64A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		151A42FD15538F9D003BF64A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SpiralPlayer/SpiralPlayer-Prefix.pch";
+				INFOPLIST_FILE = "SpiralPlayer/SpiralPlayer-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		151A42FE15538F9D003BF64A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SpiralPlayer/SpiralPlayer-Prefix.pch";
+				INFOPLIST_FILE = "SpiralPlayer/SpiralPlayer-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		151A42D815538F9D003BF64A /* Build configuration list for PBXProject "SpiralPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				151A42FA15538F9D003BF64A /* Debug */,
+				151A42FB15538F9D003BF64A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		151A42FC15538F9D003BF64A /* Build configuration list for PBXNativeTarget "SpiralPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				151A42FD15538F9D003BF64A /* Debug */,
+				151A42FE15538F9D003BF64A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 151A42D515538F9D003BF64A /* Project object */;
+}
