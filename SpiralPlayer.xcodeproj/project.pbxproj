@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		150CC5D31554468200570ACC /* DrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = 150CC5D21554468200570ACC /* DrawView.m */; };
+		150CC5D31554468200570ACC /* SpiralControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 150CC5D21554468200570ACC /* SpiralControl.m */; };
 		150CC5DA1554503000570ACC /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 150CC5D91554503000570ACC /* AVFoundation.framework */; };
 		150CC5DC155450DD00570ACC /* ComeAway.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 150CC5DB155450DD00570ACC /* ComeAway.mp3 */; };
 		151A42E315538F9D003BF64A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 151A42E215538F9D003BF64A /* UIKit.framework */; };
@@ -19,12 +19,11 @@
 		151A42F615538F9D003BF64A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 151A42F515538F9D003BF64A /* ViewController.m */; };
 		151A42F915538F9D003BF64A /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 151A42F715538F9D003BF64A /* ViewController.xib */; };
 		1533A54315853ED200E27069 /* handle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1533A54215853ED200E27069 /* handle@2x.png */; };
-		1533A5471585D37E00E27069 /* SpiralControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 1533A5461585D37E00E27069 /* SpiralControl.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		150CC5D11554468200570ACC /* DrawView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawView.h; sourceTree = "<group>"; };
-		150CC5D21554468200570ACC /* DrawView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawView.m; sourceTree = "<group>"; };
+		150CC5D11554468200570ACC /* SpiralControl.h */ = {isa = PBXFileReference; fileEncoding = 4; path = SpiralControl.h; sourceTree = "<group>"; };
+		150CC5D21554468200570ACC /* SpiralControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpiralControl.m; sourceTree = "<group>"; };
 		150CC5D91554503000570ACC /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		150CC5DB155450DD00570ACC /* ComeAway.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ComeAway.mp3; sourceTree = "<group>"; };
 		151A42DE15538F9D003BF64A /* SpiralPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpiralPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -41,8 +40,6 @@
 		151A42F515538F9D003BF64A /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		151A42F815538F9D003BF64A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
 		1533A54215853ED200E27069 /* handle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "handle@2x.png"; sourceTree = "<group>"; };
-		1533A5451585D37D00E27069 /* SpiralControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpiralControl.h; sourceTree = "<group>"; };
-		1533A5461585D37E00E27069 /* SpiralControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpiralControl.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,10 +94,8 @@
 				151A42F215538F9D003BF64A /* AppDelegate.m */,
 				151A42F415538F9D003BF64A /* ViewController.h */,
 				151A42F515538F9D003BF64A /* ViewController.m */,
-				150CC5D11554468200570ACC /* DrawView.h */,
-				150CC5D21554468200570ACC /* DrawView.m */,
-				1533A5451585D37D00E27069 /* SpiralControl.h */,
-				1533A5461585D37E00E27069 /* SpiralControl.m */,
+				150CC5D11554468200570ACC /* SpiralControl.h */,
+				150CC5D21554468200570ACC /* SpiralControl.m */,
 				151A42F715538F9D003BF64A /* ViewController.xib */,
 				151A42E915538F9D003BF64A /* Supporting Files */,
 			);
@@ -185,8 +180,7 @@
 				151A42EF15538F9D003BF64A /* main.m in Sources */,
 				151A42F315538F9D003BF64A /* AppDelegate.m in Sources */,
 				151A42F615538F9D003BF64A /* ViewController.m in Sources */,
-				150CC5D31554468200570ACC /* DrawView.m in Sources */,
-				1533A5471585D37E00E27069 /* SpiralControl.m in Sources */,
+				150CC5D31554468200570ACC /* SpiralControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

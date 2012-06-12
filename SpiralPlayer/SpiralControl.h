@@ -1,8 +1,8 @@
 //
-//  SpiralControl.h
+//  DrawView.h
 //  SpiralPlayer
 //
-//  Created by Rinat Abdrashitov on 12-06-11.
+//  Created by Rinat Abdrashitov on 12-05-04.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
@@ -13,7 +13,21 @@
     double centerX_;
     double centerY_;
     double dSpace_;
-    double iTurns_;
+    //double iTurns_;
+    
+    //Current values
+    double value_;
+    double currentAngleDeg_;
+    double currentAngleRad_;
+    
+    //Maximum values
+    double maximumValue_;
+    double maxAngleDeg_;
+    double maxAngleRad_;
+    
 }
+
+@property (nonatomic, assign) double value;
+@property (nonatomic, assign) double maximumValue;
 
 @end
