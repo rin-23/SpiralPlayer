@@ -13,7 +13,11 @@
     double centerX_;
     double centerY_;
     double dSpace_;
-    //double iTurns_;
+    
+    int currentLevel_;
+    double degreeAtCurrentLevel_;
+    double radianAtCurrentLevel_;
+    int currentQuarter_;    
     
     //Current values
     double value_;

@@ -9,7 +9,9 @@
 #import "SpiralControl.h"
 #import "math.h"
 
-#define DEGREES_PER_UNIT_VALUE 5 // how many degress are per second of audio for example
+#define DEGREES_PER_UNIT_VALUE 3 // how many degress are per second of audio for example
+
+
 
 @interface SpiralControl(PrivateMethods)
 -(void)setCurrentAngleDegrees:(double)angleDeg;
@@ -32,8 +34,7 @@
         centerX_ = 380; // x-coordinate of the center of the spiral
         centerY_ = 512; // y-coordinate of the center of the spiral 
         dSpace_ = 90.0; // space between succesive turns of the spiral
-        //iTurns_ = 5; // Number of turns.
-               
+       
         //Player thumb needle
         thumb_ = [UIButton buttonWithType:UIButtonTypeCustom];
         thumb_.frame=CGRectMake(0, 0, 50, 52);
@@ -51,7 +52,21 @@
 #pragma mark - THUMB NEEDLE TOUCH EVENT HANDLERS
 
 /*Handle event of first touch of the thumb needle*/
-- (void) dragThumbBegan:(UIControl *)control withEvent:(UIEvent *)event {}
+- (void) dragThumbBegan:(UIControl *)control withEvent:(UIEvent *)event {
+    currentLevel_ = (int)ceil(currentAngleDeg_/360.0) - 1;
+    degreeAtCurrentLevel_ = currentAngleDeg_ - currentLevel_*360;
+    radianAtCurrentLevel_ = currentAngleRad_ - currentLevel_*2*M_PI;
+    if (degreeAtCurrentLevel_ <= 90) {
+        currentQuarter_ = 1;
+    } else if(degreeAtCurrentLevel_>90 && degreeAtCurrentLevel_<=180){
+        currentQuarter_ = 2;
+    } else if(degreeAtCurrentLevel_>180 && degreeAtCurrentLevel_ <=270) {
+        currentQuarter_ = 3;
+    } else if(degreeAtCurrentLevel_>270 && degreeAtCurrentLevel_<=360){
+        currentQuarter_ = 4;
+    }
+    NSLog(@"Began Drag Thumb -- Degree:%f Rad:%f Level:%i", degreeAtCurrentLevel_, radianAtCurrentLevel_, currentLevel_);
+}
 
 /*
  * Handle events of dragging the thumb needle
@@ -64,28 +79,35 @@
     //Move the (x,y) coordinates back to the origin
     double x = p.x - centerX_;
     double y = p.y - centerY_;
-    //Calculate turn number based on the distance from the of origin
-    int turnNum = floor(sqrt(pow(x,2) + pow(y,2)) / dSpace_); 
-            
+  
     //Determine which quarter of the circle we touched. Adjust angle accrodingly.
     double angle = atan((double)abs(y)/abs(x));
         
-    if      (x>=0 && y>=0) angle = angle; //I quarter - do nothing.
-    else if (x<=0 && y>=0) angle = M_PI - angle; //II
-    else if (x<=0 && y<=0) angle = M_PI + angle; //III
-    else if (x>=0 && y<=0) angle = 2*M_PI - angle;  //IV
-         
-    //add number of 360 degree turns depending on the turn number
-    angle = angle + 2*turnNum*M_PI;  
-    if (angle > maxAngleRad_) return; // exceed turn number limit
-    [self setCurrentAngleRadians:angle]; //update metrics
+    if  (x>=0 && y>=0) {
+        angle = angle; //I quarter - do nothing.
+        if (currentQuarter_ == 4) currentLevel_ += 1;
+        currentQuarter_ = 1;
+    } else if (x<=0 && y>0) {
+        angle = M_PI - angle; //II
+        currentQuarter_ = 2;
+    } else if (x<0 && y<=0) { 
+        angle = M_PI + angle; //III
+        currentQuarter_ = 3;
+    } else if (x>0 && y<0) { 
+        angle = 2*M_PI - angle; //IV
+        if (currentQuarter_ == 1) currentLevel_ -= 1;
+        currentQuarter_ = 4;
+    }  
     
-    //Calculate the final coordinates
-    double newX = (dSpace_*angle*cos(angle))/(2*M_PI) + centerX_;
-    double newY = (dSpace_*angle*sin(angle))/(2*M_PI) + centerY_;
-    //NSLog(@"Continue --    turn:%i newX:%0.0f newY:%0.0f x:%0.0f y:%0.0f", turnNum, newX, newY, p.x, p.y);
+    NSLog(@"ANGLE: %f",angle*(180.0/M_PI) );
+            
+    //add number of 360 degree turns depending on the turn number
+    angle = angle + 2*currentLevel_*M_PI;  
+    if (angle > maxAngleRad_ || angle<0) return; // exceed turn number limit
        
-    thumb_.center = CGPointMake(newX, newY); 
+    //Calculate the final coordinates
+    [self setCurrentAngleRadians:angle]; //update metrics
+    [self updateNeedlePosition]; 
     [self sendActionsForControlEvents:UIControlEventValueChanged];
 
 }
@@ -99,7 +121,7 @@
  */
 - (UIBezierPath *)spiralPath {
 	
-	int iDegrees = 5;			// Angle between points. 15, 20, 24, 30.
+	int iDegrees = DEGREES_PER_UNIT_VALUE;			// Angle between points. 15, 20, 24, 30.
 	int totalPoints = 360 / iDegrees;		// Total number of points.
 
 	double iDegreesRadian= M_PI * iDegrees / 180.0;;			// iDegrees as radians.
@@ -148,45 +170,23 @@
 				iCount = -1;
 			    [path addCurveToPoint:CGPointMake(X, Y) controlPoint1:c1 controlPoint2:c2];
             }
+            
+            // Draw circle after each turn
+//            if (i%360 == 0) {            
+//                CGContextSetLineWidth(context, 1.0);
+//                CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
+//                float circleRad = (k+1)*dSpace_;
+//                CGRect rectangle = CGRectMake(centerX_-circleRad, centerY_-circleRad, 2*circleRad, 2*circleRad);
+//                CGContextAddEllipseInRect(context, rectangle);
+//                CGContextStrokeEllipseInRect(context, rectangle);
+//                CGContextStrokePath(context);
+//            }
         }
-//        CGContextSetLineWidth(context, 1.0);
-//        CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
-//        float circleRad = (k+1)*dSpace_;
-//        CGRect rectangle = CGRectMake(centerX_-circleRad, centerY_-circleRad, 2*circleRad, 2*circleRad);
-//       // CGContextAddEllipseInRect(context, rectangle);
-//        CGContextStrokeEllipseInRect(context, rectangle);
-        //CGContextStrokePath(context);
+       
     //}
     return path;
 }
 
-/*
- * Draw Spiral by drawing a line between each points. (slower method)
- */
-//- (void)drawSpiral {
-//    double angle = 0.0;	// Cumulative radians while stepping.
-//	double newX = centerX_;
-//    double newY = centerY_;
-//	    
-//	CGContextRef context = UIGraphicsGetCurrentContext();
-//    CGContextBeginPath (context);
-//    
-//	for (int k = 0; k < iTurns_; k++) {
-//		for (int i = 1; i <= 360; i++)	{
-//            
-//            angle = (M_PI*i/180.0) + 2*k*M_PI;
-//            
-//            CGContextMoveToPoint(context, newX, newY);
-//            
-//            newX = (dSpace_*angle*cos(angle))/(2*M_PI) + centerX_;
-//            newY = (dSpace_*angle*sin(angle))/(2*M_PI) + centerY_;
-//            //NSLog(@"Drawing:k:%i angle:%i  newX: %0.0f newY: %0.0f", k, i, newX, newY);
-//        
-//            CGContextAddLineToPoint(context, newX, newY);
-//        }
-//    }
-//    CGContextStrokePath(context);
-//}
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
@@ -198,38 +198,50 @@
 
 #pragma mark - UIControl TOUCH EVENTS
 
-- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {NSLog(@"Touch Began");return YES;}
-- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {NSLog(@"Touch Continued");return YES;}
+- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+    NSLog(@"Touch Began");
+    return YES;
+}
+- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+    NSLog(@"Touch Continued");
+    return YES;
+}
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
-    NSLog(@"Touch Ended");
+    //NSLog(@"Touch Ended");
     CGPoint p = [touch locationInView:self];
     
     //Move the (x,y) coordinates back to the origin
     double x = p.x - centerX_;
     double y = p.y - centerY_;
     //Calculate turn number based on the distance from the of origin
-    int turnNum = floor(sqrt(pow(x,2) + pow(y,2)) / dSpace_); 
+    currentLevel_ = floor(sqrt(pow(x,2) + pow(y,2)) / dSpace_); 
         
     //Determine which quarter of the circle we touched. Adjust angle accrodingly.
     double angle = atan((double)abs(y)/abs(x));
     
-    if      (x>=0 && y>=0) angle = angle; //I quarter - do nothing.
-    else if (x<=0 && y>=0) angle = M_PI - angle; //II
-    else if (x<=0 && y<=0) angle = M_PI + angle; //III
-    else if (x>=0 && y<=0) angle = 2*M_PI - angle; //IV
+    if  (x>=0 && y>=0) {
+        angle = angle; //I quarter - do nothing.
+        currentQuarter_ = 1;
+    } else if (x<=0 && y>0) {
+        angle = M_PI - angle; //II
+        currentQuarter_ = 2;
+    } else if (x<0 && y<=0) { 
+        angle = M_PI + angle; //III
+        currentQuarter_ = 3;
+    } else if (x>0 && y<0) { 
+        angle = 2*M_PI - angle; //IV
+        currentQuarter_ = 4;
+    }  
+    
     
     //add number of 360 degree turns depending on the turn number
-    angle = angle + 2*turnNum*M_PI;  
-    if (angle > maxAngleRad_) return; // exceed turn number limit
-    [self setCurrentAngleRadians:angle]; // update metrics
-    
+    angle = angle + 2*currentLevel_*M_PI;  
+    if (angle > maxAngleRad_ || angle < 0) return; // exceed turn number limit
+        
     //Calculate the final coordinates
-    double newX = (dSpace_*angle*cos(angle))/(2*M_PI) + centerX_;
-    double newY = (dSpace_*angle*sin(angle))/(2*M_PI) + centerY_;
-    //NSLog(@"Continue --    turn:%i newX:%0.0f newY:%0.0f x:%0.0f y:%0.0f", turnNum, newX, newY, p.x, p.y);
-    
-    thumb_.center = CGPointMake(newX, newY);
+    [self setCurrentAngleRadians:angle]; // update metrics 
+    [self updateNeedlePosition];
     [self sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
@@ -246,6 +258,7 @@
     value_ = value * DEGREES_PER_UNIT_VALUE;
     currentAngleDeg_ = value_;
     currentAngleRad_ = value_ * (M_PI/180.0);
+    [self updateNeedlePosition];
 }
 
 -(double)maximumValue{
@@ -261,13 +274,13 @@
 #pragma mark - CUSTOM PRIVATE METHODS
 
 -(void)setCurrentAngleDegrees:(double)angleDeg {
-    value_ = angleDeg / DEGREES_PER_UNIT_VALUE;
+    value_ = angleDeg;
     currentAngleDeg_ = angleDeg;
     currentAngleRad_ = angleDeg * (180.0/M_PI);
 }
 
 -(void) setCurrentAngleRadians:(double)angleRad {
-    value_ = (angleRad *(180.0/M_PI))/DEGREES_PER_UNIT_VALUE;
+    value_ = (angleRad *(180.0/M_PI));
     currentAngleDeg_ = value_;
     currentAngleRad_ = angleRad;    
 }
