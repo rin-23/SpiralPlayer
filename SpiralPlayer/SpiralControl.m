@@ -1,17 +1,9 @@
-//
-//  DrawView.m
-//  SpiralPlayer
-//
-//  Created by Rinat Abdrashitov on 12-05-04.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
-//
 
 #import "SpiralControl.h"
 #import "math.h"
 
 #define DEGREES_PER_UNIT_VALUE 3 // how many degress are per second of audio for example
-
-
+#define ARCLENGTH_PER_UNIT_VALUE 3
 
 @interface SpiralControl(PrivateMethods)
 -(void)setCurrentAngleDegrees:(double)angleDeg;
@@ -21,7 +13,7 @@
 -(void)numOfTurns;
 @end
 
-@implementation SpiralControl
+@implementation SpiralControl     
 
 @synthesize value = value_, maximumValue = maximumValue_;
 
@@ -31,14 +23,16 @@
                
         self.backgroundColor = [UIColor lightGrayColor];        
         
-        centerX_ = 380; // x-coordinate of the center of the spiral
-        centerY_ = 512; // y-coordinate of the center of the spiral 
-        dSpace_ = 90.0; // space between succesive turns of the spiral
+        //centerX_ = 380; // x-coordinate of the center of the spiral
+        //centerY_ = 512; // y-coordinate of the center of the spiral 
+        centerX_ = 360/2;
+        centerY_ = 480/2;
+        dSpace_ = 50.0; // space between succesive turns of the spiral
        
         //Player thumb needle
         thumb_ = [UIButton buttonWithType:UIButtonTypeCustom];
         thumb_.frame=CGRectMake(0, 0, 50, 52);
-        thumb_.center = CGPointMake(centerX_, centerY_);
+        thumb_.center = CGPointMake(centerX_, centerY_);         
         [thumb_ addTarget:self action:@selector(dragThumbBegan:withEvent:) forControlEvents:UIControlEventTouchDown];
         [thumb_ addTarget:self action:@selector(dragThumbContinue:withEvent:) forControlEvents:UIControlEventTouchDragInside|UIControlEventTouchDragOutside];
         [thumb_ addTarget:self action:@selector(dragThumbEnded:withEvent:) forControlEvents:UIControlEventTouchUpInside|UIControlEventTouchUpOutside];
@@ -71,16 +65,15 @@
 /*
  * Handle events of dragging the thumb needle
  */
-- (void) dragThumbContinue:(UIControl *)control withEvent:(UIEvent *)event {
+- (void) dragThumbContinue:(UIControl*)control withEvent:(UIEvent *)event {
     
-    //UIButton *bt = (UIButton *)control;
     CGPoint p =[[[event allTouches] anyObject] locationInView:self];
     
     //Move the (x,y) coordinates back to the origin
     double x = p.x - centerX_;
     double y = p.y - centerY_;
   
-    //Determine which quarter of the circle we touched. Adjust angle accrodingly.
+    //Determine which quarter of the circle we touched. Adjust angle accordingly.
     double angle = atan((double)abs(y)/abs(x));
         
     if  (x>=0 && y>=0) {
@@ -121,10 +114,10 @@
  */
 - (UIBezierPath *)spiralPath {
 	
-	int iDegrees = DEGREES_PER_UNIT_VALUE;			// Angle between points. 15, 20, 24, 30.
-	int totalPoints = 360 / iDegrees;		// Total number of points.
-
-	double iDegreesRadian= M_PI * iDegrees / 180.0;;			// iDegrees as radians.
+	//int iDegrees = DEGREES_PER_UNIT_VALUE;			// Angle between points. 15, 20, 24, 30.
+	int totalPoints = 360 / DEGREES_PER_UNIT_VALUE;		// Total number of points.
+    //int totalPoints = (2*M_PI*pow(dSpace_,2)) / ARCLENGTH_PER_UNIT_VALUE;
+	double iDegreesRadian= M_PI * DEGREES_PER_UNIT_VALUE / 180.0;;			// iDegrees as radians.
 	double dAngle;				// Cumulative radians while stepping.
 	double dSpaceStep = 0;		// dSpace/iN.
 	double insideCircleRadius = 0;				// Radius of inside circle. 
@@ -134,6 +127,136 @@
     // Control- and end-points. First 2 points are control-points. Third point is end-point.
 
 	dSpaceStep = 0; 
+	double iCount = -1;      
+	
+	CGPoint c1 = CGPointMake(0, 0);
+	CGPoint c2 = CGPointMake(0, 0);
+	
+	UIBezierPath *path = [UIBezierPath bezierPath];
+	[path moveToPoint:CGPointMake(centerX_, centerY_)];
+	//CGContextRef context = UIGraphicsGetCurrentContext();
+
+    int level = 0;
+    int currentArc = 0;
+    for (int i = DEGREES_PER_UNIT_VALUE; i <= maximumValue_; i += DEGREES_PER_UNIT_VALUE) {
+        dSpaceStep += dSpace_/(double)totalPoints;
+        
+        int j = i;
+        level = 0;
+        while (j>=0) {
+            level +=1;
+            currentArc = j;
+            j  = j - level*2*M_PI*dSpace_; 
+        }
+        
+        dAngle = (double)currentArc/((double)level*(double)dSpace_) + 2*M_PI*(level-1);
+
+
+        // Get points.
+        iCount += 1;
+        if ((iCount == 0) || (iCount == 1)) {
+            // Control-point.
+            X = ((insideCircleRadius + dSpaceStep) / cos(iDegreesRadian)) * cos(dAngle) + centerX_;
+            Y = ((insideCircleRadius + dSpaceStep) / cos(iDegreesRadian)) * sin(dAngle) + centerY_;
+            
+            if (iCount == 0){
+                c1 = CGPointMake(X, Y);
+            } else {
+                c2 = CGPointMake(X, Y);
+            }
+        } else {
+            // End-point.
+            X = (insideCircleRadius + dSpaceStep) * cos(dAngle) + centerX_;
+            Y = (insideCircleRadius + dSpaceStep) * sin(dAngle) + centerY_;
+            //NSLog(@"End point: X:%f Y:%f", X-centerX, Y-centerY);
+            iCount = -1;
+            [path addCurveToPoint:CGPointMake(X, Y) controlPoint1:c1 controlPoint2:c2];
+        }
+
+        //float arclength = 0.5 * dSpace_*(sqrt(pow(dAngle,2) + 1)*dAngle + pow(sinh(dAngle),-1));
+        //float arclength = 0.5 * dSpace_ * (dAngle*sqrt(1+pow(dAngle, 2)) + log10(dAngle+sqrt(1+pow(dAngle, 2))));
+        //NSLog(@"AngleDEG:%i AngleRAD:%f Arc Length: %f\n", i, dAngle, arclength);
+
+        // Draw circle after each turn
+//        if (i%360 == 0) {            
+//            CGContextSetLineWidth(context, 1.0);
+//            CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
+//            int k = i/360;
+//            float circleRad = k*dSpace_;
+//            CGRect rectangle = CGRectMake(centerX_-circleRad, centerY_-circleRad, 2*circleRad, 2*circleRad);
+//            CGContextAddEllipseInRect(context, rectangle);
+//            CGContextStrokeEllipseInRect(context, rectangle);
+//           // CGContextStrokePath(context);
+//        }
+    }
+       
+    
+
+    return path;
+}
+
+
+
+/*
+ * Draw Spiral by drawing a line between each points. (slower method)
+ */
+- (void)drawSpiralSlow {
+    double angle = 0.0;	// Cumulative radians while stepping.
+	double newX = centerX_;
+    double newY = centerY_;
+
+	CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextBeginPath (context);
+
+//	for (int i = DEGREES_PER_UNIT_VALUE; i <= maximumValue_; i += DEGREES_PER_UNIT_VALUE) {
+//            angle = (M_PI*i/180.0);// + 2*k*M_PI;
+//            CGContextMoveToPoint(context, newX, newY);
+//            newX = (dSpace_*angle*cos(angle))/(2*M_PI) + centerX_;
+//            newY = (dSpace_*angle*sin(angle))/(2*M_PI) + centerY_;
+//            //NSLog(@"Drawing:k:%i angle:%i  newX: %0.0f newY: %0.0f", k, i, newX, newY);
+//            CGContextAddLineToPoint(context, newX, newY);
+//    }
+     
+    int level = 0;
+    int currentArc = 0;
+    for (int i = 0; i <= maximumValue_; i += DEGREES_PER_UNIT_VALUE) {
+        // find current level based on arclength
+        int j = i;
+        
+        level = 0;
+        while (j>=0) {
+            level +=1;
+            currentArc = j;
+            j  = j - level*2*M_PI*dSpace_; 
+        }
+       
+        angle = (double)currentArc/((double)level*(double)dSpace_) + 2*M_PI*(level-1);
+        CGContextMoveToPoint(context, newX, newY);
+        newX = (dSpace_*angle*cos(angle))/(2*M_PI) + centerX_;
+        newY = (dSpace_*angle*sin(angle))/(2*M_PI) + centerY_;
+        NSLog(@"Drawing:level:%i i:%i angle:%f newX: %0.0f newY: %0.0f", level, i, angle , newX, newY);
+        CGContextAddLineToPoint(context, newX, newY);
+    }
+    CGContextStrokePath(context);
+}
+
+/*
+ * Draw a spiral using Bezier Curve by having an arc length step
+ */
+- (UIBezierPath *)spiralPathArcLength {
+
+	int totalPoints = 360 / ARCLENGTH_PER_UNIT_VALUE;		// Total number of points.
+    
+	double iDegreesRadian= M_PI * ARCLENGTH_PER_UNIT_VALUE / 180.0;;			// iDegrees as radians.
+	double dAngle;				// Cumulative radians while stepping.
+	double dSpaceStep = 0;		// dSpace/iN.
+	double insideCircleRadius = 0;				// Radius of inside circle. 
+	double X = 0.0;				// x co-ordinate of a point.
+	double Y = 0.0;				// y co-ordinate of a point.
+    
+    // Control- and end-points. First 2 points are control-points. Third point is end-point.
+    
+	dSpaceStep = 0; 
 	double iCount = -1;
 	
 	CGPoint c1 = CGPointMake(0, 0);
@@ -141,61 +264,69 @@
 	
 	UIBezierPath *path = [UIBezierPath bezierPath];
 	[path moveToPoint:CGPointMake(centerX_, centerY_)];
-	
-  	//for (int k = 0; k < iTurns_; k++) {
-		for (int i = iDegrees; i <= maximumValue_; i += iDegrees)	{
+	CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    for (int i = ARCLENGTH_PER_UNIT_VALUE; i <= maximumValue_; i += ARCLENGTH_PER_UNIT_VALUE)	{
+        dSpaceStep += dSpace_/(double)totalPoints;
+        dAngle = M_PI * i / 180.0;
+        
+        // Get points.
+        iCount += 1;
+        if ((iCount == 0) || (iCount == 1)) {
+            // Control-point.
+            X = ((insideCircleRadius + dSpaceStep) / cos(iDegreesRadian)) * cos(dAngle) + centerX_;
+            Y = ((insideCircleRadius + dSpaceStep) / cos(iDegreesRadian)) * sin(dAngle) + centerY_;
             
-            dSpaceStep += dSpace_/(double)totalPoints;
-			dAngle = M_PI * i / 180.0;
-               
-			// Get points.
-			iCount += 1;
-			if ((iCount == 0) || (iCount == 1)) {
-				// Control-point.
-				X = ((insideCircleRadius + dSpaceStep) / cos(iDegreesRadian)) * cos(dAngle) + centerX_;
- 				Y = ((insideCircleRadius + dSpaceStep) / cos(iDegreesRadian)) * sin(dAngle) + centerY_;
-                
-				if (iCount == 0){
-					c1 = CGPointMake(X, Y);
-                   // NSLog(@"Control Point 1: X:%f Y:%f", X-centerX, Y-centerY);
-                } else {
-					c2 = CGPointMake(X, Y);
-                    //NSLog(@"Control Point 2: X:%f Y:%f", X-centerX, Y-centerY);
-                }
-			} else {
-				// End-point.
-				X = (insideCircleRadius + dSpaceStep) * cos(dAngle) + centerX_;
-                Y = (insideCircleRadius + dSpaceStep) * sin(dAngle) + centerY_;
-                //NSLog(@"End point: X:%f Y:%f", X-centerX, Y-centerY);
-				iCount = -1;
-			    [path addCurveToPoint:CGPointMake(X, Y) controlPoint1:c1 controlPoint2:c2];
+            if (iCount == 0){
+                c1 = CGPointMake(X, Y);
+            } else {
+                c2 = CGPointMake(X, Y);
             }
-            
-            // Draw circle after each turn
-//            if (i%360 == 0) {            
-//                CGContextSetLineWidth(context, 1.0);
-//                CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
-//                float circleRad = (k+1)*dSpace_;
-//                CGRect rectangle = CGRectMake(centerX_-circleRad, centerY_-circleRad, 2*circleRad, 2*circleRad);
-//                CGContextAddEllipseInRect(context, rectangle);
-//                CGContextStrokeEllipseInRect(context, rectangle);
-//                CGContextStrokePath(context);
-//            }
+        } else {
+            // End-point.
+            X = (insideCircleRadius + dSpaceStep) * cos(dAngle) + centerX_;
+            Y = (insideCircleRadius + dSpaceStep) * sin(dAngle) + centerY_;
+            //NSLog(@"End point: X:%f Y:%f", X-centerX, Y-centerY);
+            iCount = -1;
+            [path addCurveToPoint:CGPointMake(X, Y) controlPoint1:c1 controlPoint2:c2];
         }
-       
-    //}
+        
+        //float arclength = 0.5 * dSpace_*(sqrt(pow(dAngle,2) + 1)*dAngle + pow(sinh(dAngle),-1));
+        float arclength = 0.5 * dSpace_ * (dAngle*sqrt(1+pow(dAngle, 2)) + log10(dAngle+sqrt(1+pow(dAngle, 2))));
+        NSLog(@"AngleDEG:%i AngleRAD:%f Arc Length: %f\n", i, dAngle, arclength);
+        
+        // Draw circle after each turn
+        if (i%360 == 0) {            
+            CGContextSetLineWidth(context, 1.0);
+            CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
+            int k = i/360;
+            float circleRad = k*dSpace_;
+            CGRect rectangle = CGRectMake(centerX_-circleRad, centerY_-circleRad, 2*circleRad, 2*circleRad);
+            CGContextAddEllipseInRect(context, rectangle);
+            CGContextStrokeEllipseInRect(context, rectangle);
+            CGContextStrokePath(context);
+        }
+    }
+    
+    
+    
     return path;
 }
+
 
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
-    UIBezierPath *path = [self spiralPath]; // get your bezier path, perhaps from an ivar?
-    [path stroke];
-    //[self drawSpiral];
-}
 
+    //UIBezierPath *path = [self spiralPath]; // get your bezier path, perhaps from an ivar?
+  	CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
+    //[path stroke];
+    //CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
+    [self drawSpiralSlow];
+}
+ 
 #pragma mark - UIControl TOUCH EVENTS
 
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
@@ -232,8 +363,7 @@
     } else if (x>0 && y<0) { 
         angle = 2*M_PI - angle; //IV
         currentQuarter_ = 4;
-    }  
-    
+    }      
     
     //add number of 360 degree turns depending on the turn number
     angle = angle + 2*currentLevel_*M_PI;  
@@ -245,55 +375,54 @@
     [self sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {[super touchesBegan:touches withEvent:event];}
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {[super touchesMoved:touches withEvent:event];}
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {[super touchesEnded:touches withEvent:event];}
+- (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent *)event {[super touchesBegan:touches withEvent:event];}
+- (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent *)event {[super touchesMoved:touches withEvent:event];}
+- (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent *)event {[super touchesEnded:touches withEvent:event];}
 
 #pragma mark - CUSTOM PUBLIC GETTERS AND SETTERS 
--(double)value {
+-(double) value {
     return value_/DEGREES_PER_UNIT_VALUE;
 }
 
--(void)setValue:(double)value {
+-(void) setValue:(double)value {
     value_ = value * DEGREES_PER_UNIT_VALUE;
     currentAngleDeg_ = value_;
     currentAngleRad_ = value_ * (M_PI/180.0);
     [self updateNeedlePosition];
 }
 
--(double)maximumValue{
+-(double) maximumValue{
     return maximumValue_/DEGREES_PER_UNIT_VALUE;
 }
 
--(void)setMaximumValue:(double)maximumValue {
-    maximumValue_ = maximumValue * DEGREES_PER_UNIT_VALUE; //convert value to degrees
+-(void) setMaximumValue:(double)maximumValue {
+    maximumValue_ = maximumValue * DEGREES_PER_UNIT_VALUE; // convert value to degrees
     maxAngleDeg_ = maximumValue_; // same
-    maxAngleRad_ = maximumValue_ * (M_PI/180.0); //convert to radians
+    maxAngleRad_ = maximumValue_ * (M_PI/180.0); // convert to radians
 }
 
 #pragma mark - CUSTOM PRIVATE METHODS
 
--(void)setCurrentAngleDegrees:(double)angleDeg {
+- (void) setCurrentAngleDegrees: (double) angleDeg {
     value_ = angleDeg;
     currentAngleDeg_ = angleDeg;
     currentAngleRad_ = angleDeg * (180.0/M_PI);
 }
 
--(void) setCurrentAngleRadians:(double)angleRad {
+- (void) setCurrentAngleRadians: (double) angleRad {
     value_ = (angleRad *(180.0/M_PI));
     currentAngleDeg_ = value_;
     currentAngleRad_ = angleRad;    
 }
 
 /*
- * Update needle position depending on the current angle
+ * Update needle position depending on the current angle 
  */
--(void)updateNeedlePosition {
+-(void) updateNeedlePosition {
     double newX = (dSpace_*currentAngleRad_*cos(currentAngleRad_))/(2*M_PI) + centerX_;
     double newY = (dSpace_*currentAngleRad_*sin(currentAngleRad_))/(2*M_PI) + centerY_;
     thumb_.center = CGPointMake(newX, newY);
     //NSLog(@"Continue --    turn:%i newX:%0.0f newY:%0.0f x:%0.0f y:%0.0f", turnNum, newX, newY, p.x, p.y);
 }
-
 
 @end

@@ -18,11 +18,14 @@
 		151A42F315538F9D003BF64A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 151A42F215538F9D003BF64A /* AppDelegate.m */; };
 		151A42F615538F9D003BF64A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 151A42F515538F9D003BF64A /* ViewController.m */; };
 		151A42F915538F9D003BF64A /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 151A42F715538F9D003BF64A /* ViewController.xib */; };
+		151F4375159D7844000CCDEB /* ChameleonComedian.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 151F4374159D7844000CCDEB /* ChameleonComedian.mp3 */; };
 		1533A54315853ED200E27069 /* handle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1533A54215853ED200E27069 /* handle@2x.png */; };
+		15E163F6158B1AD900CC8FAC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15E163F3158B1AD900CC8FAC /* AudioToolbox.framework */; };
+		15E163F8158B1AD900CC8FAC /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15E163F5158B1AD900CC8FAC /* CoreAudio.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		150CC5D11554468200570ACC /* SpiralControl.h */ = {isa = PBXFileReference; fileEncoding = 4; path = SpiralControl.h; sourceTree = "<group>"; };
+		150CC5D11554468200570ACC /* SpiralControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpiralControl.h; sourceTree = "<group>"; };
 		150CC5D21554468200570ACC /* SpiralControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpiralControl.m; sourceTree = "<group>"; };
 		150CC5D91554503000570ACC /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		150CC5DB155450DD00570ACC /* ComeAway.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ComeAway.mp3; sourceTree = "<group>"; };
@@ -39,7 +42,10 @@
 		151A42F415538F9D003BF64A /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		151A42F515538F9D003BF64A /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		151A42F815538F9D003BF64A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
+		151F4374159D7844000CCDEB /* ChameleonComedian.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ChameleonComedian.mp3; sourceTree = "<group>"; };
 		1533A54215853ED200E27069 /* handle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "handle@2x.png"; sourceTree = "<group>"; };
+		15E163F3158B1AD900CC8FAC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		15E163F5158B1AD900CC8FAC /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +53,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15E163F6158B1AD900CC8FAC /* AudioToolbox.framework in Frameworks */,
+				15E163F8158B1AD900CC8FAC /* CoreAudio.framework in Frameworks */,
 				150CC5DA1554503000570ACC /* AVFoundation.framework in Frameworks */,
 				151A42E315538F9D003BF64A /* UIKit.framework in Frameworks */,
 				151A42E515538F9D003BF64A /* Foundation.framework in Frameworks */,
@@ -77,6 +85,8 @@
 		151A42E115538F9D003BF64A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				15E163F3158B1AD900CC8FAC /* AudioToolbox.framework */,
+				15E163F5158B1AD900CC8FAC /* CoreAudio.framework */,
 				150CC5D91554503000570ACC /* AVFoundation.framework */,
 				151A42E215538F9D003BF64A /* UIKit.framework */,
 				151A42E415538F9D003BF64A /* Foundation.framework */,
@@ -89,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				1533A54215853ED200E27069 /* handle@2x.png */,
+				151F4374159D7844000CCDEB /* ChameleonComedian.mp3 */,
 				150CC5DB155450DD00570ACC /* ComeAway.mp3 */,
 				151A42F115538F9D003BF64A /* AppDelegate.h */,
 				151A42F215538F9D003BF64A /* AppDelegate.m */,
@@ -167,6 +178,7 @@
 				151A42F915538F9D003BF64A /* ViewController.xib in Resources */,
 				150CC5DC155450DD00570ACC /* ComeAway.mp3 in Resources */,
 				1533A54315853ED200E27069 /* handle@2x.png in Resources */,
+				151F4375159D7844000CCDEB /* ChameleonComedian.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,6 +271,7 @@
 				INFOPLIST_FILE = "SpiralPlayer/SpiralPlayer-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -271,6 +284,7 @@
 				INFOPLIST_FILE = "SpiralPlayer/SpiralPlayer-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
