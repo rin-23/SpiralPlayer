@@ -28,6 +28,7 @@
     double maximumValue_;
     double maxAngleDeg_;
     double maxAngleRad_;
+    double maxArcLength_;
     
 }
 
