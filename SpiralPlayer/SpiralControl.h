@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import <AVFoundation/AVFoundation.h>
+#import "math.h"
 @interface SpiralControl : UIControl {
     UIButton* thumb_;
     double centerX_;
@@ -30,9 +31,22 @@
     double maxAngleRad_;
     double maxArcLength_;
     
+    BOOL dataReady_;
+    
+    
+    // Song data
+    NSMutableData* samples_;
+    SInt16  normalizeMax_;
+    NSInteger sampleCount_; 
+    NSInteger channelCount_;
+    NSInteger averageSample_;
+    
 }
 
 @property (nonatomic, assign) double value;
 @property (nonatomic, assign) double maximumValue;
+@property (nonatomic, retain) NSMutableData* samples;
+
+- (void) drawSpiralForAsset:(AVURLAsset*) songAsset;
 
 @end

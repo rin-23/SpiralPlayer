@@ -28,7 +28,8 @@
     [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(updateProgressBar) userInfo:nil repeats:YES];
     
     //Load audio file
-    NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"ChameleonComedian" ofType:@"mp3"]];
+    NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Charlie Brown" ofType:@"mp3"]];
+    AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:url options:nil];
     NSError *error;
     audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url  error:&error];
     if (error) {
@@ -42,8 +43,10 @@
     //spiralControl_ = [[SpiralControl alloc] initWithFrame:CGRectMake(0, 0, 768, 1024)];
     spiralControl_ = [[SpiralControl alloc] initWithFrame:CGRectMake(0, 0, 360, 480)];
     spiralControl_.maximumValue = audioPlayer.duration;
+    
     [spiralControl_ addTarget:self action:@selector(spiralValueChanged) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:spiralControl_];
+    [spiralControl_ drawSpiralForAsset:songAsset]; //draw the spiral
     [spiralControl_ release];
     
     //Play Button

@@ -1,8 +1,8 @@
 #import "SpiralControl.h"
-#import "math.h"
+
 
 #define DEGREES_PER_UNIT_VALUE 1 // how many degress are per second of audio for example
-#define ARCLENGTH_PER_UNIT_VALUE 3
+#define ARCLENGTH_PER_UNIT_VALUE 1
 
 @interface SpiralControl(PrivateMethods)
 - (void) setCurrentAngleDegrees: (double) angleDeg;
@@ -15,7 +15,7 @@
 
 @implementation SpiralControl     
 
-@synthesize value = value_, maximumValue = maximumValue_;
+@synthesize value = value_, maximumValue = maximumValue_, samples = samples_;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -31,6 +31,8 @@
         currentAngleRad_ = 0;
         currentAngleDeg_ = 0;
         currentLevel_ = 0;
+        dataReady_ = NO;
+
         //Player thumb needle
         thumb_ = [UIButton buttonWithType:UIButtonTypeCustom];
         thumb_.frame=CGRectMake(0, 0, 50, 52);
@@ -120,145 +122,7 @@
     NSLog(@"DRAG ENDED");
 }
 
-#pragma mark - DRAWING THE SPIRAL
-/*
- * Draw a spiral using Bezier Curve (faster drawing method)
- */
-- (UIBezierPath *)spiralPath {
-	
-	//int iDegrees = DEGREES_PER_UNIT_VALUE;			// Angle between points. 15, 20, 24, 30.
-	int totalPoints = 360 / DEGREES_PER_UNIT_VALUE;		// Total number of points.
-    //int totalPoints = (2*M_PI*pow(dSpace_,2)) / ARCLENGTH_PER_UNIT_VALUE;
-	double iDegreesRadian= M_PI * DEGREES_PER_UNIT_VALUE / 180.0;;			// iDegrees as radians.
-	double dAngle;				// Cumulative radians while stepping.
-	double dSpaceStep = 0;		// dSpace/iN.
-	double insideCircleRadius = 0;				// Radius of inside circle. 
-	double X = 0.0;				// x co-ordinate of a point.
-	double Y = 0.0;				// y co-ordinate of a point.
-    
-    // Control- and end-points. First 2 points are control-points. Third point is end-point.
 
-	dSpaceStep = 0; 
-	double iCount = -1;      
-	
-	CGPoint c1 = CGPointMake(0, 0);
-	CGPoint c2 = CGPointMake(0, 0);
-	
-	UIBezierPath *path = [UIBezierPath bezierPath];
-	[path moveToPoint:CGPointMake(centerX_, centerY_)];
-	//CGContextRef context = UIGraphicsGetCurrentContext();
-
-    int level = 0;
-    int currentArc = 0;
-    for (int i = DEGREES_PER_UNIT_VALUE; i <= maxAngleDeg_; i += DEGREES_PER_UNIT_VALUE) {
-        dSpaceStep += dSpace_/(double)totalPoints;
-        
-        int j = i;
-        level = 0;
-        while (j>=0) {
-            level +=1;
-            currentArc = j;
-            j  = j - level*2*M_PI*dSpace_; 
-        }
-        
-        dAngle = (double)currentArc/((double)level*(double)dSpace_) + 2*M_PI*(level-1);
-
-
-        // Get points.
-        iCount += 1;
-        if ((iCount == 0) || (iCount == 1)) {
-            // Control-point.
-            X = ((insideCircleRadius + dSpaceStep) / cos(iDegreesRadian)) * cos(dAngle) + centerX_;
-            Y = ((insideCircleRadius + dSpaceStep) / cos(iDegreesRadian)) * sin(dAngle) + centerY_;
-            
-            if (iCount == 0){
-                c1 = CGPointMake(X, Y);
-            } else {
-                c2 = CGPointMake(X, Y);
-            }
-        } else {
-            // End-point.
-            X = (insideCircleRadius + dSpaceStep) * cos(dAngle) + centerX_;
-            Y = (insideCircleRadius + dSpaceStep) * sin(dAngle) + centerY_;
-            //NSLog(@"End point: X:%f Y:%f", X-centerX, Y-centerY);
-            iCount = -1;
-            [path addCurveToPoint:CGPointMake(X, Y) controlPoint1:c1 controlPoint2:c2];
-        }
-
-        //float arclength = 0.5 * dSpace_*(sqrt(pow(dAngle,2) + 1)*dAngle + pow(sinh(dAngle),-1));
-        //float arclength = 0.5 * dSpace_ * (dAngle*sqrt(1+pow(dAngle, 2)) + log10(dAngle+sqrt(1+pow(dAngle, 2))));
-        //NSLog(@"AngleDEG:%i AngleRAD:%f Arc Length: %f\n", i, dAngle, arclength);
-
-        // Draw circle after each turn
-//        if (i%360 == 0) {            
-//            CGContextSetLineWidth(context, 1.0);
-//            CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
-//            int k = i/360;
-//            float circleRad = k*dSpace_;
-//            CGRect rectangle = CGRectMake(centerX_-circleRad, centerY_-circleRad, 2*circleRad, 2*circleRad);
-//            CGContextAddEllipseInRect(context, rectangle);
-//            CGContextStrokeEllipseInRect(context, rectangle);
-//           // CGContextStrokePath(context);
-//        }
-    }
-       
-    
-
-    return path;
-}
-
-/*
- * Draw Spiral by drawing a line between each points. (slower method)
- */
-- (void)drawSpiralSlow {
-    double angle = 0.0;	// Cumulative radians while stepping.
-	double newX = centerX_;
-    double newY = centerY_;
-
-	CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextBeginPath (context);
-
-//	for (int i = DEGREES_PER_UNIT_VALUE; i <= maximumValue_; i += DEGREES_PER_UNIT_VALUE) {
-//            angle = (M_PI*i/180.0);// + 2*k*M_PI;CGContextMoveToPoint(context, newX, newY);
-//            newX = (dSpace_*angle*cos(angle))/(2*M_PI) + centerX_; newY = (dSpace_*angle*sin(angle))/(2*M_PI) + centerY_;
-//            //NSLog(@"Drawing:k:%i angle:%i  newX: %0.0f newY: %0.0f", k, i, newX, newY);
-//            CGContextAddLineToPoint(context, newX, newY); }
-     
-    int level = 0;
-    double currentArc = 0.0;
-    int j = 0;
-    for (int i = 0; i <= maxArcLength_; i += ARCLENGTH_PER_UNIT_VALUE) {
-
-        // Find current level based on arclength
-        j = i;
-        level = 0;
-        while(j >= 0) {
-            level += 1;
-            currentArc = j;
-            j  = j - 2*M_PI*(level*dSpace_); 
-        }
-        
-        angle = currentArc/(level*dSpace_) + 2*M_PI*(level-1); //total angle
-        CGContextMoveToPoint(context, newX, newY);
-        newX = (dSpace_*angle*cos(angle))/(2*M_PI) + centerX_;
-        newY = (dSpace_*angle*sin(angle))/(2*M_PI) + centerY_;
-        NSLog(@"Drawing:level:%i i:%i angle:%f newX: %0.0f newY: %0.0f", level, i, angle , newX, newY);
-        CGContextAddLineToPoint(context, newX, newY);
-    }
-    CGContextStrokePath(context);
-}
-
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    //UIBezierPath *path = [self spiralPath]; // get your bezier path, perhaps from an ivar?
-  	CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
-    //[path stroke];
-    //CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
-    [self drawSpiralSlow];
-}
- 
 #pragma mark - UIControl TOUCH EVENTS
 
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
@@ -320,6 +184,84 @@
 - (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent *)event {[super touchesMoved:touches withEvent:event];}
 - (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent *)event {[super touchesEnded:touches withEvent:event];}
 
+#pragma mark - DRAWING THE SPIRAL
+/*
+ * Draw Spiral by drawing a line between each points. (slower method)
+ */
+
+
+- (void)drawSpiralSlow {
+    double angle = 0.0;	// Cumulative radians while stepping.
+	double newX = centerX_;
+    double newY = centerY_;
+    
+	CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextBeginPath (context);
+    
+    CGColorRef leftcolor = [[UIColor whiteColor] CGColor];
+    CGColorRef rightcolor = [[UIColor redColor] CGColor];
+    CGContextSetLineWidth(context, 1.0);
+
+    NSLog(@"SampleCount: %i MaxArc:%f", sampleCount_, maxArcLength_);
+    
+    int level = 0;
+    double currentArc = 0.0;
+    int j = 0;
+    SInt16* temp_sample = (SInt16*) self.samples.bytes;
+    for (int i = 0; i <= floor(maxArcLength_); i += ARCLENGTH_PER_UNIT_VALUE) {
+        if (i>sampleCount_) break;
+               
+        // Find current level based on arclength
+        j = i;
+        level = 0;
+        while(j >= 0) {
+            level += 1;
+            currentArc = j;
+            j  = j - 2*M_PI*(level*dSpace_); 
+        }
+        
+        angle = currentArc/(level*dSpace_) + 2*M_PI*(level-1); //total angle
+        CGContextMoveToPoint(context, newX, newY);
+        newX = (dSpace_*angle*cos(angle))/(2*M_PI) + centerX_;
+        newY = (dSpace_*angle*sin(angle))/(2*M_PI) + centerY_;
+       // NSLog(@"Drawing:level:%i i:%i angle:%f newX: %0.0f newY: %0.0f", level, i, angle , newX, newY);
+        
+        SInt16 left = *temp_sample++;
+       // NSLog(@"Sample:%i Avergae:%i", left, averageSample_);
+        if (left < averageSample_) {
+            CGContextSetStrokeColorWithColor(context, leftcolor);
+        } else {
+            CGContextSetStrokeColorWithColor(context, rightcolor);
+        }
+        
+        if (channelCount_==2) {
+            SInt16 right = *temp_sample++;
+        }
+        CGContextAddLineToPoint(context, newX, newY);
+        CGContextStrokePath(context);
+        
+    }
+    //CGContextStrokePath(context);
+}
+
+
+- (void)drawRect:(CGRect)rect {
+    //UIBezierPath *path = [self spiralPath]; // get your bezier path, perhaps from an ivar?
+ 
+    //[path stroke];
+    //CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
+
+
+
+    if (dataReady_ == YES) {
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
+        [self drawSpiralSlow];
+    }
+    
+}
+
+
 #pragma mark - CUSTOM PUBLIC GETTERS AND SETTERS 
 -(double) value {
     return value_/ARCLENGTH_PER_UNIT_VALUE;
@@ -348,7 +290,7 @@
     [self updateNeedlePosition];
 }
 
--(double) maximumValue{
+-(double) maximumValue { 
     return maximumValue_;
 }
 
@@ -358,6 +300,7 @@
     maxAngleDeg_ = maximumValue * DEGREES_PER_UNIT_VALUE; // convert value to degrees
     maxAngleRad_ = maxAngleDeg_ * (M_PI/180.0); // convert to radians
     maxArcLength_ = maximumValue * ARCLENGTH_PER_UNIT_VALUE;
+    NSLog(@"maxiumValue:%f maxArcLength:%f", maximumValue, maxArcLength_);
 }
 
 #pragma mark - CUSTOM PRIVATE METHODS
@@ -387,5 +330,140 @@
     thumb_.center = CGPointMake(newX, newY);
     //NSLog(@"Continue --    turn:%i newX:%0.0f newY:%0.0f x:%0.0f y:%0.0f", turnNum, newX, newY, p.x, p.y);
 }
+
+#pragma mark - READ DATA
+- (void) drawSpiralForAsset: (AVURLAsset*) songAsset {
+    NSError * error = nil;
+     
+    AVAssetReader * reader = [[AVAssetReader alloc] initWithAsset:songAsset error:&error];
+    AVAssetTrack * songTrack = [songAsset.tracks objectAtIndex:0];
+    NSDictionary* outputSettingsDict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                        [NSNumber numberWithInt:kAudioFormatLinearPCM],AVFormatIDKey,
+                                        //     [NSNumber numberWithInt:44100.0],AVSampleRateKey, /*Not Supported*/
+                                        //     [NSNumber numberWithInt: 2],AVNumberOfChannelsKey,    /*Not Supported*/
+                                        [NSNumber numberWithInt:16],AVLinearPCMBitDepthKey,
+                                        [NSNumber numberWithBool:NO],AVLinearPCMIsBigEndianKey,
+                                        [NSNumber numberWithBool:NO],AVLinearPCMIsFloatKey,
+                                        [NSNumber numberWithBool:NO],AVLinearPCMIsNonInterleaved,
+                                        nil];
+        
+    AVAssetReaderTrackOutput* output = [[AVAssetReaderTrackOutput alloc] initWithTrack:songTrack outputSettings:outputSettingsDict];
+    [reader addOutput:output];
+    [output release];
+    
+    UInt32 sampleRate,channelCount;
+    NSArray* formatDesc = songTrack.formatDescriptions;
+    for(unsigned int i = 0; i < [formatDesc count]; ++i) {
+        CMAudioFormatDescriptionRef item = (CMAudioFormatDescriptionRef)[formatDesc objectAtIndex:i];
+        const AudioStreamBasicDescription* fmtDesc = CMAudioFormatDescriptionGetStreamBasicDescription (item);
+        if(fmtDesc ) {
+            sampleRate = fmtDesc->mSampleRate;
+            channelCount = fmtDesc->mChannelsPerFrame;
+            //    NSLog(@"channels:%u, bytes/packet: %u, sampleRate %f",fmtDesc->mChannelsPerFrame, fmtDesc->mBytesPerPacket,fmtDesc->mSampleRate);
+        }
+    }
+        
+    UInt32 bytesPerSample = 2 * channelCount;
+    SInt16 normalizeMax = 0;
+    NSMutableData * fullSongData = [[NSMutableData alloc] init];
+    [reader startReading];    
+    
+    UInt64 totalBytes = 0;   
+    SInt64 totalLeft  = 0;
+    SInt64 totalRight = 0;
+    NSInteger sampleTally = 0;
+    NSInteger maxTally = -1*INFINITY;
+    NSInteger totalAmplitude = 0;
+    NSInteger totalNumberOfSamples = 0;
+    NSInteger samplesPerPixel = sampleRate;
+    
+    while (reader.status == AVAssetReaderStatusReading){
+        
+        AVAssetReaderTrackOutput * trackOutput = (AVAssetReaderTrackOutput *)[reader.outputs objectAtIndex:0];
+        CMSampleBufferRef sampleBufferRef = [trackOutput copyNextSampleBuffer];
+        
+        if (sampleBufferRef) {
+            CMBlockBufferRef blockBufferRef = CMSampleBufferGetDataBuffer(sampleBufferRef);
+            size_t length = CMBlockBufferGetDataLength(blockBufferRef);
+            totalBytes += length;
+            
+            NSAutoreleasePool *wader = [[NSAutoreleasePool alloc] init];
+            NSMutableData * data = [NSMutableData dataWithLength:length];
+            CMBlockBufferCopyDataBytes(blockBufferRef, 0, length, data.mutableBytes);
+            
+            SInt16 * samples = (SInt16 *) data.mutableBytes;
+            int sampleCount = length / bytesPerSample;
+            for (int i = 0; i < sampleCount ; i ++) {
+                SInt16 left = *samples++;
+                totalLeft  += left;  
+               
+                SInt16 right;
+                if (channelCount==2) {
+                    right = *samples++;
+                    totalRight += right;
+                }
+               
+                sampleTally++;
+                if (left>maxTally) maxTally = left;
+                
+                //Rinat added this for calculating areas 
+                if (sampleTally > samplesPerPixel) {
+                    //left  = totalLeft / sampleTally; 
+                    left = maxTally;
+                    totalAmplitude += left;
+                    totalNumberOfSamples += 1;
+                    
+                    SInt16 fix = abs(left);
+                    if (fix > normalizeMax) {
+                        normalizeMax = fix;
+                    }
+                    //NSLog(@"LEFT: %i", left);
+                    [fullSongData appendBytes:&left length:sizeof(left)];
+                    
+                    if (channelCount==2) {
+                        right = totalRight / sampleTally; 
+                        SInt16 fix = abs(right);
+                        if (fix > normalizeMax) normalizeMax = fix;
+                        [fullSongData appendBytes:&right length:sizeof(right)];
+                    }
+                    
+                    totalLeft   = 0;
+                    totalRight  = 0;
+                    sampleTally = 0;
+                    maxTally = -1*INFINITY;
+                }
+            }
+            
+            [wader drain];
+            CMSampleBufferInvalidate(sampleBufferRef);
+            CFRelease(sampleBufferRef);
+        }
+    }
+    
+    
+    if (reader.status == AVAssetReaderStatusFailed || reader.status == AVAssetReaderStatusUnknown){
+        // Something went wrong. return nil
+        NSLog(@"ERROR: ASSET READER FAILED");
+        return;
+    }
+    
+    if (reader.status == AVAssetReaderStatusCompleted){
+        NSLog(@"rendering output graphics using normalizeMax %d",normalizeMax);
+        
+        self.samples = fullSongData;
+        normalizeMax_ = normalizeMax;
+        sampleCount_ = fullSongData.length / 4;
+        channelCount_ = channelCount;
+        averageSample_ = totalAmplitude/totalNumberOfSamples;
+        dataReady_ = YES;
+        
+    }
+       
+    [fullSongData release];
+    [reader release];
+    [self setNeedsDisplay];
+    
+}
+
 
 @end
