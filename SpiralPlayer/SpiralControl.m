@@ -1,7 +1,7 @@
 #import "SpiralControl.h"
 
 #define DEGREES_PER_UNIT_VALUE 1 // how many degress are per second of audio for example
-#define ARCLENGTH_PER_UNIT_VALUE 3  
+#define ARCLENGTH_PER_UNIT_VALUE 2                                                                                                                                                                                                                                                                                    
 
 @interface SpiralControl(PrivateMethods)
 - (void) setCurrentAngleDegrees: (double) angleDeg;
@@ -210,7 +210,10 @@
     
     for (int i = 0; i <= floor(maxArcLength_); i += ARCLENGTH_PER_UNIT_VALUE) {
         
-        if (i > sampleCount_ * ARCLENGTH_PER_UNIT_VALUE) break;
+        if (i > sampleCount_ * ARCLENGTH_PER_UNIT_VALUE) {
+            NSLog(@"ERROR: Current Arc Length exceeds sample count");
+            break;
+        }
                 
         // Find current level based on arclength
         j = i;
@@ -219,19 +222,20 @@
             level += 1;
             currentArc = j;
             j = j - 2*M_PI*(level*dSpace_); 
-        }
+        }   
         
         angle = currentArc/(level*dSpace_) + 2*M_PI*(level-1); //total angle
+        
         CGContextMoveToPoint(context, newX, newY);
         newX = (dSpace_*angle*cos(angle))/(2*M_PI) + centerX_;
         newY = (dSpace_*angle*sin(angle))/(2*M_PI) + centerY_;
-        // NSLog(@"Drawing:level:%i i:%i angle:%f newX: %0.0f newY: %0.0f", level, i, angle , newX, newY);
+        NSLog(@"Drawing:level:%i i:%i angle:%f newX: %0.0f newY: %0.0f", level, i, angle , newX, newY);
         
         SInt16 left = *temp_sample++;
-        // NSLog(@"Sample:%i Avergae:%i", left, averageSample_);
+        NSLog(@"Sample:%i Avergae:%i", left, averageSample_);
         CGColorRef middleColor = [[UIColor colorWithRed:left/32767.0 green:0 blue:0 alpha:1] CGColor];
         CGContextSetStrokeColorWithColor(context, middleColor);
-        CGContextSetLineWidth(context, 1.0 + 2*left/32767.0);
+        CGContextSetLineWidth(context, 10*(left/32767.0));
         
 //        if (left < averageSample_) {
 //            CGContextSetStrokeColorWithColor(context, leftcolor);
@@ -242,8 +246,7 @@
         if (channelCount_==2) {
             SInt16 right = *temp_sample++;
         } 
-        
-                
+                        
         CGContextAddLineToPoint(context, newX, newY);
         CGContextStrokePath(context);
     }
@@ -380,7 +383,7 @@
     NSInteger maxTally = -1*INFINITY;
     NSInteger totalAmplitude = 0;
     NSInteger totalNumberOfSamples = 0;
-    NSInteger samplesPerPixel = sampleRate;
+    NSInteger samplesPerPixel = sampleRate*2;
      
     while (reader.status == AVAssetReaderStatusReading) {
         
