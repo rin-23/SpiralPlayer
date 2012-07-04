@@ -1,8 +1,7 @@
 #import "SpiralControl.h"
 
-
 #define DEGREES_PER_UNIT_VALUE 1 // how many degress are per second of audio for example
-#define ARCLENGTH_PER_UNIT_VALUE 1
+#define ARCLENGTH_PER_UNIT_VALUE 3  
 
 @interface SpiralControl(PrivateMethods)
 - (void) setCurrentAngleDegrees: (double) angleDeg;
@@ -67,7 +66,7 @@
     NSLog(@"Began Drag Thumb -- Degree:%f Rad:%f Level:%i", degreeAtCurrentLevel_, radianAtCurrentLevel_, currentLevel_);
 }
 
-/*
+/*       
  * Handle events of dragging the thumb needle
  */
 - (void) dragThumbContinue:(UIControl*)control withEvent:(UIEvent *)event {
@@ -93,7 +92,7 @@
         cur_level_angle = 2*M_PI - cur_level_angle; //IV
         if (currentQuarter_ == 1) currentLevel_ -= 1;
         currentQuarter_ = 4;
-    }  
+    }     
     
     // Add number of 360 degree turns depending on the turn number
     double total_angle = cur_level_angle + 2*currentLevel_*M_PI;  
@@ -104,10 +103,10 @@
         arclength += 2*M_PI*currentLevel_*dSpace_;
     }
     arclength += cur_level_angle * (currentLevel_ + 1) * dSpace_; //arclength at current level
-        
+    
+    
     NSLog(@"LEVEL: %i, ANGLE: %f, ARCLENGTH: %f, MAXARCLENTGH: %f", currentLevel_, cur_level_angle*(180.0/M_PI), arclength, maxArcLength_);
-    if (arclength > maxArcLength_ || total_angle < 0) 
-        return;   
+    if (arclength > maxArcLength_ || total_angle < 0) return;   
     // If (angle > maxAngleRad_ || angle<0) return; // exceed turn number limit
                
     // Calculate the final coordinates
@@ -121,7 +120,7 @@
 - (void) dragThumbEnded:(UIControl *)control withEvent:(UIEvent *)event {
     NSLog(@"DRAG ENDED");
 }
-
+   
 
 #pragma mark - UIControl TOUCH EVENTS
 
@@ -171,7 +170,7 @@
     arclength += cur_level_angle * (currentLevel_ + 1) * dSpace_; //arclength at current level
     
     NSLog(@"LEVEL: %i, ANGLE: %f, ARCLENGTH: %f, MAXARCLENTGH: %f", currentLevel_, cur_level_angle*(180.0/M_PI), arclength, maxArcLength_);
-    if (arclength > maxArcLength_ || total_angle < 0) return;   
+    if (arclength > maxArcLength_ || total_angle < 0) return;    
  
     //Calculate the final coordinates
     [self setCurrentAngleRadians:total_angle]; // update metrics 
@@ -185,10 +184,10 @@
 - (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent *)event {[super touchesEnded:touches withEvent:event];}
 
 #pragma mark - DRAWING THE SPIRAL
+
 /*
  * Draw Spiral by drawing a line between each points. (slower method)
  */
-
 
 - (void)drawSpiralSlow {
     double angle = 0.0;	// Cumulative radians while stepping.
@@ -198,48 +197,55 @@
 	CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextBeginPath (context);
     
-    CGColorRef leftcolor = [[UIColor whiteColor] CGColor];
+    CGColorRef leftcolor = [[UIColor whiteColor] CGColor]; 
     CGColorRef rightcolor = [[UIColor redColor] CGColor];
-    CGContextSetLineWidth(context, 1.0);
-
-    NSLog(@"SampleCount: %i MaxArc:%f", sampleCount_, maxArcLength_);
     
+    NSLog(@"SampleCount: %i MaxArc:%f", sampleCount_, maxArcLength_);
+         
     int level = 0;
     double currentArc = 0.0;
     int j = 0;
     SInt16* temp_sample = (SInt16*) self.samples.bytes;
+
+    
     for (int i = 0; i <= floor(maxArcLength_); i += ARCLENGTH_PER_UNIT_VALUE) {
-        if (i>sampleCount_) break;
-               
+        
+        if (i > sampleCount_ * ARCLENGTH_PER_UNIT_VALUE) break;
+                
         // Find current level based on arclength
         j = i;
         level = 0;
-        while(j >= 0) {
+        while (j >= 0) {
             level += 1;
             currentArc = j;
-            j  = j - 2*M_PI*(level*dSpace_); 
+            j = j - 2*M_PI*(level*dSpace_); 
         }
         
         angle = currentArc/(level*dSpace_) + 2*M_PI*(level-1); //total angle
         CGContextMoveToPoint(context, newX, newY);
         newX = (dSpace_*angle*cos(angle))/(2*M_PI) + centerX_;
         newY = (dSpace_*angle*sin(angle))/(2*M_PI) + centerY_;
-       // NSLog(@"Drawing:level:%i i:%i angle:%f newX: %0.0f newY: %0.0f", level, i, angle , newX, newY);
+        // NSLog(@"Drawing:level:%i i:%i angle:%f newX: %0.0f newY: %0.0f", level, i, angle , newX, newY);
         
         SInt16 left = *temp_sample++;
-       // NSLog(@"Sample:%i Avergae:%i", left, averageSample_);
-        if (left < averageSample_) {
-            CGContextSetStrokeColorWithColor(context, leftcolor);
-        } else {
-            CGContextSetStrokeColorWithColor(context, rightcolor);
-        }
+        // NSLog(@"Sample:%i Avergae:%i", left, averageSample_);
+        CGColorRef middleColor = [[UIColor colorWithRed:left/32767.0 green:0 blue:0 alpha:1] CGColor];
+        CGContextSetStrokeColorWithColor(context, middleColor);
+        CGContextSetLineWidth(context, 1.0 + 2*left/32767.0);
         
+//        if (left < averageSample_) {
+//            CGContextSetStrokeColorWithColor(context, leftcolor);
+//        } else {
+//            CGContextSetStrokeColorWithColor(context, rightcolor);
+//        }
+                   
         if (channelCount_==2) {
             SInt16 right = *temp_sample++;
-        }
+        } 
+        
+                
         CGContextAddLineToPoint(context, newX, newY);
         CGContextStrokePath(context);
-        
     }
     //CGContextStrokePath(context);
 }
@@ -261,7 +267,6 @@
     
 }
 
-
 #pragma mark - CUSTOM PUBLIC GETTERS AND SETTERS 
 -(double) value {
     return value_/ARCLENGTH_PER_UNIT_VALUE;
@@ -279,7 +284,7 @@
             currentAngleRad_ += arclen_temp/((level_temp+1)*dSpace_);
         } else  {
             currentAngleRad_ += 2*M_PI;
-        }
+        }    
         arclen_temp -= 2*M_PI*((level_temp+1)*dSpace_); // decrease full circle of arclength
         level_temp++; // advance to next level
     }
@@ -367,17 +372,17 @@
     SInt16 normalizeMax = 0;
     NSMutableData * fullSongData = [[NSMutableData alloc] init];
     [reader startReading];    
-    
-    UInt64 totalBytes = 0;   
-    SInt64 totalLeft  = 0;
-    SInt64 totalRight = 0;
+               
+    UInt64    totalBytes = 0;   
+    SInt64    totalLeft  = 0;
+    SInt64    totalRight = 0;
     NSInteger sampleTally = 0;
     NSInteger maxTally = -1*INFINITY;
     NSInteger totalAmplitude = 0;
     NSInteger totalNumberOfSamples = 0;
     NSInteger samplesPerPixel = sampleRate;
-    
-    while (reader.status == AVAssetReaderStatusReading){
+     
+    while (reader.status == AVAssetReaderStatusReading) {
         
         AVAssetReaderTrackOutput * trackOutput = (AVAssetReaderTrackOutput *)[reader.outputs objectAtIndex:0];
         CMSampleBufferRef sampleBufferRef = [trackOutput copyNextSampleBuffer];
@@ -438,8 +443,7 @@
             CMSampleBufferInvalidate(sampleBufferRef);
             CFRelease(sampleBufferRef);
         }
-    }
-    
+    }    
     
     if (reader.status == AVAssetReaderStatusFailed || reader.status == AVAssetReaderStatusUnknown){
         // Something went wrong. return nil
