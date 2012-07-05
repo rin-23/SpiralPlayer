@@ -20,9 +20,9 @@
 		151A42F915538F9D003BF64A /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 151A42F715538F9D003BF64A /* ViewController.xib */; };
 		151F4375159D7844000CCDEB /* ChameleonComedian.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 151F4374159D7844000CCDEB /* ChameleonComedian.mp3 */; };
 		1533A54315853ED200E27069 /* handle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1533A54215853ED200E27069 /* handle@2x.png */; };
-		153BE19E15A23BD3000606C1 /* Charlie Brown.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 153BE19D15A23BD3000606C1 /* Charlie Brown.mp3 */; };
 		1544D94615A229EB00AE7C63 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1544D94515A229EB00AE7C63 /* CoreMedia.framework */; };
 		1544D94915A22A0E00AE7C63 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1544D94815A22A0E00AE7C63 /* MediaPlayer.framework */; };
+		157D3F2615A543B8009064CF /* CharlieBrown.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 157D3F2515A543B8009064CF /* CharlieBrown.mp3 */; };
 		15E163F6158B1AD900CC8FAC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15E163F3158B1AD900CC8FAC /* AudioToolbox.framework */; };
 		15E163F8158B1AD900CC8FAC /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15E163F5158B1AD900CC8FAC /* CoreAudio.framework */; };
 /* End PBXBuildFile section */
@@ -47,9 +47,9 @@
 		151A42F815538F9D003BF64A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
 		151F4374159D7844000CCDEB /* ChameleonComedian.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ChameleonComedian.mp3; sourceTree = "<group>"; };
 		1533A54215853ED200E27069 /* handle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "handle@2x.png"; sourceTree = "<group>"; };
-		153BE19D15A23BD3000606C1 /* Charlie Brown.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Charlie Brown.mp3"; sourceTree = "<group>"; };
 		1544D94515A229EB00AE7C63 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		1544D94815A22A0E00AE7C63 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		157D3F2515A543B8009064CF /* CharlieBrown.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = CharlieBrown.mp3; sourceTree = "<group>"; };
 		15E163F3158B1AD900CC8FAC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		15E163F5158B1AD900CC8FAC /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -109,7 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				1533A54215853ED200E27069 /* handle@2x.png */,
-				153BE19D15A23BD3000606C1 /* Charlie Brown.mp3 */,
+				157D3F2515A543B8009064CF /* CharlieBrown.mp3 */,
 				151F4374159D7844000CCDEB /* ChameleonComedian.mp3 */,
 				150CC5DB155450DD00570ACC /* ComeAway.mp3 */,
 				151A42F115538F9D003BF64A /* AppDelegate.h */,
@@ -190,7 +190,7 @@
 				150CC5DC155450DD00570ACC /* ComeAway.mp3 in Resources */,
 				1533A54315853ED200E27069 /* handle@2x.png in Resources */,
 				151F4375159D7844000CCDEB /* ChameleonComedian.mp3 in Resources */,
-				153BE19E15A23BD3000606C1 /* Charlie Brown.mp3 in Resources */,
+				157D3F2615A543B8009064CF /* CharlieBrown.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,7 +283,7 @@
 				INFOPLIST_FILE = "SpiralPlayer/SpiralPlayer-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -296,7 +296,7 @@
 				INFOPLIST_FILE = "SpiralPlayer/SpiralPlayer-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

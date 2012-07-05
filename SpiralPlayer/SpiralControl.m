@@ -1,7 +1,8 @@
 #import "SpiralControl.h"
 
 #define DEGREES_PER_UNIT_VALUE 1 // how many degress are per second of audio for example
-#define ARCLENGTH_PER_UNIT_VALUE 2                                                                                                                                                                                                                                                                                    
+#define ARCLENGTH_PER_UNIT_VALUE 25
+//#define WAVEFORM_HEIGHT 30
 
 @interface SpiralControl(PrivateMethods)
 - (void) setCurrentAngleDegrees: (double) angleDeg;
@@ -14,7 +15,7 @@
 
 @implementation SpiralControl     
 
-@synthesize value = value_, maximumValue = maximumValue_, samples = samples_;
+@synthesize value = value_, maximumValue = maximumValue_, samples = samples_, waveFormHeight=waveFormHeight_, radiusStep = radiusStep_;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -22,17 +23,18 @@
                
         self.backgroundColor = [UIColor lightGrayColor];        
         
-        //centerX_ = 380; // x-coordinate of the center of the spiral
-        //centerY_ = 512; // y-coordinate of the center of the spiral 
-        centerX_ = 360/2;
-        centerY_ = 480/2;
-        dSpace_ = 50.0; // space between succesive turns of the spiral
+        centerX_ = 380; // x-coordinate of the center of the spiral
+        centerY_ = 512; // y-coordinate of the center of the spiral 
+        //centerX_ = 360/2;
+        //centerY_ = 480/2;
+        radiusStep_ = 60.0; // space between succesive turns of the spiral
         currentAngleRad_ = 0;
         currentAngleDeg_ = 0;
         currentLevel_ = 0;
         dataReady_ = NO;
-
-        //Player thumb needle
+        waveFormHeight_ = 20;        
+        
+        // Player thumb needle
         thumb_ = [UIButton buttonWithType:UIButtonTypeCustom];
         thumb_.frame=CGRectMake(0, 0, 50, 52);
         thumb_.center = CGPointMake(centerX_, centerY_);         
@@ -41,7 +43,8 @@
         [thumb_ addTarget:self action:@selector(dragThumbEnded:withEvent:) forControlEvents:UIControlEventTouchUpInside|UIControlEventTouchUpOutside];
         [thumb_ setImage:[UIImage imageNamed:@"handle"] forState:UIControlStateNormal];
         [self addSubview:thumb_];
-     
+        
+   
     }
     return self;
 }
@@ -78,6 +81,7 @@
   
     //Determine which quarter of the circle we touched. Adjust angle accordingly.
     double cur_level_angle = atan((double)abs(y)/abs(x)); //angle at teh current level only
+    int oldLevel = currentLevel_;
     if  (x >= 0 && y >= 0) {
         cur_level_angle = cur_level_angle; //I quarter - do nothing.
         if (currentQuarter_ == 4) currentLevel_ += 1;
@@ -99,14 +103,17 @@
     
     // Calculate total arclength
     float arclength = 0;  
-    for (int cur = 0; cur < currentLevel_ ; cur++) {
-        arclength += 2*M_PI*currentLevel_*dSpace_;
+    for (int cur = 1; cur <= currentLevel_ ; cur++) {
+        arclength += 2*M_PI*cur*radiusStep_;
     }
-    arclength += cur_level_angle * (currentLevel_ + 1) * dSpace_; //arclength at current level
+    arclength += cur_level_angle*(currentLevel_+1)*radiusStep_; //arclength at current level
     
     
     NSLog(@"LEVEL: %i, ANGLE: %f, ARCLENGTH: %f, MAXARCLENTGH: %f", currentLevel_, cur_level_angle*(180.0/M_PI), arclength, maxArcLength_);
-    if (arclength > maxArcLength_ || total_angle < 0) return;   
+    if (arclength > maxArcLength_ || total_angle < 0){ 
+        //currentLevel_ = oldLevel;
+        return;
+    }   
     // If (angle > maxAngleRad_ || angle<0) return; // exceed turn number limit
                
     // Calculate the final coordinates
@@ -141,7 +148,8 @@
     double x = p.x - centerX_;
     double y = p.y - centerY_;
     //Calculate turn number based on the distance from the of origin
-    currentLevel_ = floor(sqrt(pow(x,2) + pow(y,2)) / dSpace_); 
+    int oldLevel = currentLevel_;
+    currentLevel_ = floor(sqrt(pow(x,2) + pow(y,2)) / radiusStep_); 
     
     //Determine which quarter of the circle we touched. Adjust angle accrodingly.
     double cur_level_angle = atan((double)abs(y)/abs(x));
@@ -164,13 +172,16 @@
     double total_angle = cur_level_angle + 2*currentLevel_*M_PI;  
     // Calculate total arclength
     float arclength = 0;  
-    for (int cur = 0; cur < currentLevel_ ; cur++) {
-        arclength += 2*M_PI*currentLevel_*dSpace_;
+    for (int cur = 1; cur <= currentLevel_ ; cur++) {
+        arclength += 2*M_PI*cur*radiusStep_;
     }
-    arclength += cur_level_angle * (currentLevel_ + 1) * dSpace_; //arclength at current level
+    arclength += cur_level_angle * (currentLevel_+1) * radiusStep_; //arclength at current level
     
     NSLog(@"LEVEL: %i, ANGLE: %f, ARCLENGTH: %f, MAXARCLENTGH: %f", currentLevel_, cur_level_angle*(180.0/M_PI), arclength, maxArcLength_);
-    if (arclength > maxArcLength_ || total_angle < 0) return;    
+    if (arclength > maxArcLength_ || total_angle < 0) {
+        currentLevel_=oldLevel;
+        return;
+    }    
  
     //Calculate the final coordinates
     [self setCurrentAngleRadians:total_angle]; // update metrics 
@@ -183,13 +194,12 @@
 - (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent *)event {[super touchesMoved:touches withEvent:event];}
 - (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent *)event {[super touchesEnded:touches withEvent:event];}
 
-#pragma mark - DRAWING THE SPIRAL
+#pragma mark - DRAWING THE SPIRAL  
 
 /*
  * Draw Spiral by drawing a line between each points. (slower method)
  */
-
-- (void)drawSpiralSlow {
+- (void) drawSpiralSlow {
     double angle = 0.0;	// Cumulative radians while stepping.
 	double newX = centerX_;
     double newY = centerY_;
@@ -206,36 +216,33 @@
     double currentArc = 0.0;
     int j = 0;
     SInt16* temp_sample = (SInt16*) self.samples.bytes;
-
     
-    for (int i = 0; i <= floor(maxArcLength_); i += ARCLENGTH_PER_UNIT_VALUE) {
-        
-        if (i > sampleCount_ * ARCLENGTH_PER_UNIT_VALUE) {
-            NSLog(@"ERROR: Current Arc Length exceeds sample count");
-            break;
-        }
-                
-        // Find current level based on arclength
+    for (int i = 0; i <= sampleCount_; i += 1) { 
+//        if (i > sampleCount_ * ARCLENGTH_PER_UNIT_VALUE) {
+//            NSLog(@"ERROR: Current Arc Length exceeds sample count");
+//            break;
+//        }
+//        Find current level based on arclength
         j = i;
         level = 0;
         while (j >= 0) {
             level += 1;
             currentArc = j;
-            j = j - 2*M_PI*(level*dSpace_); 
+            j = j - 2*M_PI*(level*radiusStep_); 
         }   
         
-        angle = currentArc/(level*dSpace_) + 2*M_PI*(level-1); //total angle
+        angle = currentArc/(level*radiusStep_) + 2*M_PI*(level-1); //total angle
         
         CGContextMoveToPoint(context, newX, newY);
-        newX = (dSpace_*angle*cos(angle))/(2*M_PI) + centerX_;
-        newY = (dSpace_*angle*sin(angle))/(2*M_PI) + centerY_;
-        NSLog(@"Drawing:level:%i i:%i angle:%f newX: %0.0f newY: %0.0f", level, i, angle , newX, newY);
+        newX = (radiusStep_*angle*cos(angle))/(2*M_PI) + centerX_;
+        newY = (radiusStep_*angle*sin(angle))/(2*M_PI) + centerY_;
+        //NSLog(@"Drawing:level:%i i:%i angle:%f newX: %0.0f newY: %0.0f", level, i, angle , newX, newY);
         
         SInt16 left = *temp_sample++;
-        NSLog(@"Sample:%i Avergae:%i", left, averageSample_);
-        CGColorRef middleColor = [[UIColor colorWithRed:left/32767.0 green:0 blue:0 alpha:1] CGColor];
+        //NSLog(@"Sample:%i Avergae:%i", left, averageSample_);
+        CGColorRef middleColor = [[UIColor colorWithRed:0 green:0 blue:1 alpha:1] CGColor];
         CGContextSetStrokeColorWithColor(context, middleColor);
-        CGContextSetLineWidth(context, 10*(left/32767.0));
+        CGContextSetLineWidth(context, waveFormHeight_*(left/32767.0));
         
 //        if (left < averageSample_) {
 //            CGContextSetStrokeColorWithColor(context, leftcolor);
@@ -249,7 +256,7 @@
                         
         CGContextAddLineToPoint(context, newX, newY);
         CGContextStrokePath(context);
-    }
+    } 
     //CGContextStrokePath(context);
 }
 
@@ -265,7 +272,9 @@
     if (dataReady_ == YES) {
         CGContextRef context = UIGraphicsGetCurrentContext();
         CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
+        NSLog(@"draw");
         [self drawSpiralSlow];
+        NSLog(@"finish draw");
     }
     
 }
@@ -283,12 +292,12 @@
     //calculete angle using arclength given
     currentAngleRad_ = 0;
     while (arclen_temp >= 0) {
-        if (arclen_temp - 2*M_PI*((level_temp+1)*dSpace_) <= 0) {
-            currentAngleRad_ += arclen_temp/((level_temp+1)*dSpace_);
+        if (arclen_temp - 2*M_PI*((level_temp+1)*radiusStep_) <= 0) {
+            currentAngleRad_ += arclen_temp/((level_temp+1)*radiusStep_);
         } else  {
             currentAngleRad_ += 2*M_PI;
         }    
-        arclen_temp -= 2*M_PI*((level_temp+1)*dSpace_); // decrease full circle of arclength
+        arclen_temp -= 2*M_PI*((level_temp+1)*radiusStep_); // decrease full circle of arclength
         level_temp++; // advance to next level
     }
     //currentAngleDeg_ = value * DEGREES_PER_UNIT_VALUE;
@@ -309,6 +318,16 @@
     maxAngleRad_ = maxAngleDeg_ * (M_PI/180.0); // convert to radians
     maxArcLength_ = maximumValue * ARCLENGTH_PER_UNIT_VALUE;
     NSLog(@"maxiumValue:%f maxArcLength:%f", maximumValue, maxArcLength_);
+}
+
+- (void) setWaveFormHeight:(double)waveFormHeight {
+    waveFormHeight_ = waveFormHeight;
+    [self setNeedsDisplay];
+}
+
+-(void) setRadiusStep:(double)radiusStep {
+    radiusStep_ = radiusStep;
+    [self setNeedsDisplay];
 }
 
 #pragma mark - CUSTOM PRIVATE METHODS
@@ -333,8 +352,8 @@
  * Update needle position depending on the current angle 
  */
 -(void) updateNeedlePosition {
-    double newX = (dSpace_*currentAngleRad_*cos(currentAngleRad_))/(2*M_PI) + centerX_;
-    double newY = (dSpace_*currentAngleRad_*sin(currentAngleRad_))/(2*M_PI) + centerY_;
+    double newX = (radiusStep_*currentAngleRad_*cos(currentAngleRad_))/(2*M_PI) + centerX_;
+    double newY = (radiusStep_*currentAngleRad_*sin(currentAngleRad_))/(2*M_PI) + centerY_;
     thumb_.center = CGPointMake(newX, newY);
     //NSLog(@"Continue --    turn:%i newX:%0.0f newY:%0.0f x:%0.0f y:%0.0f", turnNum, newX, newY, p.x, p.y);
 }
@@ -354,7 +373,7 @@
                                         [NSNumber numberWithBool:NO],AVLinearPCMIsFloatKey,
                                         [NSNumber numberWithBool:NO],AVLinearPCMIsNonInterleaved,
                                         nil];
-        
+         
     AVAssetReaderTrackOutput* output = [[AVAssetReaderTrackOutput alloc] initWithTrack:songTrack outputSettings:outputSettingsDict];
     [reader addOutput:output];
     [output release];
@@ -383,7 +402,7 @@
     NSInteger maxTally = -1*INFINITY;
     NSInteger totalAmplitude = 0;
     NSInteger totalNumberOfSamples = 0;
-    NSInteger samplesPerPixel = sampleRate*2;
+    NSInteger samplesPerPixel = sampleRate/ARCLENGTH_PER_UNIT_VALUE;
      
     while (reader.status == AVAssetReaderStatusReading) {
         
