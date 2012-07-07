@@ -9,11 +9,13 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import "math.h"
+#import "Constants.h"
 @interface SpiralControl : UIControl {
     UIButton* thumb_;
     double centerX_;
     double centerY_;
     double radiusStep_;
+    double arclength_per_unit_value_; 
     
     int currentLevel_;
     double degreeAtCurrentLevel_;
@@ -25,6 +27,7 @@
     double currentAngleDeg_;
     double currentAngleRad_;
     double waveFormHeight_;
+    int samplesPerPixelRatio_;
     
     //Maximum values
     double maximumValue_;
@@ -40,10 +43,7 @@
     NSInteger sampleCount_; 
     NSInteger channelCount_;
     NSInteger averageSample_;
-    
-   
-   
-    
+     
 }
 
 @property (nonatomic, assign) double value;
@@ -51,6 +51,7 @@
 @property (nonatomic, retain) NSMutableData* samples;
 @property (nonatomic, assign) double waveFormHeight;
 @property (nonatomic, assign) double radiusStep;
+@property (nonatomic, assign) int samplesPerPixelRatio;
 
 - (void) drawSpiralForAsset:(AVURLAsset*) songAsset;
 

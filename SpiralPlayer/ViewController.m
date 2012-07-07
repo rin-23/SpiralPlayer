@@ -9,8 +9,6 @@
 #import "ViewController.h"
 #include <AudioToolbox/AudioToolbox.h>
 
-#define kInputFileLocation	CFSTR("ComeAway.mp3")
-
 @implementation ViewController
 
 - (void)didReceiveMemoryWarning
@@ -39,53 +37,82 @@
         [audioPlayer prepareToPlay];
     } 
     
-    //Spiral audio control
-    spiralControl_ = [[SpiralControl alloc] initWithFrame:CGRectMake(0, 0, 768, 1024)];
-    //spiralControl_ = [[SpiralControl alloc] initWithFrame:CGRectMake(0, 0, 360, 480)];
+    // Spiral audio control
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        spiralControl_ = [[SpiralControl alloc] initWithFrame:CGRectMake(0, 0, 768, 1024)];
+    } else {
+        spiralControl_ = [[SpiralControl alloc] initWithFrame:CGRectMake(0, 0, 360, 480)];
+    }
     spiralControl_.maximumValue = audioPlayer.duration;
     [spiralControl_ addTarget:self action:@selector(spiralValueChanged) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:spiralControl_];
     [spiralControl_ drawSpiralForAsset:songAsset]; //draw the spiral
     [spiralControl_ release];
     
-    //Play Button
+    // Play Button
     playButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    playButton.frame = CGRectMake(40, 65, 60, 30);
-    //playButton.frame = CGRectMake(40, 20, 60, 30);
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        playButton.frame = CGRectMake(40, 65, 60, 30);
+    } else {
+        playButton.frame = CGRectMake(40, 20, 60, 30);
+    }
     [playButton addTarget:self action:@selector(playButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [playButton setTitle:@"Play" forState:UIControlStateNormal];
     [self.view addSubview:playButton];
     
-    //Linear audio control
-    seekControl = [[UISlider alloc] initWithFrame:CGRectMake((768 - 400)/2, 20, 400, 15)];
-    //seekControl = [[UISlider alloc] initWithFrame:CGRectMake((360 - 120)/2, 25, 180, 20)];
+    // Linear audio control
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        seekControl = [[UISlider alloc] initWithFrame:CGRectMake((768 - 400)/2, 20, 400, 15)];
+    } else {
+        seekControl = [[UISlider alloc] initWithFrame:CGRectMake((360 - 120)/2, 20, 180, 15)];
+    }
     seekControl.minimumValue = 0;
     seekControl.maximumValue = 1;
+    seekControl.hidden = YES;
     [seekControl addTarget:self action:@selector(seekToTime) forControlEvents:UIControlEventTouchDragInside];
     [self.view addSubview: seekControl];
     [seekControl release];
     
     //Height of the waveform control
-    waveFormHeightSlider_ = [[UISlider alloc] initWithFrame:CGRectMake((768 - 400)/2, 45, 400, 15)];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        waveFormHeightSlider_ = [[UISlider alloc] initWithFrame:CGRectMake((768 - 400)/2, 45, 400, 15)]; 
+    } else {
+        waveFormHeightSlider_ = [[UISlider alloc] initWithFrame:CGRectMake((360 - 120)/2, 45, 180, 15)]; 
+    }
     waveFormHeightSlider_.maximumValue = 70;
     waveFormHeightSlider_.minimumValue = 1;
     waveFormHeightSlider_.value = 30;
     [waveFormHeightSlider_ addTarget:self action:@selector(changeWaveFormHeight) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:waveFormHeightSlider_];
     [waveFormHeightSlider_ release];
-    
-    
-    //Height of the waveform control
-    radiusStepSlider_ = [[UISlider alloc] initWithFrame:CGRectMake((768 - 400)/2, 70, 400, 15)];
-    radiusStepSlider_.maximumValue = 70;
-    radiusStepSlider_.minimumValue = 20;
+        
+    //Radius of the spiral step control
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        radiusStepSlider_ = [[UISlider alloc] initWithFrame:CGRectMake((768 - 400)/2, 70, 400, 15)]; 
+    } else {
+        radiusStepSlider_ = [[UISlider alloc] initWithFrame:CGRectMake((360 - 120)/2, 70, 180, 15)];
+    }
+    radiusStepSlider_.maximumValue = kMAX_SPIRAL_STEP_RADIUS;
+    radiusStepSlider_.minimumValue = kMIN_SPIRAL_STEP_RADIUS;
     radiusStepSlider_.value = 50;
+    radiusStepSlider_.hidden = YES;
     [radiusStepSlider_ addTarget:self action:@selector(changeRadiusStep) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:radiusStepSlider_];
     [radiusStepSlider_ release];
 
-    
-    
+    //Radius of the spiral step control
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        sampleRateRatioSlider_ = [[UISlider alloc] initWithFrame:CGRectMake((768 - 400)/2, 95, 400, 15)];
+    } else {
+        sampleRateRatioSlider_ = [[UISlider alloc] initWithFrame:CGRectMake((360 - 120)/2, 95, 180, 15)];        
+    }
+    sampleRateRatioSlider_.maximumValue = kMAX_SAMPLE_RATE_RATIO;
+    sampleRateRatioSlider_.minimumValue = kMIN_SAMPLE_RATE_RATIO;
+    sampleRateRatioSlider_.value = 1;
+    sampleRateRatioSlider_.hidden = YES;
+    [sampleRateRatioSlider_ addTarget:self action:@selector(sampleRateRatioChanged) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:sampleRateRatioSlider_];
+    [sampleRateRatioSlider_ release];
 }
 
 // waveFormHeightSlider selector
@@ -96,6 +123,14 @@
 // radiusStepSlider selector
 - (void) changeRadiusStep {
     spiralControl_.radiusStep = radiusStepSlider_.value;   
+}
+
+// sampleRateRatioChanged selector
+- (void) sampleRateRatioChanged {
+    int rounded_value = ceil(sampleRateRatioSlider_.value);
+    NSLog(@"SAMPLE RATE CHOSEN %i", rounded_value);
+    sampleRateRatioSlider_.value = rounded_value;
+    spiralControl_.samplesPerPixelRatio = rounded_value;
 }
 
 /*

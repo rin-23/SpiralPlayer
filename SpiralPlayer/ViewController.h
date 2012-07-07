@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import "SpiralControl.h"
+#import "Constants.h"
 
 @interface ViewController : UIViewController <AVAudioPlayerDelegate> {
     AVAudioPlayer *audioPlayer;
@@ -17,6 +18,7 @@
     //Spiral Controls
     UISlider* waveFormHeightSlider_;
     UISlider* radiusStepSlider_;
+    UISlider* sampleRateRatioSlider_;
     UISlider *seekControl;
     UIButton* playButton;
 }

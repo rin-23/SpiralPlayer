@@ -1,8 +1,9 @@
 #import "SpiralControl.h"
 
 #define DEGREES_PER_UNIT_VALUE 1 // how many degress are per second of audio for example
-#define ARCLENGTH_PER_UNIT_VALUE 25
+//#define ARCLENGTH_PER_UNIT_VALUE 10
 //#define WAVEFORM_HEIGHT 30
+#define MIN_SAMPLE_RATE_PER_PIXEL 100
 
 @interface SpiralControl(PrivateMethods)
 - (void) setCurrentAngleDegrees: (double) angleDeg;
@@ -15,7 +16,7 @@
 
 @implementation SpiralControl     
 
-@synthesize value = value_, maximumValue = maximumValue_, samples = samples_, waveFormHeight=waveFormHeight_, radiusStep = radiusStep_;
+@synthesize value = value_, maximumValue = maximumValue_, samples = samples_, waveFormHeight=waveFormHeight_, radiusStep = radiusStep_, samplesPerPixelRatio = samplesPerPixelRatio_;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -23,16 +24,22 @@
                
         self.backgroundColor = [UIColor lightGrayColor];        
         
-        centerX_ = 380; // x-coordinate of the center of the spiral
-        centerY_ = 512; // y-coordinate of the center of the spiral 
-        //centerX_ = 360/2;
-        //centerY_ = 480/2;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            centerX_ = 380; // x-coordinate of the center of the spiral
+            centerY_ = 512; // y-coordinate of the center of the spiral 
+        } else {
+            centerX_ = 320/2;
+            centerY_ = 480/2 + 30; 
+        }
+        
         radiusStep_ = 60.0; // space between succesive turns of the spiral
         currentAngleRad_ = 0;
         currentAngleDeg_ = 0;
         currentLevel_ = 0;
         dataReady_ = NO;
         waveFormHeight_ = 20;        
+        samplesPerPixelRatio_ = 100;
+        arclength_per_unit_value_ = 44100.0 /(samplesPerPixelRatio_* MIN_SAMPLE_RATE_PER_PIXEL);
         
         // Player thumb needle
         thumb_ = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -44,9 +51,47 @@
         [thumb_ setImage:[UIImage imageNamed:@"handle"] forState:UIControlStateNormal];
         [self addSubview:thumb_];
         
+        // Gesture Recognition
+        UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchGesture:)];
+        [self addGestureRecognizer:pinchGesture];
+        [pinchGesture release];
+        
+        UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotaionGesture:)];
+        [self addGestureRecognizer:rotationGesture];
+        [rotationGesture release];
    
     }
     return self;
+}
+
+#pragma mark - GESTURE RECOGNIZER
+- (void) handlePinchGesture:(UIGestureRecognizer *)sender {
+    CGFloat scale = [(UIPinchGestureRecognizer *)sender scale];
+    CGFloat velocity = [(UIPinchGestureRecognizer *)sender velocity];
+    if (velocity > 0) {
+        self.radiusStep = self.radiusStep + 4;
+    } else {
+        self.radiusStep = self.radiusStep - 4;
+    }
+    
+    NSLog(@"PINCH SCALE %f", scale);
+    NSLog(@"PINCH VELOCITY %f", velocity);
+    
+    
+    //self.view.transform = CGAffineTransformMakeScale(factor, factor);
+}
+
+-(void) handleRotaionGesture:(UIGestureRecognizer *)sender {
+    CGFloat rotation = [(UIRotationGestureRecognizer*)sender rotation];
+    CGFloat velocity = [(UIRotationGestureRecognizer*) sender velocity];
+    if (velocity > 0) {
+        self.samplesPerPixelRatio = self.samplesPerPixelRatio - 4;
+    } else {
+        self.samplesPerPixelRatio = self.samplesPerPixelRatio + 4;
+    }
+    NSLog(@"Rotaion: %f", rotation);
+    NSLog(@"Velocity: %f", velocity);
+    
 }
 
 #pragma mark - THUMB NEEDLE TOUCH EVENT HANDLERS
@@ -130,17 +175,17 @@
    
 
 #pragma mark - UIControl TOUCH EVENTS
-
-- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+- (BOOL) beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     NSLog(@"Touch Began");
     return YES;
 }
-- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+
+- (BOOL) continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     NSLog(@"Touch Continued");
     return YES;
 }
-- (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
-    
+
+- (void) endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     //NSLog(@"Touch Ended");
     CGPoint p = [touch locationInView:self];
     
@@ -207,22 +252,19 @@
 	CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextBeginPath (context);
     
-    CGColorRef leftcolor = [[UIColor whiteColor] CGColor]; 
-    CGColorRef rightcolor = [[UIColor redColor] CGColor];
+//    CGColorRef leftcolor = [[UIColor whiteColor] CGColor]; 
+//    CGColorRef rightcolor = [[UIColor redColor] CGColor];
     
-    NSLog(@"SampleCount: %i MaxArc:%f", sampleCount_, maxArcLength_);
+    //NSLog(@"SampleCount: %i MaxArc:%f", sampleCount_, maxArcLength_);
          
     int level = 0;
     double currentArc = 0.0;
     int j = 0;
     SInt16* temp_sample = (SInt16*) self.samples.bytes;
     
-    for (int i = 0; i <= sampleCount_; i += 1) { 
-//        if (i > sampleCount_ * ARCLENGTH_PER_UNIT_VALUE) {
-//            NSLog(@"ERROR: Current Arc Length exceeds sample count");
-//            break;
-//        }
-//        Find current level based on arclength
+    //NSLog(@"SamplesCount: %i SamplesPerPixelRatio: %i Total Samples: %i", sampleCount_, samplesPerPixelRatio_, sampleCount_/samplesPerPixelRatio_);
+    for (int i = 0; i <= sampleCount_/samplesPerPixelRatio_; i += 1) {
+    //for (int i = 0; i <= sampleCount_; i += 1) {
         j = i;
         level = 0;
         while (j >= 0) {
@@ -238,22 +280,23 @@
         newY = (radiusStep_*angle*sin(angle))/(2*M_PI) + centerY_;
         //NSLog(@"Drawing:level:%i i:%i angle:%f newX: %0.0f newY: %0.0f", level, i, angle , newX, newY);
         
-        SInt16 left = *temp_sample++;
+        NSInteger maxTally = -1*INFINITY;
+        SInt16 left;
+        for (int bit = 0; bit<samplesPerPixelRatio_; bit++) {
+          left = *temp_sample++;
+          if (left > maxTally) maxTally = left;
+        }
+        left = maxTally;        
+        
         //NSLog(@"Sample:%i Avergae:%i", left, averageSample_);
-        CGColorRef middleColor = [[UIColor colorWithRed:0 green:0 blue:1 alpha:1] CGColor];
+        CGColorRef middleColor = [[UIColor colorWithRed:0 green:0 blue:left/32767.0 alpha:1] CGColor];
         CGContextSetStrokeColorWithColor(context, middleColor);
         CGContextSetLineWidth(context, waveFormHeight_*(left/32767.0));
         
-//        if (left < averageSample_) {
-//            CGContextSetStrokeColorWithColor(context, leftcolor);
-//        } else {
-//            CGContextSetStrokeColorWithColor(context, rightcolor);
-//        }
-                   
-        if (channelCount_==2) {
-            SInt16 right = *temp_sample++;
-        } 
-                        
+//        if (left < averageSample_) CGContextSetStrokeColorWithColor(context, leftcolor);
+//        else CGContextSetStrokeColorWithColor(context, rightcolor);
+//        if (channelCount_==2) SInt16 right = *temp_sample++;
+                           
         CGContextAddLineToPoint(context, newX, newY);
         CGContextStrokePath(context);
     } 
@@ -272,20 +315,20 @@
     if (dataReady_ == YES) {
         CGContextRef context = UIGraphicsGetCurrentContext();
         CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
-        NSLog(@"draw");
+        //NSLog(@"draw");
         [self drawSpiralSlow];
-        NSLog(@"finish draw");
+        //NSLog(@"finish draw");
     }
     
 }
 
 #pragma mark - CUSTOM PUBLIC GETTERS AND SETTERS 
 -(double) value {
-    return value_/ARCLENGTH_PER_UNIT_VALUE;
+    return value_/arclength_per_unit_value_;
 }
 
 -(void) setValue:(double)value {
-    value_ = value * ARCLENGTH_PER_UNIT_VALUE;
+    value_ = value * arclength_per_unit_value_;
     double arclen_temp = value_;
     int level_temp = 0;
     //NSLog(@"%f %f %f", value, value_, arclen_temp);
@@ -316,7 +359,7 @@
     
     maxAngleDeg_ = maximumValue * DEGREES_PER_UNIT_VALUE; // convert value to degrees
     maxAngleRad_ = maxAngleDeg_ * (M_PI/180.0); // convert to radians
-    maxArcLength_ = maximumValue * ARCLENGTH_PER_UNIT_VALUE;
+    maxArcLength_ = maximumValue * arclength_per_unit_value_;
     NSLog(@"maxiumValue:%f maxArcLength:%f", maximumValue, maxArcLength_);
 }
 
@@ -326,7 +369,18 @@
 }
 
 -(void) setRadiusStep:(double)radiusStep {
+    NSLog(@"Radius Step: %f", radiusStep);
+    if (radiusStep>kMAX_SPIRAL_STEP_RADIUS || radiusStep<kMIN_SPIRAL_STEP_RADIUS) return;
     radiusStep_ = radiusStep;
+    [self setNeedsDisplay];
+}
+
+-(void) setSamplesPerPixelRatio:(int)samplesPerPixelRatio {
+    NSLog(@"SamplePerPixel: %i", samplesPerPixelRatio);
+    if (samplesPerPixelRatio>kMAX_SAMPLE_RATE_RATIO || samplesPerPixelRatio<kMIN_SAMPLE_RATE_RATIO) return;
+    samplesPerPixelRatio_ = samplesPerPixelRatio;  
+    arclength_per_unit_value_ = 44100.0 /(samplesPerPixelRatio_* MIN_SAMPLE_RATE_PER_PIXEL);
+    maxArcLength_ = maximumValue_ * arclength_per_unit_value_;
     [self setNeedsDisplay];
 }
 
@@ -402,7 +456,7 @@
     NSInteger maxTally = -1*INFINITY;
     NSInteger totalAmplitude = 0;
     NSInteger totalNumberOfSamples = 0;
-    NSInteger samplesPerPixel = sampleRate/ARCLENGTH_PER_UNIT_VALUE;
+    NSInteger samplesPerPixel = MIN_SAMPLE_RATE_PER_PIXEL;
      
     while (reader.status == AVAssetReaderStatusReading) {
         
@@ -420,7 +474,7 @@
             
             SInt16 * samples = (SInt16 *) data.mutableBytes;
             int sampleCount = length / bytesPerSample;
-            for (int i = 0; i < sampleCount ; i ++) {
+            for (int i = 0; i < sampleCount; i ++) {
                 SInt16 left = *samples++;
                 totalLeft  += left;  
                
@@ -433,7 +487,6 @@
                 sampleTally++;
                 if (left>maxTally) maxTally = left;
                 
-                //Rinat added this for calculating areas 
                 if (sampleTally > samplesPerPixel) {
                     //left  = totalLeft / sampleTally; 
                     left = maxTally;
@@ -451,7 +504,7 @@
                         right = totalRight / sampleTally; 
                         SInt16 fix = abs(right);
                         if (fix > normalizeMax) normalizeMax = fix;
-                        [fullSongData appendBytes:&right length:sizeof(right)];
+                        //[fullSongData appendBytes:&right length:sizeof(right)];
                     }
                     
                     totalLeft   = 0;
@@ -478,7 +531,7 @@
         
         self.samples = fullSongData;
         normalizeMax_ = normalizeMax;
-        sampleCount_ = fullSongData.length / 4;
+        sampleCount_ = fullSongData.length / 2; // TO DO CHANGE THIS IF SHOWING TWO CHANNELS
         channelCount_ = channelCount;
         averageSample_ = totalAmplitude/totalNumberOfSamples;
         dataReady_ = YES;
