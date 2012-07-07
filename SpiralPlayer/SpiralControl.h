@@ -10,6 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "math.h"
 #import "Constants.h"
+#import <MediaPlayer/MediaPlayer.h>
 @interface SpiralControl : UIControl {
     UIButton* thumb_;
     double centerX_;

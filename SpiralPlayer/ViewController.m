@@ -50,15 +50,23 @@
     [spiralControl_ release];
     
     // Play Button
-    playButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        playButton.frame = CGRectMake(40, 65, 60, 30);
-    } else {
-        playButton.frame = CGRectMake(40, 20, 60, 30);
-    }
+    playButton= [UIButton buttonWithType:UIButtonTypeCustom];
+    playButton.frame = CGRectMake(10, 10, 44, 44);
+    playButton.selected = NO;
+    [playButton setImage:[UIImage imageNamed:@"play1-150x150.png"] forState:UIControlStateNormal];
+    [playButton setImage:[UIImage imageNamed:@"pause1-150x150"] forState:UIControlStateSelected];
+    [playButton setImage:[UIImage imageNamed:@"play1-150x150.png"] forState:UIControlStateHighlighted];
     [playButton addTarget:self action:@selector(playButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [playButton setTitle:@"Play" forState:UIControlStateNormal];
     [self.view addSubview:playButton];
+    
+     
+    // Choose Song Button
+    songChooseButton_ = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    songChooseButton_.frame = CGRectMake(80, 10, 44, 29);
+    [songChooseButton_ setImage:[UIImage imageNamed:@"choose_song_btn.png"] forState:UIControlStateNormal];   
+    [songChooseButton_ addTarget:self action:@selector(chooseSongClicked) forControlEvents:UIControlEventTouchUpInside];
+    //[self.view addSubview:songChooseButton_];
+    
     
     // Linear audio control
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -77,7 +85,7 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         waveFormHeightSlider_ = [[UISlider alloc] initWithFrame:CGRectMake((768 - 400)/2, 45, 400, 15)]; 
     } else {
-        waveFormHeightSlider_ = [[UISlider alloc] initWithFrame:CGRectMake((360 - 120)/2, 45, 180, 15)]; 
+        waveFormHeightSlider_ = [[UISlider alloc] initWithFrame:CGRectMake(80, 45, 180, 15)]; 
     }
     waveFormHeightSlider_.maximumValue = 70;
     waveFormHeightSlider_.minimumValue = 1;
@@ -85,7 +93,23 @@
     [waveFormHeightSlider_ addTarget:self action:@selector(changeWaveFormHeight) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:waveFormHeightSlider_];
     [waveFormHeightSlider_ release];
-        
+    
+    
+    heightLabel_ = [[UILabel alloc] initWithFrame:CGRectMake(80, 20, 300, 15)];
+    heightLabel_.backgroundColor = [UIColor clearColor];
+    heightLabel_.userInteractionEnabled = NO;
+    heightLabel_.text = @"Scale Wave Form Height";
+    [self.view addSubview:heightLabel_];
+    [heightLabel_ release];
+            
+    UILabel* msg = [[UILabel alloc] initWithFrame:CGRectMake(75, 70, 300, 15)];
+    msg.backgroundColor = [UIColor clearColor];
+    msg.userInteractionEnabled = NO;
+    msg.text = @"Use zoom and rotation gestures";
+    [self.view addSubview:msg];
+    [msg release];
+    
+    
     //Radius of the spiral step control
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         radiusStepSlider_ = [[UISlider alloc] initWithFrame:CGRectMake((768 - 400)/2, 70, 400, 15)]; 
@@ -113,7 +137,66 @@
     [sampleRateRatioSlider_ addTarget:self action:@selector(sampleRateRatioChanged) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:sampleRateRatioSlider_];
     [sampleRateRatioSlider_ release];
+    
+    
+    waveformSpinner_ = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    waveformSpinner_.frame = CGRectMake(0, 0, 30, 30);
+    waveformSpinner_.center = CGPointMake(320/2, 480/2);
+    [self.view addSubview:waveformSpinner_];
+    [waveformSpinner_ release];
 }
+
+#pragma mark - MPMediaPickerControllerDelegate Methods
+
+- (void)mediaPicker:(MPMediaPickerController *)mediaPicker didPickMediaItems:(MPMediaItemCollection *)mediaItemCollection {
+    
+    [self dismissModalViewControllerAnimated:YES];
+	if ([mediaItemCollection count] < 1) {
+		return;
+	}
+	
+	// Populate meatadata
+    MPMediaItem* song = [[mediaItemCollection items] objectAtIndex:0];
+    NSURL *assetURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
+    AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
+    
+    [waveformSpinner_ startAnimating];
+
+    [audioPlayer stop];
+    playButton.selected = NO;
+    //[self loadNewAudio:assetURL];
+    [self performSelectorInBackground:@selector(drawNewSpiral:) withObject:songAsset];
+
+    
+}
+
+-(void) drawNewSpiral:(AVURLAsset*) songAsset {
+    [spiralControl_ drawSpiralForAsset:songAsset];
+    [waveformSpinner_ stopAnimating];    
+}
+
+-(void) loadNewAudio:(NSURL*) assetURL {
+    if (audioPlayer!=nil) {
+        [audioPlayer release];    
+    }
+    NSError *error;
+    audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:assetURL error:&error];
+    if (error) {
+        NSLog(@"Error in audioPlayer: %@", 
+        [error localizedDescription]);
+    } else {
+
+        audioPlayer.delegate = self;
+        
+        [audioPlayer prepareToPlay];
+        [audioPlayer play]; 
+    }
+}
+
+- (void) mediaPickerDidCancel: (MPMediaPickerController *) mediaPicker{
+    [self dismissModalViewControllerAnimated:YES];
+}
+
 
 // waveFormHeightSlider selector
 - (void) changeWaveFormHeight {
@@ -140,13 +223,22 @@
     [audioPlayer setCurrentTime:spiralControl_.value];
 }
 
+-(void) chooseSongClicked {
+    MPMediaPickerController* picker = [[MPMediaPickerController alloc] initWithMediaTypes:MPMediaTypeMusic];
+    picker.prompt = @"Choose song to process";
+    picker.delegate = self;
+    [self presentModalViewController:picker animated:YES];
+    [picker release];
+}
+
 -(void) playButtonClicked {
+    
     if (audioPlayer.playing) {
         [audioPlayer pause];
-        [playButton setTitle:@"Play" forState:UIControlStateNormal];
+        playButton.selected = NO;
     } else {
         [audioPlayer play];
-        [playButton setTitle:@"Pause" forState:UIControlStateNormal];
+        playButton.selected = YES;
     }
     
 }

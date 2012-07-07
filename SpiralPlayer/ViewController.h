@@ -10,8 +10,10 @@
 #import <AVFoundation/AVFoundation.h>
 #import "SpiralControl.h"
 #import "Constants.h"
-
-@interface ViewController : UIViewController <AVAudioPlayerDelegate> {
+#import <MediaPlayer/MediaPlayer.h>
+@interface ViewController : UIViewController <AVAudioPlayerDelegate, MPMediaPickerControllerDelegate> {
+    
+    //MPMusicPlayerController* musicPlayer_;
     AVAudioPlayer *audioPlayer;
     SpiralControl* spiralControl_; 
        
@@ -21,6 +23,9 @@
     UISlider* sampleRateRatioSlider_;
     UISlider *seekControl;
     UIButton* playButton;
+    UIButton* songChooseButton_;
+    UIActivityIndicatorView* waveformSpinner_;
+    UILabel* heightLabel_;
 }
 
 

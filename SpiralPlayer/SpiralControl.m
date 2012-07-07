@@ -252,8 +252,8 @@
 	CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextBeginPath (context);
     
-//    CGColorRef leftcolor = [[UIColor whiteColor] CGColor]; 
-//    CGColorRef rightcolor = [[UIColor redColor] CGColor];
+    CGColorRef leftcolor = [[UIColor whiteColor] CGColor]; 
+    CGColorRef rightcolor = [[UIColor colorWithRed:0.7 green:0 blue:0 alpha:1] CGColor];
     
     //NSLog(@"SampleCount: %i MaxArc:%f", sampleCount_, maxArcLength_);
          
@@ -289,13 +289,15 @@
         left = maxTally;        
         
         //NSLog(@"Sample:%i Avergae:%i", left, averageSample_);
-        CGColorRef middleColor = [[UIColor colorWithRed:0 green:0 blue:left/32767.0 alpha:1] CGColor];
-        CGContextSetStrokeColorWithColor(context, middleColor);
+        //CGColorRef middleColor = [[UIColor colorWithRed:0 green:0 blue:0.8 alpha:1] CGColor];
+        //CGContextSetStrokeColorWithColor(context, middleColor);
+        
+        if (left < averageSample_) CGContextSetStrokeColorWithColor(context, leftcolor);
+        else CGContextSetStrokeColorWithColor(context, rightcolor);
+
         CGContextSetLineWidth(context, waveFormHeight_*(left/32767.0));
         
-//        if (left < averageSample_) CGContextSetStrokeColorWithColor(context, leftcolor);
-//        else CGContextSetStrokeColorWithColor(context, rightcolor);
-//        if (channelCount_==2) SInt16 right = *temp_sample++;
+        //        if (channelCount_==2) SInt16 right = *temp_sample++;
                            
         CGContextAddLineToPoint(context, newX, newY);
         CGContextStrokePath(context);
@@ -313,11 +315,12 @@
 
 
     if (dataReady_ == YES) {
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
-        //NSLog(@"draw");
         [self drawSpiralSlow];
-        //NSLog(@"finish draw");
+    } else {
+        NSLog(@"DELETE PREVIOIS WAVEFORM");
+        CGContextRef context = UIGraphicsGetCurrentContext();
+       	CGContextBeginPath (context);
+        CGContextStrokePath(context);
     }
     
 }
@@ -415,7 +418,11 @@
 #pragma mark - READ DATA
 - (void) drawSpiralForAsset: (AVURLAsset*) songAsset {
     NSError * error = nil;
-     
+    
+    //delete old waveform
+    dataReady_ = NO; 
+    [self setNeedsDisplay];
+    
     AVAssetReader * reader = [[AVAssetReader alloc] initWithAsset:songAsset error:&error];
     AVAssetTrack * songTrack = [songAsset.tracks objectAtIndex:0];
     NSDictionary* outputSettingsDict = [[NSDictionary alloc] initWithObjectsAndKeys:
@@ -541,7 +548,7 @@
     [fullSongData release];
     [reader release];
     [self setNeedsDisplay];
-    
+        
 }
 
 
