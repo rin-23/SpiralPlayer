@@ -11,6 +11,7 @@
 #import "math.h"
 #import "Constants.h"
 #import <MediaPlayer/MediaPlayer.h>
+
 @interface SpiralControl : UIControl {
     UIButton* thumb_;
     double centerX_;
@@ -55,5 +56,6 @@
 @property (nonatomic, assign) int samplesPerPixelRatio;
 
 - (void) drawSpiralForAsset:(AVURLAsset*) songAsset;
+- (void) convertToCAF:(AVURLAsset*) songAsset;
 
 @end

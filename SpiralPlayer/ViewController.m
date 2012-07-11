@@ -46,7 +46,8 @@
     spiralControl_.maximumValue = audioPlayer.duration;
     [spiralControl_ addTarget:self action:@selector(spiralValueChanged) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:spiralControl_];
-    [spiralControl_ drawSpiralForAsset:songAsset]; //draw the spiral
+    //[spiralControl_ convertToCAF:songAsset];
+    [spiralControl_ drawSpiralForAsset:songAsset]; //draw the spiral 
     [spiralControl_ release];
     
     // Play Button
@@ -197,7 +198,6 @@
     [self dismissModalViewControllerAnimated:YES];
 }
 
-
 // waveFormHeightSlider selector
 - (void) changeWaveFormHeight {
     spiralControl_.waveFormHeight = waveFormHeightSlider_.value;   
@@ -258,6 +258,8 @@
     [audioPlayer play];
     [seekControl setValue:0];
 }
+
+
 -(void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError *)error
 {
 }

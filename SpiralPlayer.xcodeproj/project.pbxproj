@@ -24,6 +24,7 @@
 		157D3F7B15A7D216009064CF /* choose_song_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 157D3F7A15A7D216009064CF /* choose_song_btn.png */; };
 		157D3F7E15A7D369009064CF /* play1-150x150.png in Resources */ = {isa = PBXBuildFile; fileRef = 157D3F7C15A7D368009064CF /* play1-150x150.png */; };
 		157D3F7F15A7D369009064CF /* pause1-150x150.png in Resources */ = {isa = PBXBuildFile; fileRef = 157D3F7D15A7D369009064CF /* pause1-150x150.png */; };
+		15CF25C515AD5411007CA929 /* WaveAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 15CF25C415AD5411007CA929 /* WaveAudioPlayer.m */; };
 		15E163F6158B1AD900CC8FAC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15E163F3158B1AD900CC8FAC /* AudioToolbox.framework */; };
 		15E163F8158B1AD900CC8FAC /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15E163F5158B1AD900CC8FAC /* CoreAudio.framework */; };
 /* End PBXBuildFile section */
@@ -53,6 +54,8 @@
 		157D3F7A15A7D216009064CF /* choose_song_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = choose_song_btn.png; sourceTree = "<group>"; };
 		157D3F7C15A7D368009064CF /* play1-150x150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play1-150x150.png"; sourceTree = "<group>"; };
 		157D3F7D15A7D369009064CF /* pause1-150x150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pause1-150x150.png"; sourceTree = "<group>"; };
+		15CF25C315AD5410007CA929 /* WaveAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaveAudioPlayer.h; sourceTree = "<group>"; };
+		15CF25C415AD5411007CA929 /* WaveAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaveAudioPlayer.m; sourceTree = "<group>"; };
 		15E163F3158B1AD900CC8FAC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		15E163F5158B1AD900CC8FAC /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -118,6 +121,8 @@
 				151A42F515538F9D003BF64A /* ViewController.m */,
 				150CC5D11554468200570ACC /* SpiralControl.h */,
 				150CC5D21554468200570ACC /* SpiralControl.m */,
+				15CF25C315AD5410007CA929 /* WaveAudioPlayer.h */,
+				15CF25C415AD5411007CA929 /* WaveAudioPlayer.m */,
 				151A42F715538F9D003BF64A /* ViewController.xib */,
 				157D3F8115A7D4E0009064CF /* Music Files */,
 				157D3F8015A7D4CE009064CF /* Assets */,
@@ -227,6 +232,7 @@
 				151A42F315538F9D003BF64A /* AppDelegate.m in Sources */,
 				151A42F615538F9D003BF64A /* ViewController.m in Sources */,
 				150CC5D31554468200570ACC /* SpiralControl.m in Sources */,
+				15CF25C515AD5411007CA929 /* WaveAudioPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,7 +311,7 @@
 				INFOPLIST_FILE = "SpiralPlayer/SpiralPlayer-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -318,7 +324,7 @@
 				INFOPLIST_FILE = "SpiralPlayer/SpiralPlayer-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

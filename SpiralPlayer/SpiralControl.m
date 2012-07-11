@@ -4,6 +4,7 @@
 //#define ARCLENGTH_PER_UNIT_VALUE 10
 //#define WAVEFORM_HEIGHT 30
 #define MIN_SAMPLE_RATE_PER_PIXEL 100
+#define EXPORT_NAME @"exported.caf"
 
 @interface SpiralControl(PrivateMethods)
 - (void) setCurrentAngleDegrees: (double) angleDeg;
@@ -12,8 +13,8 @@
 - (void) updateNeedlePosition;
 - (void) drawSpiral;
 - (void) numOfTurns;
-@end
-
+@end     
+ 
 @implementation SpiralControl     
 
 @synthesize value = value_, maximumValue = maximumValue_, samples = samples_, waveFormHeight=waveFormHeight_, radiusStep = radiusStep_, samplesPerPixelRatio = samplesPerPixelRatio_;
@@ -421,7 +422,7 @@
     
     //delete old waveform
     dataReady_ = NO; 
-    [self setNeedsDisplay];
+    //[self setNeedsDisplay];
     
     AVAssetReader * reader = [[AVAssetReader alloc] initWithAsset:songAsset error:&error];
     AVAssetTrack * songTrack = [songAsset.tracks objectAtIndex:0];
@@ -550,6 +551,9 @@
     [self setNeedsDisplay];
         
 }
+
+
+
 
 
 @end
