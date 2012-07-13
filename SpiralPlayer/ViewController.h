@@ -8,13 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
+
 #import "SpiralControl.h"
 #import "Constants.h"
 #import <MediaPlayer/MediaPlayer.h>
-@interface ViewController : UIViewController <AVAudioPlayerDelegate, MPMediaPickerControllerDelegate> {
+#import "WaveAudioPlayer.h"
+
+@interface ViewController : UIViewController <MPMediaPickerControllerDelegate, WaveAudioPlayerDelegate> {
     
     //MPMusicPlayerController* musicPlayer_;
-    AVAudioPlayer *audioPlayer;
+    WaveAudioPlayer *audioPlayer;
     SpiralControl* spiralControl_; 
        
     //Spiral Controls

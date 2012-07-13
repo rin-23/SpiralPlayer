@@ -25,6 +25,7 @@
 		157D3F7E15A7D369009064CF /* play1-150x150.png in Resources */ = {isa = PBXBuildFile; fileRef = 157D3F7C15A7D368009064CF /* play1-150x150.png */; };
 		157D3F7F15A7D369009064CF /* pause1-150x150.png in Resources */ = {isa = PBXBuildFile; fileRef = 157D3F7D15A7D369009064CF /* pause1-150x150.png */; };
 		15CF25C515AD5411007CA929 /* WaveAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 15CF25C415AD5411007CA929 /* WaveAudioPlayer.m */; };
+		15D2CEA215B0BFEF006966AF /* appIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 15D2CEA115B0BFEF006966AF /* appIcon.png */; };
 		15E163F6158B1AD900CC8FAC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15E163F3158B1AD900CC8FAC /* AudioToolbox.framework */; };
 		15E163F8158B1AD900CC8FAC /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15E163F5158B1AD900CC8FAC /* CoreAudio.framework */; };
 /* End PBXBuildFile section */
@@ -56,6 +57,7 @@
 		157D3F7D15A7D369009064CF /* pause1-150x150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pause1-150x150.png"; sourceTree = "<group>"; };
 		15CF25C315AD5410007CA929 /* WaveAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaveAudioPlayer.h; sourceTree = "<group>"; };
 		15CF25C415AD5411007CA929 /* WaveAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaveAudioPlayer.m; sourceTree = "<group>"; };
+		15D2CEA115B0BFEF006966AF /* appIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appIcon.png; sourceTree = "<group>"; };
 		15E163F3158B1AD900CC8FAC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		15E163F5158B1AD900CC8FAC /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -82,6 +84,7 @@
 		151A42D315538F9D003BF64A = {
 			isa = PBXGroup;
 			children = (
+				15D2CEA115B0BFEF006966AF /* appIcon.png */,
 				151A42E815538F9D003BF64A /* SpiralPlayer */,
 				151A42E115538F9D003BF64A /* Frameworks */,
 				151A42DF15538F9D003BF64A /* Products */,
@@ -218,6 +221,7 @@
 				157D3F7B15A7D216009064CF /* choose_song_btn.png in Resources */,
 				157D3F7E15A7D369009064CF /* play1-150x150.png in Resources */,
 				157D3F7F15A7D369009064CF /* pause1-150x150.png in Resources */,
+				15D2CEA215B0BFEF006966AF /* appIcon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,7 +315,7 @@
 				INFOPLIST_FILE = "SpiralPlayer/SpiralPlayer-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -324,7 +328,7 @@
 				INFOPLIST_FILE = "SpiralPlayer/SpiralPlayer-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

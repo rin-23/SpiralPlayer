@@ -55,7 +55,7 @@
 @property (nonatomic, assign) double radiusStep;
 @property (nonatomic, assign) int samplesPerPixelRatio;
 
-- (void) drawSpiralForAsset:(AVURLAsset*) songAsset;
+- (void) drawSpiralForMediaItem: (MPMediaItem*) mediaItem;
 - (void) convertToCAF:(AVURLAsset*) songAsset;
 
 @end

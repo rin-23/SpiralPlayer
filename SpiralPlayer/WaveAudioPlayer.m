@@ -7,64 +7,56 @@
 //
 
 #import "WaveAudioPlayer.h"
-
+#import <AudioToolbox/AudioToolbox.h>
 #define EXPORT_NAME @"exported.caf"
-
 
 @interface WaveAudioPlayer(PrivateMethods)
 - (void) convertCurrentItemToCAF;
 @end     
 
-
 @implementation WaveAudioPlayer
 
-@synthesize mediaItem = mediaItem_, player = audioPlayer_;
-
-
+@synthesize mediaItem = mediaItem_, player = audioPlayer_, delegate = delegate_;
 
 /*
  * Initialization
  */
 -(id) init{
     self = [super init];
-    if (self){
-        
-    }
-    return self;
-}
-
-- (id) initWithMPMediaItem:(MPMediaItem*) mediaItem {
-    self = [super init];
-    if (self) {
-        self.mediaItem = mediaItem;
-        [self convertCurrentItemToCAF];
-  
-    }
     return self;
 }
 
 /*
  * Play next media item
- */
-- (void) playNextMediaItem:(MPMediaItem*) mediaItem {
+ */ 
+- (void) loadNextMediaItem:(MPMediaItem*) mediaItem {
     [self.player stop];
     self.mediaItem = mediaItem;
     [self convertCurrentItemToCAF]; //covert to pcm data
-    self.player = nil; //release the old media item
-    
+}
+
+- (void) doneConverting {
+    if (audioPlayer_ != nil) {
+        [audioPlayer_ release];
+    }
+    [[AVAudioSession sharedInstance] setDelegate: self];
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error: nil];
+    UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;
+    AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute,sizeof (audioRouteOverride),&audioRouteOverride);
     NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectoryPath = [dirs objectAtIndex:0];
     NSString *exportPath = [[documentsDirectoryPath stringByAppendingPathComponent:EXPORT_NAME] retain];
     NSURL *url = [NSURL fileURLWithPath:exportPath];
     NSError *error;
-
-    self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
-    if (error)  {
+        
+    //NSURL *test_url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"ChameleonComedian" ofType:@"mp3"]];
+    audioPlayer_= [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+    
+    if (error) {
         NSLog(@"Error in audioPlayer: %@",  [error localizedDescription]);
     } else {
-        [self.player prepareToPlay];      
-        [self.player play];
-   
+        [self.player prepareToPlay]; 
+        [delegate_ finishedConvertingToPCM];        
     }
 }
 
@@ -173,17 +165,17 @@
                                                        error:nil];
                  NSLog (@"done. file size is %ld", [outputFileAttributes fileSize]);
                  NSNumber *doneFileSize = [NSNumber numberWithLong:[outputFileAttributes fileSize]];
-                 
                  [assetReader release];
                  [assetReaderOutput release];
                  [assetWriter release];
                  [assetWriterInput release];
                  [exportPath release];
+                 [self  performSelectorOnMainThread: @selector(doneConverting) withObject:nil waitUntilDone:NO];
                  break;
              }
          }
          
-	 }];
+	}];
 	NSLog (@"bottom of convertTapped:");
     
 }

@@ -3,7 +3,7 @@
 #define DEGREES_PER_UNIT_VALUE 1 // how many degress are per second of audio for example
 //#define ARCLENGTH_PER_UNIT_VALUE 10
 //#define WAVEFORM_HEIGHT 30
-#define MIN_SAMPLE_RATE_PER_PIXEL 100
+#define MIN_SAMPLE_RATE_PER_PIXEL 300
 #define EXPORT_NAME @"exported.caf"
 
 @interface SpiralControl(PrivateMethods)
@@ -19,7 +19,7 @@
 
 @synthesize value = value_, maximumValue = maximumValue_, samples = samples_, waveFormHeight=waveFormHeight_, radiusStep = radiusStep_, samplesPerPixelRatio = samplesPerPixelRatio_;
 
-- (id)initWithFrame:(CGRect)frame {
+- (id) initWithFrame:(CGRect) frame {
     self = [super initWithFrame:frame];
     if (self) {
                
@@ -70,25 +70,23 @@
     CGFloat scale = [(UIPinchGestureRecognizer *)sender scale];
     CGFloat velocity = [(UIPinchGestureRecognizer *)sender velocity];
     if (velocity > 0) {
-        self.radiusStep = self.radiusStep + 4;
+        self.radiusStep = self.radiusStep + 2;
     } else {
-        self.radiusStep = self.radiusStep - 4;
+        self.radiusStep = self.radiusStep - 2;
     }
     
     NSLog(@"PINCH SCALE %f", scale);
     NSLog(@"PINCH VELOCITY %f", velocity);
-    
-    
-    //self.view.transform = CGAffineTransformMakeScale(factor, factor);
+
 }
 
 -(void) handleRotaionGesture:(UIGestureRecognizer *)sender {
     CGFloat rotation = [(UIRotationGestureRecognizer*)sender rotation];
     CGFloat velocity = [(UIRotationGestureRecognizer*) sender velocity];
     if (velocity > 0) {
-        self.samplesPerPixelRatio = self.samplesPerPixelRatio - 4;
+        self.samplesPerPixelRatio = self.samplesPerPixelRatio - 2;
     } else {
-        self.samplesPerPixelRatio = self.samplesPerPixelRatio + 4;
+        self.samplesPerPixelRatio = self.samplesPerPixelRatio + 2;
     }
     NSLog(@"Rotaion: %f", rotation);
     NSLog(@"Velocity: %f", velocity);
@@ -417,13 +415,19 @@
 }
 
 #pragma mark - READ DATA
-- (void) drawSpiralForAsset: (AVURLAsset*) songAsset {
+- (void) drawSpiralForMediaItem: (MPMediaItem*) mediaItem {
+
+    NSURL *assetURL = [mediaItem valueForProperty:MPMediaItemPropertyAssetURL];
+    AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
+
+    //NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"ChameleonComedian" ofType:@"mp3"]];
+    //AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:url options:nil];
+   
     NSError * error = nil;
     
     //delete old waveform
     dataReady_ = NO; 
-    //[self setNeedsDisplay];
-    
+      
     AVAssetReader * reader = [[AVAssetReader alloc] initWithAsset:songAsset error:&error];
     AVAssetTrack * songTrack = [songAsset.tracks objectAtIndex:0];
     NSDictionary* outputSettingsDict = [[NSDictionary alloc] initWithObjectsAndKeys:
@@ -440,17 +444,18 @@
     [reader addOutput:output];
     [output release];
     
-    UInt32 sampleRate,channelCount;
-    NSArray* formatDesc = songTrack.formatDescriptions;
-    for(unsigned int i = 0; i < [formatDesc count]; ++i) {
-        CMAudioFormatDescriptionRef item = (CMAudioFormatDescriptionRef)[formatDesc objectAtIndex:i];
-        const AudioStreamBasicDescription* fmtDesc = CMAudioFormatDescriptionGetStreamBasicDescription (item);
-        if(fmtDesc ) {
-            sampleRate = fmtDesc->mSampleRate;
-            channelCount = fmtDesc->mChannelsPerFrame;
-            //    NSLog(@"channels:%u, bytes/packet: %u, sampleRate %f",fmtDesc->mChannelsPerFrame, fmtDesc->mBytesPerPacket,fmtDesc->mSampleRate);
-        }
-    }
+    UInt32 sampleRate = 44100;
+    UInt32 channelCount = 2;
+//    NSArray* formatDesc = songTrack.formatDescriptions;
+//    for (unsigned int i = 0; i < [formatDesc count]; ++i) {
+//        CMAudioFormatDescriptionRef item = (CMAudioFormatDescriptionRef)[formatDesc objectAtIndex:i];
+//        const AudioStreamBasicDescription* fmtDesc = CMAudioFormatDescriptionGetStreamBasicDescription (item);
+//        if(fmtDesc ) {
+//            sampleRate = fmtDesc->mSampleRate;
+//            channelCount = fmtDesc->mChannelsPerFrame;
+//            //NSLog(@"channels:%u, bytes/packet: %u, sampleRate %f",fmtDesc->mChannelsPerFrame, fmtDesc->mBytesPerPacket,fmtDesc->mSampleRate);
+//        }
+//    }
         
     UInt32 bytesPerSample = 2 * channelCount;
     SInt16 normalizeMax = 0;

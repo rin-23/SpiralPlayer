@@ -1,53 +1,30 @@
-//
-//  ViewController.m
-//  SpiralPlayer
-//
-//  Created by Rinat Abdrashitov on 12-05-04.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
-//
-
 #import "ViewController.h"
 #include <AudioToolbox/AudioToolbox.h>
 
 @implementation ViewController
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Release any cached data, images, etc that aren't in use.
 }
 
 #pragma mark - View lifecycle
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(updateProgressBar) userInfo:nil repeats:YES];
     
-    //Load audio file
-    NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"ChameleonComedian" ofType:@"mp3"]];
-    AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:url options:nil];
-    NSError *error;
-    audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url  error:&error];
-    if (error) {
-        NSLog(@"Error in audioPlayer: %@", [error localizedDescription]);
-    } else {
-        audioPlayer.delegate = self;
-        [audioPlayer prepareToPlay];
-    } 
-    
+    audioPlayer = [[WaveAudioPlayer alloc] init];
+    audioPlayer.delegate = self;
+
     // Spiral audio control
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         spiralControl_ = [[SpiralControl alloc] initWithFrame:CGRectMake(0, 0, 768, 1024)];
     } else {
         spiralControl_ = [[SpiralControl alloc] initWithFrame:CGRectMake(0, 0, 360, 480)];
     }
-    spiralControl_.maximumValue = audioPlayer.duration;
     [spiralControl_ addTarget:self action:@selector(spiralValueChanged) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:spiralControl_];
-    //[spiralControl_ convertToCAF:songAsset];
-    [spiralControl_ drawSpiralForAsset:songAsset]; //draw the spiral 
     [spiralControl_ release];
     
     // Play Button
@@ -59,16 +36,14 @@
     [playButton setImage:[UIImage imageNamed:@"play1-150x150.png"] forState:UIControlStateHighlighted];
     [playButton addTarget:self action:@selector(playButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:playButton];
-    
-     
+         
     // Choose Song Button
     songChooseButton_ = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     songChooseButton_.frame = CGRectMake(80, 10, 44, 29);
     [songChooseButton_ setImage:[UIImage imageNamed:@"choose_song_btn.png"] forState:UIControlStateNormal];   
     [songChooseButton_ addTarget:self action:@selector(chooseSongClicked) forControlEvents:UIControlEventTouchUpInside];
-    //[self.view addSubview:songChooseButton_];
-    
-    
+    [self.view addSubview:songChooseButton_];
+        
     // Linear audio control
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         seekControl = [[UISlider alloc] initWithFrame:CGRectMake((768 - 400)/2, 20, 400, 15)];
@@ -94,23 +69,7 @@
     [waveFormHeightSlider_ addTarget:self action:@selector(changeWaveFormHeight) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:waveFormHeightSlider_];
     [waveFormHeightSlider_ release];
-    
-    
-    heightLabel_ = [[UILabel alloc] initWithFrame:CGRectMake(80, 20, 300, 15)];
-    heightLabel_.backgroundColor = [UIColor clearColor];
-    heightLabel_.userInteractionEnabled = NO;
-    heightLabel_.text = @"Scale Wave Form Height";
-    [self.view addSubview:heightLabel_];
-    [heightLabel_ release];
-            
-    UILabel* msg = [[UILabel alloc] initWithFrame:CGRectMake(75, 70, 300, 15)];
-    msg.backgroundColor = [UIColor clearColor];
-    msg.userInteractionEnabled = NO;
-    msg.text = @"Use zoom and rotation gestures";
-    [self.view addSubview:msg];
-    [msg release];
-    
-    
+ 
     //Radius of the spiral step control
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         radiusStepSlider_ = [[UISlider alloc] initWithFrame:CGRectMake((768 - 400)/2, 70, 400, 15)]; 
@@ -138,8 +97,7 @@
     [sampleRateRatioSlider_ addTarget:self action:@selector(sampleRateRatioChanged) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:sampleRateRatioSlider_];
     [sampleRateRatioSlider_ release];
-    
-    
+        
     waveformSpinner_ = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     waveformSpinner_.frame = CGRectMake(0, 0, 30, 30);
     waveformSpinner_.center = CGPointMake(320/2, 480/2);
@@ -149,52 +107,28 @@
 
 #pragma mark - MPMediaPickerControllerDelegate Methods
 
-- (void)mediaPicker:(MPMediaPickerController *)mediaPicker didPickMediaItems:(MPMediaItemCollection *)mediaItemCollection {
-    
+- (void) mediaPicker:(MPMediaPickerController *)mediaPicker didPickMediaItems:(MPMediaItemCollection *)mediaItemCollection {
     [self dismissModalViewControllerAnimated:YES];
-	if ([mediaItemCollection count] < 1) {
-		return;
-	}
+	if ([mediaItemCollection count] < 1) { return; }
 	
-	// Populate meatadata
-    MPMediaItem* song = [[mediaItemCollection items] objectAtIndex:0];
-    NSURL *assetURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
-    AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
-    
-    [waveformSpinner_ startAnimating];
-
-    [audioPlayer stop];
+     MPMediaItem* mediaItem = [[mediaItemCollection items] objectAtIndex:0];
+    [audioPlayer loadNextMediaItem:mediaItem];
+       
+    //[waveformSpinner_ startAnimating];
+    //[audioPlayer.player stop];
     playButton.selected = NO;
     //[self loadNewAudio:assetURL];
-    [self performSelectorInBackground:@selector(drawNewSpiral:) withObject:songAsset];
-
-    
+    //[self performSelectorInBackground:@selector(drawNewSpiral:) withObject:songAsset];
+         
 }
 
--(void) drawNewSpiral:(AVURLAsset*) songAsset {
-    [spiralControl_ drawSpiralForAsset:songAsset];
-    [waveformSpinner_ stopAnimating];    
+- (void) finishedConvertingToPCM {
+    [spiralControl_ drawSpiralForMediaItem:audioPlayer.mediaItem];
+    spiralControl_.maximumValue = audioPlayer.player.duration;
+    [audioPlayer.player play];
 }
 
--(void) loadNewAudio:(NSURL*) assetURL {
-    if (audioPlayer!=nil) {
-        [audioPlayer release];    
-    }
-    NSError *error;
-    audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:assetURL error:&error];
-    if (error) {
-        NSLog(@"Error in audioPlayer: %@", 
-        [error localizedDescription]);
-    } else {
-
-        audioPlayer.delegate = self;
-        
-        [audioPlayer prepareToPlay];
-        [audioPlayer play]; 
-    }
-}
-
-- (void) mediaPickerDidCancel: (MPMediaPickerController *) mediaPicker{
+- (void) mediaPickerDidCancel: (MPMediaPickerController *) mediaPicker {
     [self dismissModalViewControllerAnimated:YES];
 }
 
@@ -220,7 +154,7 @@
  * Callback from SpiralControl when we change the needle postion
  */
 -(void) spiralValueChanged {
-    [audioPlayer setCurrentTime:spiralControl_.value];
+    [audioPlayer.player setCurrentTime:spiralControl_.value];
 }
 
 -(void) chooseSongClicked {
@@ -231,33 +165,31 @@
     [picker release];
 }
 
--(void) playButtonClicked {
-    
-    if (audioPlayer.playing) {
-        [audioPlayer pause];
+-(void) playButtonClicked {    
+    if (audioPlayer.player.playing) {
+        [audioPlayer.player pause];
         playButton.selected = NO;
     } else {
-        [audioPlayer play];
+        [audioPlayer.player play];
         playButton.selected = YES;
     }
-    
 }
 
--(void) updateProgressBar{
-    seekControl.value = (float)audioPlayer.currentTime/(float)audioPlayer.duration;
-    spiralControl_.value = audioPlayer.currentTime;
+-(void) updateProgressBar {
+    seekControl.value = (float)audioPlayer.player.currentTime/(float)audioPlayer.player.duration;
+    spiralControl_.value = audioPlayer.player.currentTime;
 }
 
--(void) seekToTime{
+-(void) seekToTime {
     //NSLog(@"%f", seekControl.value);
-    audioPlayer.currentTime = audioPlayer.duration * seekControl.value;
+    audioPlayer.player.currentTime = audioPlayer.player.duration * seekControl.value;
 }
 
--(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
-{
-    [audioPlayer play];
-    [seekControl setValue:0];
-}
+//-(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+//{
+//    [audioPlayer.player play];
+//    [seekControl setValue:0];
+//}
 
 
 -(void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError *)error
