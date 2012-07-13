@@ -12,10 +12,11 @@
  
 @protocol WaveAudioPlayerDelegate <NSObject>
 - (void) finishedConvertingToPCM;
+- (void) waveAudioPlayerDidFinishPlaying;
 @end
 
 
-@interface WaveAudioPlayer : NSObject {
+@interface WaveAudioPlayer : NSObject <AVAudioPlayerDelegate> {
     id<WaveAudioPlayerDelegate> delegate_;
     AVAudioPlayer* audioPlayer_;
     MPMediaItem* mediaItem_;

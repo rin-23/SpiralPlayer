@@ -54,7 +54,8 @@
 @property (nonatomic, assign) double waveFormHeight;
 @property (nonatomic, assign) double radiusStep;
 @property (nonatomic, assign) int samplesPerPixelRatio;
-
+@property (nonatomic, assign) BOOL dataReady;
+@property (nonatomic, retain) UIButton* thumb; 
 - (void) drawSpiralForMediaItem: (MPMediaItem*) mediaItem;
 - (void) convertToCAF:(AVURLAsset*) songAsset;
 

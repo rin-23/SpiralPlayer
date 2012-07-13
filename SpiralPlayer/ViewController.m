@@ -39,8 +39,8 @@
          
     // Choose Song Button
     songChooseButton_ = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    songChooseButton_.frame = CGRectMake(80, 10, 44, 29);
-    [songChooseButton_ setImage:[UIImage imageNamed:@"choose_song_btn.png"] forState:UIControlStateNormal];   
+    songChooseButton_.frame = CGRectMake(65, 10, 44, 44);
+    [songChooseButton_ setImage:[UIImage imageNamed:@"eject.gif"] forState:UIControlStateNormal];   
     [songChooseButton_ addTarget:self action:@selector(chooseSongClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:songChooseButton_];
         
@@ -61,7 +61,7 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         waveFormHeightSlider_ = [[UISlider alloc] initWithFrame:CGRectMake((768 - 400)/2, 45, 400, 15)]; 
     } else {
-        waveFormHeightSlider_ = [[UISlider alloc] initWithFrame:CGRectMake(80, 45, 180, 15)]; 
+        waveFormHeightSlider_ = [[UISlider alloc] initWithFrame:CGRectMake(songChooseButton_.frame.origin.x+songChooseButton_.frame.size.width + 10, 22, 180, 15)]; 
     }
     waveFormHeightSlider_.maximumValue = 70;
     waveFormHeightSlider_.minimumValue = 1;
@@ -111,21 +111,27 @@
     [self dismissModalViewControllerAnimated:YES];
 	if ([mediaItemCollection count] < 1) { return; }
 	
-     MPMediaItem* mediaItem = [[mediaItemCollection items] objectAtIndex:0];
+    spiralControl_.dataReady = NO;
+    spiralControl_.thumb.hidden = YES;
+    [spiralControl_ setNeedsDisplay];
+    
+    MPMediaItem* mediaItem = [[mediaItemCollection items] objectAtIndex:0];
+    [waveformSpinner_ startAnimating];
     [audioPlayer loadNextMediaItem:mediaItem];
-       
-    //[waveformSpinner_ startAnimating];
-    //[audioPlayer.player stop];
-    playButton.selected = NO;
-    //[self loadNewAudio:assetURL];
-    //[self performSelectorInBackground:@selector(drawNewSpiral:) withObject:songAsset];
-         
+          
 }
 
 - (void) finishedConvertingToPCM {
     [spiralControl_ drawSpiralForMediaItem:audioPlayer.mediaItem];
+    [waveformSpinner_ stopAnimating];
     spiralControl_.maximumValue = audioPlayer.player.duration;
+    playButton.selected = YES;
     [audioPlayer.player play];
+    
+}
+
+-(void) waveAudioPlayerDidFinishPlaying {
+    playButton.selected = NO;
 }
 
 - (void) mediaPickerDidCancel: (MPMediaPickerController *) mediaPicker {
@@ -165,7 +171,9 @@
     [picker release];
 }
 
--(void) playButtonClicked {    
+-(void) playButtonClicked { 
+    if (audioPlayer.player == nil) return;
+    
     if (audioPlayer.player.playing) {
         [audioPlayer.player pause];
         playButton.selected = NO;

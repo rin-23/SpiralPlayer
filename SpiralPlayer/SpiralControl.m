@@ -1,5 +1,5 @@
 #import "SpiralControl.h"
-
+#import "UIConstants.h"
 #define DEGREES_PER_UNIT_VALUE 1 // how many degress are per second of audio for example
 //#define ARCLENGTH_PER_UNIT_VALUE 10
 //#define WAVEFORM_HEIGHT 30
@@ -17,13 +17,13 @@
  
 @implementation SpiralControl     
 
-@synthesize value = value_, maximumValue = maximumValue_, samples = samples_, waveFormHeight=waveFormHeight_, radiusStep = radiusStep_, samplesPerPixelRatio = samplesPerPixelRatio_;
+@synthesize value = value_, maximumValue = maximumValue_, samples = samples_, waveFormHeight=waveFormHeight_, radiusStep = radiusStep_, samplesPerPixelRatio = samplesPerPixelRatio_, dataReady = dataReady_, thumb = thumb_;
 
 - (id) initWithFrame:(CGRect) frame {
     self = [super initWithFrame:frame];
     if (self) {
                
-        self.backgroundColor = [UIColor lightGrayColor];        
+        self.backgroundColor = UIColorFromRGB(MAIN_BACKGROUND_COLOR);     
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             centerX_ = 380; // x-coordinate of the center of the spiral
@@ -50,6 +50,7 @@
         [thumb_ addTarget:self action:@selector(dragThumbContinue:withEvent:) forControlEvents:UIControlEventTouchDragInside|UIControlEventTouchDragOutside];
         [thumb_ addTarget:self action:@selector(dragThumbEnded:withEvent:) forControlEvents:UIControlEventTouchUpInside|UIControlEventTouchUpOutside];
         [thumb_ setImage:[UIImage imageNamed:@"handle"] forState:UIControlStateNormal];
+        thumb_.hidden = YES;
         [self addSubview:thumb_];
         
         // Gesture Recognition
@@ -301,6 +302,7 @@
         CGContextAddLineToPoint(context, newX, newY);
         CGContextStrokePath(context);
     } 
+    thumb_.hidden = NO;
     //CGContextStrokePath(context);
 }
 
@@ -310,8 +312,6 @@
  
     //[path stroke];
     //CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
-
-
 
     if (dataReady_ == YES) {
         [self drawSpiralSlow];
@@ -416,7 +416,7 @@
 
 #pragma mark - READ DATA
 - (void) drawSpiralForMediaItem: (MPMediaItem*) mediaItem {
-
+    thumb_.hidden = YES;
     NSURL *assetURL = [mediaItem valueForProperty:MPMediaItemPropertyAssetURL];
     AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
 
@@ -507,7 +507,7 @@
                     totalNumberOfSamples += 1;
                     
                     SInt16 fix = abs(left);
-                    if (fix > normalizeMax) {
+                    if (fix > normalizeMax) {      
                         normalizeMax = fix;
                     }
                     //NSLog(@"LEFT: %i", left);

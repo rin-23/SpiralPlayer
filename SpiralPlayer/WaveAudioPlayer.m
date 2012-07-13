@@ -51,6 +51,7 @@
         
     //NSURL *test_url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"ChameleonComedian" ofType:@"mp3"]];
     audioPlayer_= [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+    audioPlayer_.delegate = self;
     
     if (error) {
         NSLog(@"Error in audioPlayer: %@",  [error localizedDescription]);
@@ -60,6 +61,10 @@
     }
 }
 
+
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
+    [delegate_ waveAudioPlayerDidFinishPlaying];    
+}
 
 /*
  * Convert iPod musicItem to PCM format (Core Audio Format - CAF)
