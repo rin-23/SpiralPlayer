@@ -1,10 +1,7 @@
 #import "SpiralControl.h"
 #import "UIConstants.h"
-#define DEGREES_PER_UNIT_VALUE 1 // how many degress are per second of audio for example
-//#define ARCLENGTH_PER_UNIT_VALUE 10
-//#define WAVEFORM_HEIGHT 30
-#define MIN_SAMPLE_RATE_PER_PIXEL 300
-#define EXPORT_NAME @"exported.caf"
+#import "Constants.h"
+
 
 @interface SpiralControl(PrivateMethods)
 - (void) setCurrentAngleDegrees: (double) angleDeg;
@@ -289,11 +286,11 @@
         left = maxTally;        
         
         //NSLog(@"Sample:%i Avergae:%i", left, averageSample_);
-        //CGColorRef middleColor = [[UIColor colorWithRed:0 green:0 blue:0.8 alpha:1] CGColor];
-        //CGContextSetStrokeColorWithColor(context, middleColor);
+        CGColorRef middleColor = [[UIColor colorWithRed:left/32767.0 green:0 blue:0 alpha:1] CGColor];
+        CGContextSetStrokeColorWithColor(context, middleColor);
         
-        if (left < averageSample_) CGContextSetStrokeColorWithColor(context, leftcolor);
-        else CGContextSetStrokeColorWithColor(context, rightcolor);
+        //if (left < averageSample_) CGContextSetStrokeColorWithColor(context, leftcolor);
+        //else CGContextSetStrokeColorWithColor(context, rightcolor);
 
         CGContextSetLineWidth(context, waveFormHeight_*(left/32767.0));
         

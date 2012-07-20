@@ -8,7 +8,7 @@
 
 #import "WaveAudioPlayer.h"
 #import <AudioToolbox/AudioToolbox.h>
-#define EXPORT_NAME @"exported.caf"
+#import "Constants.h"
 
 @interface WaveAudioPlayer(PrivateMethods)
 - (void) convertCurrentItemToCAF;
@@ -152,11 +152,7 @@
              if (nextBuffer) {
                  // append buffer
                  [assetWriterInput appendSampleBuffer: nextBuffer];
-                 //				NSLog (@"appended a buffer (%d bytes)", 
-                 //					   CMSampleBufferGetTotalSampleSize (nextBuffer));
                  convertedByteCount += CMSampleBufferGetTotalSampleSize (nextBuffer);
-                 // oops, no
-                 // sizeLabel.text = [NSString stringWithFormat: @"%ld bytes converted", convertedByteCount];
                  
                  NSNumber *convertedByteCountNumber = [NSNumber numberWithLong:convertedByteCount];
                  CFRelease(nextBuffer);

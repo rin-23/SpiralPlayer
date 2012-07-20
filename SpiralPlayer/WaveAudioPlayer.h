@@ -20,7 +20,9 @@
     id<WaveAudioPlayerDelegate> delegate_;
     AVAudioPlayer* audioPlayer_;
     MPMediaItem* mediaItem_;
+
 }
+
 
 @property (nonatomic, retain) id <WaveAudioPlayerDelegate> delegate;
 @property (nonatomic, retain) MPMediaItem* mediaItem;

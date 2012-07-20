@@ -17,13 +17,13 @@
 		151A42F315538F9D003BF64A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 151A42F215538F9D003BF64A /* AppDelegate.m */; };
 		151A42F615538F9D003BF64A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 151A42F515538F9D003BF64A /* ViewController.m */; };
 		151A42F915538F9D003BF64A /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 151A42F715538F9D003BF64A /* ViewController.xib */; };
-		151F4375159D7844000CCDEB /* ChameleonComedian.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 151F4374159D7844000CCDEB /* ChameleonComedian.mp3 */; };
 		1533A54315853ED200E27069 /* handle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1533A54215853ED200E27069 /* handle@2x.png */; };
 		1544D94615A229EB00AE7C63 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1544D94515A229EB00AE7C63 /* CoreMedia.framework */; };
 		1544D94915A22A0E00AE7C63 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1544D94815A22A0E00AE7C63 /* MediaPlayer.framework */; };
 		157D3F7B15A7D216009064CF /* choose_song_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 157D3F7A15A7D216009064CF /* choose_song_btn.png */; };
 		157D3F7E15A7D369009064CF /* play1-150x150.png in Resources */ = {isa = PBXBuildFile; fileRef = 157D3F7C15A7D368009064CF /* play1-150x150.png */; };
 		157D3F7F15A7D369009064CF /* pause1-150x150.png in Resources */ = {isa = PBXBuildFile; fileRef = 157D3F7D15A7D369009064CF /* pause1-150x150.png */; };
+		15C0829C15BA06E40031679E /* Zaz – Le Long De La Route.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 15C0829B15BA06E40031679E /* Zaz – Le Long De La Route.mp3 */; };
 		15CF25C515AD5411007CA929 /* WaveAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 15CF25C415AD5411007CA929 /* WaveAudioPlayer.m */; };
 		15D2CEA215B0BFEF006966AF /* appIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 15D2CEA115B0BFEF006966AF /* appIcon.png */; };
 		15D2CEAA15B0CB5A006966AF /* eject.gif in Resources */ = {isa = PBXBuildFile; fileRef = 15D2CEA915B0CB5A006966AF /* eject.gif */; };
@@ -48,7 +48,6 @@
 		151A42F415538F9D003BF64A /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		151A42F515538F9D003BF64A /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		151A42F815538F9D003BF64A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
-		151F4374159D7844000CCDEB /* ChameleonComedian.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ChameleonComedian.mp3; sourceTree = "<group>"; };
 		1533A54215853ED200E27069 /* handle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "handle@2x.png"; sourceTree = "<group>"; };
 		1544D94515A229EB00AE7C63 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		1544D94815A22A0E00AE7C63 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -56,6 +55,7 @@
 		157D3F7A15A7D216009064CF /* choose_song_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = choose_song_btn.png; sourceTree = "<group>"; };
 		157D3F7C15A7D368009064CF /* play1-150x150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play1-150x150.png"; sourceTree = "<group>"; };
 		157D3F7D15A7D369009064CF /* pause1-150x150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pause1-150x150.png"; sourceTree = "<group>"; };
+		15C0829B15BA06E40031679E /* Zaz – Le Long De La Route.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Zaz – Le Long De La Route.mp3"; sourceTree = "<group>"; };
 		15CF25C315AD5410007CA929 /* WaveAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaveAudioPlayer.h; sourceTree = "<group>"; };
 		15CF25C415AD5411007CA929 /* WaveAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaveAudioPlayer.m; sourceTree = "<group>"; };
 		15D2CEA115B0BFEF006966AF /* appIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appIcon.png; sourceTree = "<group>"; };
@@ -164,7 +164,7 @@
 		157D3F8115A7D4E0009064CF /* Music Files */ = {
 			isa = PBXGroup;
 			children = (
-				151F4374159D7844000CCDEB /* ChameleonComedian.mp3 */,
+				15C0829B15BA06E40031679E /* Zaz – Le Long De La Route.mp3 */,
 			);
 			name = "Music Files";
 			sourceTree = "<group>";
@@ -222,12 +222,12 @@
 				151A42ED15538F9D003BF64A /* InfoPlist.strings in Resources */,
 				151A42F915538F9D003BF64A /* ViewController.xib in Resources */,
 				1533A54315853ED200E27069 /* handle@2x.png in Resources */,
-				151F4375159D7844000CCDEB /* ChameleonComedian.mp3 in Resources */,
 				157D3F7B15A7D216009064CF /* choose_song_btn.png in Resources */,
 				157D3F7E15A7D369009064CF /* play1-150x150.png in Resources */,
 				157D3F7F15A7D369009064CF /* pause1-150x150.png in Resources */,
 				15D2CEA215B0BFEF006966AF /* appIcon.png in Resources */,
 				15D2CEAA15B0CB5A006966AF /* eject.gif in Resources */,
+				15C0829C15BA06E40031679E /* Zaz – Le Long De La Route.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -321,7 +321,7 @@
 				INFOPLIST_FILE = "SpiralPlayer/SpiralPlayer-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -334,7 +334,7 @@
 				INFOPLIST_FILE = "SpiralPlayer/SpiralPlayer-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

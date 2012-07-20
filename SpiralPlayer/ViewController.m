@@ -12,7 +12,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(updateProgressBar) userInfo:nil repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:0.001 target:self selector:@selector(updateProgressBar) userInfo:nil repeats:YES];
     
     audioPlayer = [[WaveAudioPlayer alloc] init];
     audioPlayer.delegate = self;
@@ -100,7 +100,11 @@
         
     waveformSpinner_ = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     waveformSpinner_.frame = CGRectMake(0, 0, 30, 30);
-    waveformSpinner_.center = CGPointMake(320/2, 480/2);
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        waveformSpinner_.center = CGPointMake(768/2, 1024/2);
+    } else {
+        waveformSpinner_.center = CGPointMake(320/2, 480/2);
+    }
     [self.view addSubview:waveformSpinner_];
     [waveformSpinner_ release];
 }
