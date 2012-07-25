@@ -26,6 +26,20 @@
     return self;
 }
 
+-(void) loadNextAudioAsset:(NSURL*) url {
+    NSError *error;
+    [[AVAudioSession sharedInstance] setDelegate: self];
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error: nil];
+    UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;
+    AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute,sizeof (audioRouteOverride),&audioRouteOverride);
+
+    audioPlayer_= [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+    audioPlayer_.delegate = self;
+    [self.player prepareToPlay]; 
+    [delegate_ finishedConvertingToPCM];   
+    
+}
+
 /*
  * Play next media item
  */ 

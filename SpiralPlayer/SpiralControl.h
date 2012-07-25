@@ -18,7 +18,7 @@
     double centerY_;
     double radiusStep_;
     double arclength_per_unit_value_; 
-    
+        
     int currentLevel_;
     double degreeAtCurrentLevel_;
     double radianAtCurrentLevel_;
@@ -56,7 +56,9 @@
 @property (nonatomic, assign) int samplesPerPixelRatio;
 @property (nonatomic, assign) BOOL dataReady;
 @property (nonatomic, retain) UIButton* thumb; 
+
 - (void) drawSpiralForMediaItem: (MPMediaItem*) mediaItem;
+- (void) drawSpiralforAudioAsset:(NSURL*) url;
 - (void) convertToCAF:(AVURLAsset*) songAsset;
 
 @end

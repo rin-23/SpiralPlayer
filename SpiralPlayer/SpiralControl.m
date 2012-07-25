@@ -411,6 +411,150 @@
     //NSLog(@"Continue --    turn:%i newX:%0.0f newY:%0.0f x:%0.0f y:%0.0f", turnNum, newX, newY, p.x, p.y);
 }
 
+
+- (void) drawSpiralforAudioAsset:(NSURL*)url {
+    thumb_.hidden = YES;
+    AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:url options:nil];
+    
+    //NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"ChameleonComedian" ofType:@"mp3"]];
+    //AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:url options:nil];
+    
+    NSError * error = nil;
+    
+    //delete old waveform
+    dataReady_ = NO; 
+    
+    AVAssetReader * reader = [[AVAssetReader alloc] initWithAsset:songAsset error:&error];
+    AVAssetTrack * songTrack = [songAsset.tracks objectAtIndex:0];
+    NSDictionary* outputSettingsDict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                        [NSNumber numberWithInt:kAudioFormatLinearPCM],AVFormatIDKey,
+                                        //     [NSNumber numberWithInt:44100.0],AVSampleRateKey, /*Not Supported*/
+                                        //     [NSNumber numberWithInt: 2],AVNumberOfChannelsKey,    /*Not Supported*/
+                                        [NSNumber numberWithInt:16],AVLinearPCMBitDepthKey,
+                                        [NSNumber numberWithBool:NO],AVLinearPCMIsBigEndianKey,
+                                        [NSNumber numberWithBool:NO],AVLinearPCMIsFloatKey,
+                                        [NSNumber numberWithBool:NO],AVLinearPCMIsNonInterleaved,
+                                        nil];
+    
+    AVAssetReaderTrackOutput* output = [[AVAssetReaderTrackOutput alloc] initWithTrack:songTrack outputSettings:outputSettingsDict];
+    [reader addOutput:output];
+    [output release];
+    
+    UInt32 sampleRate = 44100;
+    UInt32 channelCount = 2;
+    //    NSArray* formatDesc = songTrack.formatDescriptions;
+    //    for (unsigned int i = 0; i < [formatDesc count]; ++i) {
+    //        CMAudioFormatDescriptionRef item = (CMAudioFormatDescriptionRef)[formatDesc objectAtIndex:i];
+    //        const AudioStreamBasicDescription* fmtDesc = CMAudioFormatDescriptionGetStreamBasicDescription (item);
+    //        if(fmtDesc ) {
+    //            sampleRate = fmtDesc->mSampleRate;
+    //            channelCount = fmtDesc->mChannelsPerFrame;
+    //            //NSLog(@"channels:%u, bytes/packet: %u, sampleRate %f",fmtDesc->mChannelsPerFrame, fmtDesc->mBytesPerPacket,fmtDesc->mSampleRate);
+    //        }
+    //    }
+    
+    UInt32 bytesPerSample = 2 * channelCount;
+    SInt16 normalizeMax = 0;
+    NSMutableData * fullSongData = [[NSMutableData alloc] init];
+    [reader startReading];    
+    
+    UInt64    totalBytes = 0;   
+    SInt64    totalLeft  = 0;
+    SInt64    totalRight = 0;
+    NSInteger sampleTally = 0;
+    NSInteger maxTally = -1*INFINITY;
+    NSInteger totalAmplitude = 0;
+    NSInteger totalNumberOfSamples = 0;
+    NSInteger samplesPerPixel = MIN_SAMPLE_RATE_PER_PIXEL;
+    
+    while (reader.status == AVAssetReaderStatusReading) {
+        
+        AVAssetReaderTrackOutput * trackOutput = (AVAssetReaderTrackOutput *)[reader.outputs objectAtIndex:0];
+        CMSampleBufferRef sampleBufferRef = [trackOutput copyNextSampleBuffer];
+        
+        if (sampleBufferRef) {
+            CMBlockBufferRef blockBufferRef = CMSampleBufferGetDataBuffer(sampleBufferRef);
+            size_t length = CMBlockBufferGetDataLength(blockBufferRef);
+            totalBytes += length;
+            
+            NSAutoreleasePool *wader = [[NSAutoreleasePool alloc] init];
+            NSMutableData * data = [NSMutableData dataWithLength:length];
+            CMBlockBufferCopyDataBytes(blockBufferRef, 0, length, data.mutableBytes);
+            
+            SInt16 * samples = (SInt16 *) data.mutableBytes;
+            int sampleCount = length / bytesPerSample;
+            for (int i = 0; i < sampleCount; i ++) {
+                SInt16 left = *samples++;
+                totalLeft  += left;  
+                
+                SInt16 right;
+                if (channelCount==2) {
+                    right = *samples++;
+                    totalRight += right;
+                }
+                
+                sampleTally++;
+                if (left>maxTally) maxTally = left;
+                
+                if (sampleTally > samplesPerPixel) {
+                    //left  = totalLeft / sampleTally; 
+                    left = maxTally;
+                    totalAmplitude += left;
+                    totalNumberOfSamples += 1;
+                    
+                    SInt16 fix = abs(left);
+                    if (fix > normalizeMax) {      
+                        normalizeMax = fix;
+                    }
+                    //NSLog(@"LEFT: %i", left);
+                    [fullSongData appendBytes:&left length:sizeof(left)];
+                    
+                    if (channelCount==2) {
+                        right = totalRight / sampleTally; 
+                        SInt16 fix = abs(right);
+                        if (fix > normalizeMax) normalizeMax = fix;
+                        //[fullSongData appendBytes:&right length:sizeof(right)];
+                    }
+                    
+                    totalLeft   = 0;
+                    totalRight  = 0;
+                    sampleTally = 0;
+                    maxTally = -1*INFINITY;
+                }
+            }
+            
+            [wader drain];
+            CMSampleBufferInvalidate(sampleBufferRef);
+            CFRelease(sampleBufferRef);
+        }
+    }    
+    
+    if (reader.status == AVAssetReaderStatusFailed || reader.status == AVAssetReaderStatusUnknown){
+        // Something went wrong. return nil
+        NSLog(@"ERROR: ASSET READER FAILED");
+        return;
+    }
+    
+    if (reader.status == AVAssetReaderStatusCompleted){
+        NSLog(@"rendering output graphics using normalizeMax %d",normalizeMax);
+        
+        self.samples = fullSongData;
+        normalizeMax_ = normalizeMax;
+        sampleCount_ = fullSongData.length / 2; // TO DO CHANGE THIS IF SHOWING TWO CHANNELS
+        channelCount_ = channelCount;
+        averageSample_ = totalAmplitude/totalNumberOfSamples;
+        dataReady_ = YES;
+        
+    }
+    
+    [fullSongData release];
+    [reader release];
+    [self setNeedsDisplay];
+    
+
+    
+}
+
 #pragma mark - READ DATA
 - (void) drawSpiralForMediaItem: (MPMediaItem*) mediaItem {
     thumb_.hidden = YES;

@@ -29,5 +29,6 @@
 @property (nonatomic, retain) AVAudioPlayer* player;
 
 - (void) loadNextMediaItem:(MPMediaItem*) mediaItem;
+- (void) loadNextAudioAsset:(NSURL*) url;
 
 @end

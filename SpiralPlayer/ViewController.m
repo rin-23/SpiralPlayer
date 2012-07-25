@@ -17,6 +17,10 @@
     audioPlayer = [[WaveAudioPlayer alloc] init];
     audioPlayer.delegate = self;
 
+    //*******Test Code for Fanny********
+    NSURL* fannyurl = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Zaz – Le Long De La Route" ofType:@"mp3"]];
+    [audioPlayer loadNextAudioAsset:fannyurl];
+
     // Spiral audio control
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         spiralControl_ = [[SpiralControl alloc] initWithFrame:CGRectMake(0, 0, 768, 1024)];
@@ -42,6 +46,7 @@
     songChooseButton_.frame = CGRectMake(65, 10, 44, 44);
     [songChooseButton_ setImage:[UIImage imageNamed:@"eject.gif"] forState:UIControlStateNormal];   
     [songChooseButton_ addTarget:self action:@selector(chooseSongClicked) forControlEvents:UIControlEventTouchUpInside];
+    songChooseButton_.hidden = YES;
     [self.view addSubview:songChooseButton_];
         
     // Linear audio control
@@ -126,7 +131,12 @@
 }
 
 - (void) finishedConvertingToPCM {
-    [spiralControl_ drawSpiralForMediaItem:audioPlayer.mediaItem];
+    spiralControl_.dataReady = NO;
+    spiralControl_.thumb.hidden = YES;
+    [spiralControl_ setNeedsDisplay];
+    NSURL* fannyurl = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Zaz – Le Long De La Route" ofType:@"mp3"]];
+    //[spiralControl_ drawSpiralForMediaItem:audioPlayer.mediaItem];
+    [spiralControl_ drawSpiralforAudioAsset:fannyurl];
     [waveformSpinner_ stopAnimating];
     spiralControl_.maximumValue = audioPlayer.player.duration;
     playButton.selected = YES;
@@ -168,6 +178,7 @@
 }
 
 -(void) chooseSongClicked {
+    
     MPMediaPickerController* picker = [[MPMediaPickerController alloc] initWithMediaTypes:MPMediaTypeMusic];
     picker.prompt = @"Choose song to process";
     picker.delegate = self;
