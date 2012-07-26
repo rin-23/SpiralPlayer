@@ -36,8 +36,6 @@
     audioPlayer_= [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
     audioPlayer_.delegate = self;
     [self.player prepareToPlay]; 
-    [delegate_ finishedConvertingToPCM];   
-    
 }
 
 /*

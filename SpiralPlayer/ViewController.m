@@ -18,8 +18,8 @@
     audioPlayer.delegate = self;
 
     //*******Test Code for Fanny********
-    NSURL* fannyurl = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Zaz – Le Long De La Route" ofType:@"mp3"]];
-    [audioPlayer loadNextAudioAsset:fannyurl];
+//    NSURL* fannyurl = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Zaz – Le Long De La Route" ofType:@"mp3"]];
+//    [audioPlayer loadNextAudioAsset:fannyurl];
 
     // Spiral audio control
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {

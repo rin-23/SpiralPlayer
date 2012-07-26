@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "CurveControl.h"
+#import "WaveAudioPlayer.h"
 @interface LineViewController : UIViewController {
+    WaveAudioPlayer* audioPlayer_;
     CurveControl* curveControl_;
     
 }
 
-@property (nonatomic, retain) CurveControl* curveControl;
 
 @end

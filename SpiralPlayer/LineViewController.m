@@ -10,19 +10,45 @@
 
 @implementation LineViewController
 
-@synthesize curveControl = curveControl_;
-
 - (id) init { 
     self = [super init];
     if (self) {
-        // Custom initialization
-        self.curveControl = [[CurveControl alloc] initWithFrame:CGRectMake(0, 0, 768, 1024)];
-        self.curveControl.tracklength = 300;
-        [self.view addSubview:self.curveControl];
+        [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(updateProgressBar) userInfo:nil repeats:YES];
+                
+        audioPlayer_ = [[WaveAudioPlayer alloc] init];
+        NSURL* audioUrl = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Jimmy Hendrix  – Voodoo Child" ofType:@"mp3"]];
+        [audioPlayer_ loadNextAudioAsset:audioUrl];
+        [audioPlayer_.player setNumberOfLoops:10];
         
+//        UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 1024, 768)];
+//        imageView.image = [UIImage imageNamed:@"pinkfloyd.jpg"];
+//        [self.view addSubview:imageView];
+//        [imageView release];
+    
+        curveControl_ = [[CurveControl alloc] initWithFrame:CGRectMake(0, 0, 768, 1024)];
+        curveControl_.tracklength = [audioPlayer_.player duration];
+        // curveControl_.tracklength =300;
+        NSLog(@"Track Duration: %f", curveControl_.tracklength);
+        [curveControl_ addTarget:self action:@selector(curveValueChanged) forControlEvents:UIControlEventValueChanged];
+        [self.view addSubview:curveControl_];
+        [curveControl_ release];
+       
+        [audioPlayer_.player play];
     }
     return self;
 }
+
+- (void) updateProgressBar {
+    curveControl_.value = audioPlayer_.player.currentTime;    
+}
+
+- (void) curveValueChanged { 
+    audioPlayer_.player.currentTime = curveControl_.value;
+}
+
+
+
+
 
 - (void)didReceiveMemoryWarning
 {

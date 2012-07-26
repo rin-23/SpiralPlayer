@@ -16,6 +16,10 @@
     NSDictionary* gridHashTable_; //hash table of all of the data points
     double tracklength_;
     double value_;
+    int numOfDataPoints_;
+    double milisecondsPerPoint_;
+    double secondsPerPoint_;
+    
 } 
 
 @property (nonatomic, retain) NSMutableArray* dataPoints;
@@ -25,4 +29,5 @@
 @property (nonatomic, retain) NSDictionary* gridHashTable; 
 @property (nonatomic, assign) double tracklength;
 @property (nonatomic, assign) double value;
+
 @end

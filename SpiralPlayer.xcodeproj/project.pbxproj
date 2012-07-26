@@ -25,7 +25,20 @@
 		157D3F7F15A7D369009064CF /* pause1-150x150.png in Resources */ = {isa = PBXBuildFile; fileRef = 157D3F7D15A7D369009064CF /* pause1-150x150.png */; };
 		1596CEBD15BF72D6001097AE /* LineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1596CEBC15BF72D6001097AE /* LineViewController.m */; };
 		1596CEC615BF84E0001097AE /* CurveControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 1596CEC515BF84E0001097AE /* CurveControl.m */; };
-		15C0829C15BA06E40031679E /* Zaz – Le Long De La Route.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 15C0829B15BA06E40031679E /* Zaz – Le Long De La Route.mp3 */; };
+		1596CECC15C0C021001097AE /* pinkfloyd4.ma in Resources */ = {isa = PBXBuildFile; fileRef = 1596CEC815C0C021001097AE /* pinkfloyd4.ma */; };
+		1596CECD15C0C021001097AE /* pinkfloyd3.ma in Resources */ = {isa = PBXBuildFile; fileRef = 1596CEC915C0C021001097AE /* pinkfloyd3.ma */; };
+		1596CECE15C0C021001097AE /* pinkfloyd2.ma in Resources */ = {isa = PBXBuildFile; fileRef = 1596CECA15C0C021001097AE /* pinkfloyd2.ma */; };
+		1596CECF15C0C021001097AE /* pinkfloyd1.ma in Resources */ = {isa = PBXBuildFile; fileRef = 1596CECB15C0C021001097AE /* pinkfloyd1.ma */; };
+		1596CED115C0CAF7001097AE /* hendrix.ma in Resources */ = {isa = PBXBuildFile; fileRef = 1596CED015C0CAF7001097AE /* hendrix.ma */; };
+		1596CED315C0CCFE001097AE /* xx.ma in Resources */ = {isa = PBXBuildFile; fileRef = 1596CED215C0CCFE001097AE /* xx.ma */; };
+		1596CED515C0D471001097AE /* milesmedal.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1596CED415C0D471001097AE /* milesmedal.txt */; };
+		1596CED715C0D52F001097AE /* parabola.ma in Resources */ = {isa = PBXBuildFile; fileRef = 1596CED615C0D52F001097AE /* parabola.ma */; };
+		1596CED915C0D672001097AE /* hendrix_high.ma in Resources */ = {isa = PBXBuildFile; fileRef = 1596CED815C0D672001097AE /* hendrix_high.ma */; };
+		1596CEDB15C0D6D1001097AE /* pinkfloyd.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1596CEDA15C0D6D1001097AE /* pinkfloyd.jpg */; };
+		1596CEDD15C0DC92001097AE /* lab2.ma in Resources */ = {isa = PBXBuildFile; fileRef = 1596CEDC15C0DC92001097AE /* lab2.ma */; };
+		1596CEDF15C1ABAA001097AE /* lab1.ma in Resources */ = {isa = PBXBuildFile; fileRef = 1596CEDE15C1ABAA001097AE /* lab1.ma */; };
+		1596CEE115C1B048001097AE /* Jimmy Hendrix  – Voodoo Child.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1596CEE015C1B048001097AE /* Jimmy Hendrix  – Voodoo Child.mp3 */; };
+		15C0829C15BA06E40031679E /* song.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 15C0829B15BA06E40031679E /* song.mp3 */; };
 		15CF25C515AD5411007CA929 /* WaveAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 15CF25C415AD5411007CA929 /* WaveAudioPlayer.m */; };
 		15D2CEA215B0BFEF006966AF /* appIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 15D2CEA115B0BFEF006966AF /* appIcon.png */; };
 		15D2CEAA15B0CB5A006966AF /* eject.gif in Resources */ = {isa = PBXBuildFile; fileRef = 15D2CEA915B0CB5A006966AF /* eject.gif */; };
@@ -59,9 +72,22 @@
 		157D3F7D15A7D369009064CF /* pause1-150x150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pause1-150x150.png"; sourceTree = "<group>"; };
 		1596CEBB15BF72D6001097AE /* LineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineViewController.h; sourceTree = "<group>"; };
 		1596CEBC15BF72D6001097AE /* LineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineViewController.m; sourceTree = "<group>"; };
-		1596CEC415BF84E0001097AE /* CurveControl.h */ = {isa = PBXFileReference; fileEncoding = 4; path = CurveControl.h; sourceTree = "<group>"; };
+		1596CEC415BF84E0001097AE /* CurveControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurveControl.h; sourceTree = "<group>"; };
 		1596CEC515BF84E0001097AE /* CurveControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurveControl.m; sourceTree = "<group>"; };
-		15C0829B15BA06E40031679E /* Zaz – Le Long De La Route.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Zaz – Le Long De La Route.mp3"; sourceTree = "<group>"; };
+		1596CEC815C0C021001097AE /* pinkfloyd4.ma */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = pinkfloyd4.ma; sourceTree = "<group>"; };
+		1596CEC915C0C021001097AE /* pinkfloyd3.ma */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = pinkfloyd3.ma; sourceTree = "<group>"; };
+		1596CECA15C0C021001097AE /* pinkfloyd2.ma */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = pinkfloyd2.ma; sourceTree = "<group>"; };
+		1596CECB15C0C021001097AE /* pinkfloyd1.ma */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = pinkfloyd1.ma; sourceTree = "<group>"; };
+		1596CED015C0CAF7001097AE /* hendrix.ma */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hendrix.ma; sourceTree = "<group>"; };
+		1596CED215C0CCFE001097AE /* xx.ma */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = xx.ma; sourceTree = "<group>"; };
+		1596CED415C0D471001097AE /* milesmedal.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = milesmedal.txt; sourceTree = "<group>"; };
+		1596CED615C0D52F001097AE /* parabola.ma */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = parabola.ma; sourceTree = "<group>"; };
+		1596CED815C0D672001097AE /* hendrix_high.ma */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hendrix_high.ma; sourceTree = "<group>"; };
+		1596CEDA15C0D6D1001097AE /* pinkfloyd.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pinkfloyd.jpg; sourceTree = "<group>"; };
+		1596CEDC15C0DC92001097AE /* lab2.ma */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = lab2.ma; sourceTree = "<group>"; };
+		1596CEDE15C1ABAA001097AE /* lab1.ma */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = lab1.ma; sourceTree = "<group>"; };
+		1596CEE015C1B048001097AE /* Jimmy Hendrix  – Voodoo Child.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Jimmy Hendrix  – Voodoo Child.mp3"; sourceTree = "<group>"; };
+		15C0829B15BA06E40031679E /* song.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = song.mp3; sourceTree = "<group>"; };
 		15CF25C315AD5410007CA929 /* WaveAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaveAudioPlayer.h; sourceTree = "<group>"; };
 		15CF25C415AD5411007CA929 /* WaveAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaveAudioPlayer.m; sourceTree = "<group>"; };
 		15D2CEA115B0BFEF006966AF /* appIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appIcon.png; sourceTree = "<group>"; };
@@ -138,6 +164,7 @@
 				15CF25C315AD5410007CA929 /* WaveAudioPlayer.h */,
 				15CF25C415AD5411007CA929 /* WaveAudioPlayer.m */,
 				151A42F715538F9D003BF64A /* ViewController.xib */,
+				1596CEC715C0C00F001097AE /* Data */,
 				157D3F8115A7D4E0009064CF /* Music Files */,
 				157D3F8015A7D4CE009064CF /* Assets */,
 				151A42E915538F9D003BF64A /* Supporting Files */,
@@ -171,7 +198,8 @@
 		157D3F8115A7D4E0009064CF /* Music Files */ = {
 			isa = PBXGroup;
 			children = (
-				15C0829B15BA06E40031679E /* Zaz – Le Long De La Route.mp3 */,
+				1596CEE015C1B048001097AE /* Jimmy Hendrix  – Voodoo Child.mp3 */,
+				15C0829B15BA06E40031679E /* song.mp3 */,
 			);
 			name = "Music Files";
 			sourceTree = "<group>";
@@ -185,6 +213,25 @@
 				1596CEC515BF84E0001097AE /* CurveControl.m */,
 			);
 			name = Line;
+			sourceTree = "<group>";
+		};
+		1596CEC715C0C00F001097AE /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				1596CEDE15C1ABAA001097AE /* lab1.ma */,
+				1596CEDA15C0D6D1001097AE /* pinkfloyd.jpg */,
+				1596CEDC15C0DC92001097AE /* lab2.ma */,
+				1596CED815C0D672001097AE /* hendrix_high.ma */,
+				1596CED215C0CCFE001097AE /* xx.ma */,
+				1596CED615C0D52F001097AE /* parabola.ma */,
+				1596CED415C0D471001097AE /* milesmedal.txt */,
+				1596CED015C0CAF7001097AE /* hendrix.ma */,
+				1596CEC815C0C021001097AE /* pinkfloyd4.ma */,
+				1596CEC915C0C021001097AE /* pinkfloyd3.ma */,
+				1596CECA15C0C021001097AE /* pinkfloyd2.ma */,
+				1596CECB15C0C021001097AE /* pinkfloyd1.ma */,
+			);
+			name = Data;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -245,7 +292,20 @@
 				157D3F7F15A7D369009064CF /* pause1-150x150.png in Resources */,
 				15D2CEA215B0BFEF006966AF /* appIcon.png in Resources */,
 				15D2CEAA15B0CB5A006966AF /* eject.gif in Resources */,
-				15C0829C15BA06E40031679E /* Zaz – Le Long De La Route.mp3 in Resources */,
+				15C0829C15BA06E40031679E /* song.mp3 in Resources */,
+				1596CECC15C0C021001097AE /* pinkfloyd4.ma in Resources */,
+				1596CECD15C0C021001097AE /* pinkfloyd3.ma in Resources */,
+				1596CECE15C0C021001097AE /* pinkfloyd2.ma in Resources */,
+				1596CECF15C0C021001097AE /* pinkfloyd1.ma in Resources */,
+				1596CED115C0CAF7001097AE /* hendrix.ma in Resources */,
+				1596CED315C0CCFE001097AE /* xx.ma in Resources */,
+				1596CED515C0D471001097AE /* milesmedal.txt in Resources */,
+				1596CED715C0D52F001097AE /* parabola.ma in Resources */,
+				1596CED915C0D672001097AE /* hendrix_high.ma in Resources */,
+				1596CEDB15C0D6D1001097AE /* pinkfloyd.jpg in Resources */,
+				1596CEDD15C0DC92001097AE /* lab2.ma in Resources */,
+				1596CEDF15C1ABAA001097AE /* lab1.ma in Resources */,
+				1596CEE115C1B048001097AE /* Jimmy Hendrix  – Voodoo Child.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

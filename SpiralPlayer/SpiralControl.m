@@ -101,11 +101,11 @@
     
     if (degreeAtCurrentLevel_ <= 90) {
         currentQuarter_ = 1;
-    } else if (degreeAtCurrentLevel_>90 && degreeAtCurrentLevel_<=180) {
+    } else if (degreeAtCurrentLevel_ > 90 && degreeAtCurrentLevel_  <= 180) {
         currentQuarter_ = 2;
-    } else if (degreeAtCurrentLevel_>180 && degreeAtCurrentLevel_ <=270) {
+    } else if (degreeAtCurrentLevel_ > 180 && degreeAtCurrentLevel_ <= 270) {
         currentQuarter_ = 3;
-    } else if (degreeAtCurrentLevel_>270 && degreeAtCurrentLevel_<=360){
+    } else if (degreeAtCurrentLevel_ > 270 && degreeAtCurrentLevel_ <= 360){
         currentQuarter_ = 4;
     }
     NSLog(@"Began Drag Thumb -- Degree:%f Rad:%f Level:%i", degreeAtCurrentLevel_, radianAtCurrentLevel_, currentLevel_);
@@ -149,7 +149,6 @@
         arclength += 2*M_PI*cur*radiusStep_;
     }
     arclength += cur_level_angle*(currentLevel_+1)*radiusStep_; //arclength at current level
-    
     
     NSLog(@"LEVEL: %i, ANGLE: %f, ARCLENGTH: %f, MAXARCLENTGH: %f", currentLevel_, cur_level_angle*(180.0/M_PI), arclength, maxArcLength_);
     if (arclength > maxArcLength_ || total_angle < 0){ 
