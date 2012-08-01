@@ -20,6 +20,11 @@
 		1533A54315853ED200E27069 /* handle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1533A54215853ED200E27069 /* handle@2x.png */; };
 		1544D94615A229EB00AE7C63 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1544D94515A229EB00AE7C63 /* CoreMedia.framework */; };
 		1544D94915A22A0E00AE7C63 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1544D94815A22A0E00AE7C63 /* MediaPlayer.framework */; };
+		154E7BD815C4CB4D00D3DE50 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 154E7BD715C4CB4C00D3DE50 /* QuartzCore.framework */; };
+		154E7C0815C739B600D3DE50 /* PizzaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 154E7C0715C739B600D3DE50 /* PizzaViewController.m */; };
+		154E7C0B15C739D100D3DE50 /* PizzaControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 154E7C0A15C739D100D3DE50 /* PizzaControl.m */; };
+		154E7C1115C7431F00D3DE50 /* florence_cover.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 154E7C1015C7431F00D3DE50 /* florence_cover.jpg */; };
+		154E7C1415C7445900D3DE50 /* SineWaveView.m in Sources */ = {isa = PBXBuildFile; fileRef = 154E7C1315C7445800D3DE50 /* SineWaveView.m */; };
 		157D3F7B15A7D216009064CF /* choose_song_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 157D3F7A15A7D216009064CF /* choose_song_btn.png */; };
 		157D3F7E15A7D369009064CF /* play1-150x150.png in Resources */ = {isa = PBXBuildFile; fileRef = 157D3F7C15A7D368009064CF /* play1-150x150.png */; };
 		157D3F7F15A7D369009064CF /* pause1-150x150.png in Resources */ = {isa = PBXBuildFile; fileRef = 157D3F7D15A7D369009064CF /* pause1-150x150.png */; };
@@ -66,6 +71,14 @@
 		1533A54215853ED200E27069 /* handle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "handle@2x.png"; sourceTree = "<group>"; };
 		1544D94515A229EB00AE7C63 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		1544D94815A22A0E00AE7C63 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		154E7BD715C4CB4C00D3DE50 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		154E7C0615C739B600D3DE50 /* PizzaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PizzaViewController.h; sourceTree = "<group>"; };
+		154E7C0715C739B600D3DE50 /* PizzaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PizzaViewController.m; sourceTree = "<group>"; };
+		154E7C0915C739D100D3DE50 /* PizzaControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PizzaControl.h; sourceTree = "<group>"; };
+		154E7C0A15C739D100D3DE50 /* PizzaControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PizzaControl.m; sourceTree = "<group>"; };
+		154E7C1015C7431F00D3DE50 /* florence_cover.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = florence_cover.jpg; sourceTree = "<group>"; };
+		154E7C1215C7445800D3DE50 /* SineWaveView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SineWaveView.h; sourceTree = "<group>"; };
+		154E7C1315C7445800D3DE50 /* SineWaveView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SineWaveView.m; sourceTree = "<group>"; };
 		157D3F7315A7AFC8009064CF /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		157D3F7A15A7D216009064CF /* choose_song_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = choose_song_btn.png; sourceTree = "<group>"; };
 		157D3F7C15A7D368009064CF /* play1-150x150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play1-150x150.png"; sourceTree = "<group>"; };
@@ -102,10 +115,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				154E7BD815C4CB4D00D3DE50 /* QuartzCore.framework in Frameworks */,
+				15E163F8158B1AD900CC8FAC /* CoreAudio.framework in Frameworks */,
 				1544D94915A22A0E00AE7C63 /* MediaPlayer.framework in Frameworks */,
 				1544D94615A229EB00AE7C63 /* CoreMedia.framework in Frameworks */,
 				15E163F6158B1AD900CC8FAC /* AudioToolbox.framework in Frameworks */,
-				15E163F8158B1AD900CC8FAC /* CoreAudio.framework in Frameworks */,
 				150CC5DA1554503000570ACC /* AVFoundation.framework in Frameworks */,
 				151A42E315538F9D003BF64A /* UIKit.framework in Frameworks */,
 				151A42E515538F9D003BF64A /* Foundation.framework in Frameworks */,
@@ -119,6 +133,7 @@
 		151A42D315538F9D003BF64A = {
 			isa = PBXGroup;
 			children = (
+				154E7BD715C4CB4C00D3DE50 /* QuartzCore.framework */,
 				15D2CEA115B0BFEF006966AF /* appIcon.png */,
 				151A42E815538F9D003BF64A /* SpiralPlayer */,
 				151A42E115538F9D003BF64A /* Frameworks */,
@@ -152,6 +167,7 @@
 		151A42E815538F9D003BF64A /* SpiralPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				154E7C0415C7399D00D3DE50 /* Pizza */,
 				1596CEC315BF7545001097AE /* Line */,
 				15D2CEA415B0C5B0006966AF /* UIConstants.h */,
 				157D3F7315A7AFC8009064CF /* Constants.h */,
@@ -183,9 +199,23 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		154E7C0415C7399D00D3DE50 /* Pizza */ = {
+			isa = PBXGroup;
+			children = (
+				154E7C0615C739B600D3DE50 /* PizzaViewController.h */,
+				154E7C0715C739B600D3DE50 /* PizzaViewController.m */,
+				154E7C0915C739D100D3DE50 /* PizzaControl.h */,
+				154E7C0A15C739D100D3DE50 /* PizzaControl.m */,
+				154E7C1215C7445800D3DE50 /* SineWaveView.h */,
+				154E7C1315C7445800D3DE50 /* SineWaveView.m */,
+			);
+			name = Pizza;
+			sourceTree = "<group>";
+		};
 		157D3F8015A7D4CE009064CF /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				154E7C1015C7431F00D3DE50 /* florence_cover.jpg */,
 				15D2CEA915B0CB5A006966AF /* eject.gif */,
 				157D3F7C15A7D368009064CF /* play1-150x150.png */,
 				157D3F7D15A7D369009064CF /* pause1-150x150.png */,
@@ -306,6 +336,7 @@
 				1596CEDD15C0DC92001097AE /* lab2.ma in Resources */,
 				1596CEDF15C1ABAA001097AE /* lab1.ma in Resources */,
 				1596CEE115C1B048001097AE /* Jimmy Hendrix  – Voodoo Child.mp3 in Resources */,
+				154E7C1115C7431F00D3DE50 /* florence_cover.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,6 +354,9 @@
 				15CF25C515AD5411007CA929 /* WaveAudioPlayer.m in Sources */,
 				1596CEBD15BF72D6001097AE /* LineViewController.m in Sources */,
 				1596CEC615BF84E0001097AE /* CurveControl.m in Sources */,
+				154E7C0815C739B600D3DE50 /* PizzaViewController.m in Sources */,
+				154E7C0B15C739D100D3DE50 /* PizzaControl.m in Sources */,
+				154E7C1415C7445900D3DE50 /* SineWaveView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

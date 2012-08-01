@@ -10,7 +10,7 @@
 #define SpiralPlayer_Constants_h
 
 #define kMAX_SPIRAL_STEP_RADIUS 200
-#define kMIN_SPIRAL_STEP_RADIUS 20
+#define kMIN_SPIRAL_STEP_RADIUS 1
 
 #define kMAX_SAMPLE_RATE_RATIO 147
 #define kMIN_SAMPLE_RATE_RATIO 1

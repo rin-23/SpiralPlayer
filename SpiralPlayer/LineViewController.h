@@ -12,6 +12,7 @@
 @interface LineViewController : UIViewController {
     WaveAudioPlayer* audioPlayer_;
     CurveControl* curveControl_;
+    UIView* view;
     
 }
 

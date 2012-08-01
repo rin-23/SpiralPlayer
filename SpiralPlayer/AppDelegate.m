@@ -31,7 +31,10 @@
     //self.viewController = [[[ViewController alloc] initWithNibName:@"ViewController" bundle:nil] autorelease];
 
     //LineViewController
-    self.viewController = [[LineViewController alloc] init];
+    //self.viewController = [[LineViewController alloc] init];
+    
+    //Pizza View Controller
+    self.viewController = [[PizzaViewController alloc] init];
     
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];

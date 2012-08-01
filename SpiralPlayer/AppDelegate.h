@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LineViewController.h"
+#import "PizzaViewController.h"
 @class ViewController;
 @class LineViewController;
 
@@ -15,7 +16,5 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
-//@property (strong, nonatomic) ViewController *viewController;
-@property (strong, nonatomic) LineViewController *viewController;
-
+@property (strong, nonatomic) UIViewController*  viewController;
 @end

@@ -20,6 +20,11 @@
     double milisecondsPerPoint_;
     double secondsPerPoint_;
     
+    CGPoint currentMovingPoint_;
+    int currentMovingPointIndex_;
+    
+    int lastPointIndex_;
+    
 } 
 
 @property (nonatomic, retain) NSMutableArray* dataPoints;

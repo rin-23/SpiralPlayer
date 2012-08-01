@@ -40,7 +40,7 @@
 }
 
 - (void) getDataPoints {
-    NSString* path = [[NSBundle mainBundle] pathForResource:@"hendrix" ofType:@"ma"];
+    NSString* path = [[NSBundle mainBundle] pathForResource:@"xx" ofType:@"ma"];
     NSString* content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL];
     NSArray* lines = [content componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
     numOfDataPoints_ = [(NSString*)[lines objectAtIndex:0] intValue];
@@ -80,31 +80,36 @@
     //self.dataPoints = [[self getDataPoints] retain];
     
     CGContextRef context = UIGraphicsGetCurrentContext();
- 
+    CGContextClearRect(context, rect);
     CGContextBeginPath(context);
     CGContextSetLineWidth(context, 2);
     CGColorRef leftcolor = [[UIColor whiteColor] CGColor];
-    CGContextSetStrokeColorWithColor(context, leftcolor);
+    //CGColorRef rightcolor = [[UIColor redColor] CGColor];
+    //CGContextSetStrokeColorWithColor(context, leftcolor);
 
-    CGPoint startPoint = [(NSValue*)[self.dataPoints objectAtIndex:0] CGPointValue];
-    self.thumb.center = startPoint;
-    [self hashPointToGrid:startPoint];
-    
-    CGPoint pastPoint = startPoint;
-    CGContextMoveToPoint(context, startPoint.x, startPoint.y);
-    for (int i = 1; i < [self.dataPoints count]; i++) {
+    CGPoint currentPoint = [(NSValue*)[self.dataPoints objectAtIndex:0] CGPointValue];
+    self.thumb.center = currentPoint;
+    CGContextMoveToPoint(context, currentPoint.x, currentPoint.y);
+    [self hashPointToGrid:currentPoint];
+    //CGPoint pastPoint = startPoint;
+    for (int i = 0; i < [self.dataPoints count]; i++) {
         //draw line
-        CGPoint currentPoint = [(NSValue*)[self.dataPoints objectAtIndex:i] CGPointValue];
-        CGContextAddLineToPoint(context, currentPoint.x, currentPoint.y);  
-        [self hashPointToGrid:currentPoint];
+        currentPoint = [(NSValue*)[self.dataPoints objectAtIndex:i] CGPointValue];
         
+        //if (i%2 == 0) CGContextSetStrokeColorWithColor(context, leftcolor);
+        //else CGContextSetStrokeColorWithColor(context, leftcolor);
+        
+        CGContextSetStrokeColorWithColor(context, leftcolor);
+        CGContextAddLineToPoint(context, currentPoint.x, currentPoint.y); 
+        [self hashPointToGrid:currentPoint];
         //calculate total length of the line as we draw it
-        float curLength = sqrtf(pow(currentPoint.x-pastPoint.x, 2) + pow(currentPoint.y - pastPoint.y, 2));
-        self.pathLength += curLength; 
-        pastPoint = currentPoint;
+//        float curLength = sqrtf(pow(currentPoint.x-pastPoint.x, 2) + pow(currentPoint.y - pastPoint.y, 2));
+//        self.pathLength += curLength; 
+//        pastPoint = currentPoint;
     }
-    NSLog(@"Path Length: %f", self.pathLength);
     CGContextStrokePath(context);
+    NSLog(@"Path Length: %f", self.pathLength);
+   
 }
 
 #pragma mark - HASH TABLE METHODS
@@ -214,7 +219,7 @@
 
 - (void) setValue:(double)value {
     int currentPoint = (int)(value/secondsPerPoint_);
-    NSLog(@"Value:  %f, Point Index: %i", value, currentPoint);
+    //NSLog(@"Value:  %f, Point Index: %i", value, currentPoint);
     if (currentPoint < [self.dataPoints count]) {
         self.thumbCurrentPosition = [(NSValue*)[dataPoints_ objectAtIndex:currentPoint] CGPointValue];
     }
@@ -234,14 +239,37 @@
                                                               
 #pragma mark - UIControl touch evnets
 - (BOOL) beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
-    NSLog(@"begin touch track");
+//    NSLog(@"begin touch track");
+//    CGPoint touchPoint = [touch locationInView:self];
+//    NSValue* closestTrackValue = [self getClosestGridPointToPoint:touchPoint];
+//    if (closestTrackValue == nil) {
+//        NSLog(@"Touched outside of the track area");
+//    } else {
+//        CGPoint closestTrackPoint = [[self getClosestGridPointToPoint:touchPoint] CGPointValue];
+//        currentMovingPointIndex_ = [self.dataPoints indexOfObject:closestTrackValue];
+//        currentMovingPoint_ = closestTrackPoint;
+//        
+//    }
     return YES;    
 }
 - (BOOL) continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
-    NSLog(@"continue touch track");
-    return YES;    
+//    NSLog(@"continue touch track");
+//    CGPoint touchPoint = [touch locationInView:self];
+//    NSValue* touchPointValue = [NSValue valueWithCGPoint:touchPoint];
+//    [self.dataPoints replaceObjectAtIndex:currentMovingPointIndex_ withObject:touchPointValue];
+//    [self setNeedsDisplay];
+          
+
+    return YES; 
+    
 }
 - (void) endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+//    CGPoint touchPoint = [touch locationInView:self];
+//    NSValue* touchPointValue = [NSValue valueWithCGPoint:touchPoint];
+//    [self.dataPoints replaceObjectAtIndex:currentMovingPointIndex_ withObject:touchPointValue];
+//    [self setNeedsDisplay];
+    
+    
     NSLog(@"end touch track");
     CGPoint touchPoint = [touch locationInView:self];
     NSValue* closestTrackValue = [self getClosestGridPointToPoint:touchPoint];

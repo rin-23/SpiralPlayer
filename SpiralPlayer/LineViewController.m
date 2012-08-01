@@ -7,12 +7,13 @@
 //
 
 #import "LineViewController.h"
-
+#import <QuartzCore/QuartzCore.h>
 @implementation LineViewController
 
 - (id) init { 
     self = [super init];
     if (self) {
+ 
         [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(updateProgressBar) userInfo:nil repeats:YES];
                 
         audioPlayer_ = [[WaveAudioPlayer alloc] init];
@@ -38,6 +39,8 @@
     return self;
 }
 
+
+
 - (void) updateProgressBar {
     curveControl_.value = audioPlayer_.player.currentTime;    
 }
@@ -46,15 +49,9 @@
     audioPlayer_.player.currentTime = curveControl_.value;
 }
 
-
-
-
-
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
     // Release any cached data, images, etc that aren't in use.
 }
 
@@ -85,7 +82,7 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-	return YES;
+    return UIInterfaceOrientationIsPortrait(interfaceOrientation);
 }
 
 @end
