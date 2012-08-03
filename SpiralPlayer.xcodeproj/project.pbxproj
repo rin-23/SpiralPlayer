@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		150AE12B15CB5EA700C1ED0F /* morcheeba-skye.png in Resources */ = {isa = PBXBuildFile; fileRef = 150AE12A15CB5EA700C1ED0F /* morcheeba-skye.png */; };
 		150CC5D31554468200570ACC /* SpiralControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 150CC5D21554468200570ACC /* SpiralControl.m */; };
 		150CC5DA1554503000570ACC /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 150CC5D91554503000570ACC /* AVFoundation.framework */; };
 		151A42E315538F9D003BF64A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 151A42E215538F9D003BF64A /* UIKit.framework */; };
@@ -56,6 +57,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		150AE12A15CB5EA700C1ED0F /* morcheeba-skye.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "morcheeba-skye.png"; sourceTree = "<group>"; };
 		150CC5D11554468200570ACC /* SpiralControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpiralControl.h; sourceTree = "<group>"; };
 		150CC5D21554468200570ACC /* SpiralControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpiralControl.m; sourceTree = "<group>"; };
 		150CC5D91554503000570ACC /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -232,6 +234,7 @@
 		157D3F8015A7D4CE009064CF /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				150AE12A15CB5EA700C1ED0F /* morcheeba-skye.png */,
 				1577831015CA78C20029F11A /* florence_machine_cover.png */,
 				154E7C1015C7431F00D3DE50 /* florence_cover.jpg */,
 				15D2CEA915B0CB5A006966AF /* eject.gif */,
@@ -356,6 +359,7 @@
 				1596CEE115C1B048001097AE /* Jimmy Hendrix  – Voodoo Child.mp3 in Resources */,
 				154E7C1115C7431F00D3DE50 /* florence_cover.jpg in Resources */,
 				1577831115CA78C30029F11A /* florence_machine_cover.png in Resources */,
+				150AE12B15CB5EA700C1ED0F /* morcheeba-skye.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

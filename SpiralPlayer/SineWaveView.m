@@ -17,6 +17,7 @@
 // An empty implementation adversely affects performance during animation.
 
 - (void)drawRect:(CGRect)rect {
+    int level = 30;
     
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     //CGContextClearRect(ctx, rect);
@@ -28,16 +29,16 @@
 
     double x;
     int old_y = rect.origin.y;
-    double old_x = (((double)old_y/(double)rect.size.height) * (rect.size.width/2) * sin(((30*old_y) % 360) * M_PI/180)) + rect.size.width/2;
+    double old_x = (((double)old_y/(double)rect.size.height) * (rect.size.width/2) * sin(((level*old_y) % 360) * M_PI/180)) + rect.size.width/2;
     
     int colorIndex = 0;
     for (double y = rect.origin.y; y < rect.size.height/2; y += 0.1) {
-        x = ((y/(double)rect.size.height) * (rect.size.width/2) * sin(fmod(10*y, 360.0) * M_PI/180)) + rect.size.width/2;
+        x = ((y/(double)rect.size.height) * (rect.size.width/2) * sin(fmod(level*y, 360.0) * M_PI/180)) + rect.size.width/2;
 
         CGContextMoveToPoint(ctx, old_x, old_y);
-        
-        if (colorIndex%2 == 0) { CGContextSetStrokeColorWithColor(ctx, leftcolor); } 
-        else { CGContextSetStrokeColorWithColor(ctx, rightcolor); }
+        CGContextSetStrokeColorWithColor(ctx, leftcolor);
+//        if (colorIndex%2 == 0) { CGContextSetStrokeColorWithColor(ctx, leftcolor); } 
+//        else { CGContextSetStrokeColorWithColor(ctx, rightcolor); }
 
         CGContextAddLineToPoint(ctx, x, y);
         CGContextStrokePath(ctx);

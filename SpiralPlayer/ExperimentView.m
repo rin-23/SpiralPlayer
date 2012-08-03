@@ -23,8 +23,8 @@
             centerY_ = 480/2 + 30; 
         }
         
-        maxArclength_ = 10000*9;
-        radiusStep_ = 6 ;
+        maxArclength_ = 45000;
+        radiusStep_ = 10 ;
     }
     return self;
 }
@@ -37,69 +37,131 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGImageRef maskImage;
     
-    /****************************BEGIN CREATE A MASK********************************/
-    CGContextSaveGState(context);
-    
-
-    CGContextSetRGBFillColor (context, 0, 0, 0, 0);
-    CGContextFillRect(context, rect);
-    
-    CGContextSetRGBStrokeColor(context, 1, 1, 1, 1);
-    double angle = 0.0;	// Cumulative radians while stepping.
-    centerX_ = rect.size.width/2;
-    centerY_ = rect.size.height/2;
-	double newX = centerX_;
-    double newY = centerY_;    
-	   
-    CGContextSetLineWidth(context, 2);
-    //CGColorRef leftcolor = [[UIColor whiteColor] CGColor]; 
-    //CGColorRef rightcolor = [[UIColor colorWithRed:0.7 green:0 blue:0 alpha:0] CGColor];
+    /**************************BEGIN CREATE A PIZZA LAYER MASK******************/
+    CGSize layerSize = CGSizeMake(rect.size.width/2, rect.size.height/2);
+    CGLayerRef pizzaSliceLayer = CGLayerCreateWithContext(context, layerSize, NULL); 
+    CGContextRef pizzaSliceLayerContext = CGLayerGetContext(pizzaSliceLayer);
    
-    int level = 0;
-    double currentArc = 0.0;
-    int j = 0;    
-    for (int i = 0; i <= maxArclength_; i += 1) {
-        j = i;
-        level = 0;
-        while (j >= 0) {
-            level += 1;
-            currentArc = j;
-            j = j - 2*M_PI*(level*radiusStep_); 
-        }   
+    CGContextSetRGBFillColor (pizzaSliceLayerContext, 0, 0, 0, 0);
+    CGContextFillRect(pizzaSliceLayerContext, CGRectMake(0, 0, layerSize.width, layerSize.height));
+    
+    int level = 20;
+    CGContextBeginPath(pizzaSliceLayerContext);
+    CGContextSetRGBStrokeColor(pizzaSliceLayerContext, 1, 1, 1, 1);
+    //CGContextRotateCTM(context, 10.0 * (M_PI/180));  
+    CGContextSetLineWidth(pizzaSliceLayerContext, 3);
+    double x;
+    int old_y = rect.origin.y;
+    double old_x = (((double)old_y/(double)layerSize.height) * (layerSize.width/2) * sin(((level*old_y) % 360) * M_PI/180)) + layerSize.width/2;
+    
+    for (double y = rect.origin.y; y < layerSize.height; y += 0.1) {
+        x = ((y/(double)layerSize.height) * (layerSize.width/2) * sin(fmod(level*y, 360.0) * M_PI/180)) + layerSize.width/2;
         
-        angle = currentArc/(level*radiusStep_) + 2*M_PI*(level-1); //total angle
-        CGContextMoveToPoint(context, newX, newY);
-        newX = (radiusStep_*angle*cos(angle))/(2*M_PI) + centerX_;
-        newY = (radiusStep_*angle*sin(angle))/(2*M_PI) + centerY_;
+        CGContextMoveToPoint(pizzaSliceLayerContext, old_x, old_y);
+        CGContextAddLineToPoint(pizzaSliceLayerContext, x, y);
+        CGContextStrokePath(pizzaSliceLayerContext);
         
-        //if (i%2 == 0) { CGContextSetStrokeColorWithColor(context, leftcolor);
-        //} else {
-       // CGContextSetStrokeColorWithColor(context, rightcolor);
-        //}
-               
-        CGContextAddLineToPoint(context, newX, newY);
-        CGContextStrokePath(context);
-    } 
-
-    maskImage = CGBitmapContextCreateImage(context);
-//    CGImageRef mask = CGImageMaskCreate(CGImageGetWidth(maskImage)
-//                                                    , CGImageGetHeight(maskImage)
-//                                                    , CGImageGetBitsPerComponent(maskImage)
-//                                                    , CGImageGetBitsPerPixel(maskImage)
-//                                                    , CGImageGetBytesPerRow(maskImage)
-//                                                    ,  CGImageGetDataProvider(maskImage)
-//                                                    , NULL
-//                                                    , false);
+        old_x = x;
+        old_y = y;
+    }
+    /**************************END CREATE A PIZZA LAYER MASK******************/
+    
+    /**************************BEGIN DRAW PIZZA SLICES*****************************/
+    CGContextSaveGState(context);
+    CGContextDrawLayerAtPoint(context, CGPointMake((rect.size.width/2) - (layerSize.width/2), rect.size.height/2), pizzaSliceLayer);
     CGContextRestoreGState(context);
+    
+    CGContextSaveGState(context);
+   
+    CGContextTranslateCTM(context, 450, -160);
+
+    CGContextRotateCTM(context, 50.0 * (M_PI/180));  
+       CGContextDrawLayerAtPoint(context, CGPointMake((rect.size.width/2) - (layerSize.width/2), rect.size.height/2), pizzaSliceLayer);
+    
+    CGContextRestoreGState(context);
+//    CGContextRotateCTM(context, 20.0 * (M_PI/180));  
+//    CGContextDrawLayerAtPoint(context, CGPointMake((rect.size.width/2) - (layerSize.width/2), rect.size.height/2), pizzaSliceLayer);
+//    CGContextRotateCTM(context, 20.0 * (M_PI/180));  
+//    CGContextDrawLayerAtPoint(context, CGPointMake((rect.size.width/2) - (layerSize.width/2), rect.size.height/2), pizzaSliceLayer);
+
+    
+    
+    
+    
+    /**************************END DRAW PIZZA SLICES*****************************/
+    
+    
+    
+        
+    maskImage = CGBitmapContextCreateImage(context);
+    
+    
+    /****************************BEGIN CREATE A MASK********************************/
+//    CGContextSaveGState(context);
+//    
+//
+//    CGContextSetRGBFillColor (context, 0, 0, 0, 0);
+//    CGContextFillRect(context, rect);
+//    
+//    CGContextSetRGBStrokeColor(context, 1, 1, 1, 1);
+//    double angle = 0.0;	// Cumulative radians while stepping.
+//    centerX_ = rect.size.width/2;
+//    centerY_ = rect.size.height/2;
+//    
+//	double newX = centerX_;
+//    double newY = centerY_;    
+//	   
+//    CGContextSetLineWidth(context, 2);
+//    //CGColorRef leftcolor = [[UIColor whiteColor] CGColor]; 
+//    //CGColorRef rightcolor = [[UIColor colorWithRed:0.7 green:0 blue:0 alpha:0] CGColor];
+//   
+//    int level = 0;
+//    double currentArc = 0.0;
+//    int j = 0;    
+//    for (int i = 0; i <= maxArclength_; i += 1) {
+//        j = i;
+//        level = 0;
+//        while (j >= 0) {
+//            level += 1;
+//            currentArc = j;
+//            j = j - 2*M_PI*(level*radiusStep_); 
+//        }   
+//        
+//        angle = currentArc/(level*radiusStep_) + 2*M_PI*(level-1); //total angle
+//        CGContextMoveToPoint(context, newX, newY);
+//        newX = (radiusStep_*angle*cos(angle))/(2*M_PI) + centerX_;
+//        newY = (radiusStep_*angle*sin(angle))/(2*M_PI) + centerY_;
+//        
+//        //if (i%2 == 0) { CGContextSetStrokeColorWithColor(context, leftcolor);
+//        //} else {
+//       // CGContextSetStrokeColorWithColor(context, rightcolor);
+//        //}
+//               
+//        CGContextAddLineToPoint(context, newX, newY);
+//        CGContextStrokePath(context);
+//    } 
+//
+//    maskImage = CGBitmapContextCreateImage(context);
+////    CGImageRef mask = CGImageMaskCreate(CGImageGetWidth(maskImage)
+////                                                    , CGImageGetHeight(maskImage)
+////                                                    , CGImageGetBitsPerComponent(maskImage)
+////                                                    , CGImageGetBitsPerPixel(maskImage)
+////                                                    , CGImageGetBytesPerRow(maskImage)
+////                                                    ,  CGImageGetDataProvider(maskImage)
+////                                                    , NULL
+////                                                    , false);
+//    CGContextRestoreGState(context);
     /****************************END CREATE A MASK********************************/
     
     
+    CGImageRef cgimage = [UIImage imageNamed:@"morcheeba-skye"].CGImage;
+
     CGContextTranslateCTM(context, 0, rect.size.height);
     CGContextScaleCTM(context, 1.0, -1.0);
    
     CGContextClipToMask(context, rect, maskImage); 
     //Draw Album Cover
-    CGImageRef cgimage = [UIImage imageNamed:@"florence_machine_cover"].CGImage;
+  
     CGContextDrawImage(context, rect, cgimage);
     
    

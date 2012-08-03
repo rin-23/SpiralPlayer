@@ -46,7 +46,8 @@
 {
     [super viewDidLoad];
 
-    ExperimentView* expView = [[ExperimentView alloc] initWithFrame:CGRectMake(0, 0, 500, 500)];
+    ExperimentView* expView = [[ExperimentView alloc] initWithFrame:CGRectMake(0, 0, 768, 768)];
+    expView.center = CGPointMake(768/2, 1024/2);
     [self.view addSubview:expView];
     [expView release];
     
