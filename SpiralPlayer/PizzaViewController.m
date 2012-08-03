@@ -8,6 +8,9 @@
 
 #import "PizzaViewController.h"
 #import "SineWaveView.h"
+#import "PizzaSpiralView.h"
+#import "ExperimentView.h"
+
 @implementation PizzaViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -42,11 +45,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    ExperimentView* expView = [[ExperimentView alloc] initWithFrame:CGRectMake(0, 0, 500, 500)];
+    [self.view addSubview:expView];
+    [expView release];
     
-    UIView* view = [[UIView alloc] initWithFrame:CGRectMake(200, 200, 200, 200)];
-    view.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:view];
-    [view release];
+//    PizzaSpiralView* pizzaSpiralView = [[PizzaSpiralView alloc] initWithFrame:CGRectMake(0, 0, 1024, 768)];
+//    [self.view addSubview:pizzaSpiralView];
+//    [pizzaSpiralView release];
+    
+//    UIView* view = [[UIView alloc] initWithFrame:CGRectMake(200, 200, 200, 200)];
+//    view.backgroundColor = [UIColor whiteColor];
+//    [self.view addSubview:view];
+//    [view release];
     
 //    SineWaveView* sine = [[SineWaveView alloc] initWithFrame:CGRectMake(0, 0, 1024, 768)];
 //    [self.view addSubview:sine];

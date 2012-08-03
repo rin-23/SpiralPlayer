@@ -25,6 +25,10 @@
 		154E7C0B15C739D100D3DE50 /* PizzaControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 154E7C0A15C739D100D3DE50 /* PizzaControl.m */; };
 		154E7C1115C7431F00D3DE50 /* florence_cover.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 154E7C1015C7431F00D3DE50 /* florence_cover.jpg */; };
 		154E7C1415C7445900D3DE50 /* SineWaveView.m in Sources */ = {isa = PBXBuildFile; fileRef = 154E7C1315C7445800D3DE50 /* SineWaveView.m */; };
+		157782F815C9FFAE0029F11A /* PizzaSpiralView.m in Sources */ = {isa = PBXBuildFile; fileRef = 157782F715C9FFAE0029F11A /* PizzaSpiralView.m */; };
+		1577830C15CA32390029F11A /* CoverImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1577830B15CA32380029F11A /* CoverImageView.m */; };
+		1577830F15CA76A20029F11A /* ExperimentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1577830E15CA76A20029F11A /* ExperimentView.m */; };
+		1577831115CA78C30029F11A /* florence_machine_cover.png in Resources */ = {isa = PBXBuildFile; fileRef = 1577831015CA78C20029F11A /* florence_machine_cover.png */; };
 		157D3F7B15A7D216009064CF /* choose_song_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 157D3F7A15A7D216009064CF /* choose_song_btn.png */; };
 		157D3F7E15A7D369009064CF /* play1-150x150.png in Resources */ = {isa = PBXBuildFile; fileRef = 157D3F7C15A7D368009064CF /* play1-150x150.png */; };
 		157D3F7F15A7D369009064CF /* pause1-150x150.png in Resources */ = {isa = PBXBuildFile; fileRef = 157D3F7D15A7D369009064CF /* pause1-150x150.png */; };
@@ -79,6 +83,13 @@
 		154E7C1015C7431F00D3DE50 /* florence_cover.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = florence_cover.jpg; sourceTree = "<group>"; };
 		154E7C1215C7445800D3DE50 /* SineWaveView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SineWaveView.h; sourceTree = "<group>"; };
 		154E7C1315C7445800D3DE50 /* SineWaveView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SineWaveView.m; sourceTree = "<group>"; };
+		157782F615C9FFAE0029F11A /* PizzaSpiralView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PizzaSpiralView.h; sourceTree = "<group>"; };
+		157782F715C9FFAE0029F11A /* PizzaSpiralView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PizzaSpiralView.m; sourceTree = "<group>"; };
+		1577830A15CA32380029F11A /* CoverImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoverImageView.h; sourceTree = "<group>"; };
+		1577830B15CA32380029F11A /* CoverImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoverImageView.m; sourceTree = "<group>"; };
+		1577830D15CA76A10029F11A /* ExperimentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExperimentView.h; sourceTree = "<group>"; };
+		1577830E15CA76A20029F11A /* ExperimentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExperimentView.m; sourceTree = "<group>"; };
+		1577831015CA78C20029F11A /* florence_machine_cover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = florence_machine_cover.png; sourceTree = "<group>"; };
 		157D3F7315A7AFC8009064CF /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		157D3F7A15A7D216009064CF /* choose_song_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = choose_song_btn.png; sourceTree = "<group>"; };
 		157D3F7C15A7D368009064CF /* play1-150x150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play1-150x150.png"; sourceTree = "<group>"; };
@@ -208,6 +219,12 @@
 				154E7C0A15C739D100D3DE50 /* PizzaControl.m */,
 				154E7C1215C7445800D3DE50 /* SineWaveView.h */,
 				154E7C1315C7445800D3DE50 /* SineWaveView.m */,
+				157782F615C9FFAE0029F11A /* PizzaSpiralView.h */,
+				157782F715C9FFAE0029F11A /* PizzaSpiralView.m */,
+				1577830A15CA32380029F11A /* CoverImageView.h */,
+				1577830B15CA32380029F11A /* CoverImageView.m */,
+				1577830D15CA76A10029F11A /* ExperimentView.h */,
+				1577830E15CA76A20029F11A /* ExperimentView.m */,
 			);
 			name = Pizza;
 			sourceTree = "<group>";
@@ -215,6 +232,7 @@
 		157D3F8015A7D4CE009064CF /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				1577831015CA78C20029F11A /* florence_machine_cover.png */,
 				154E7C1015C7431F00D3DE50 /* florence_cover.jpg */,
 				15D2CEA915B0CB5A006966AF /* eject.gif */,
 				157D3F7C15A7D368009064CF /* play1-150x150.png */,
@@ -337,6 +355,7 @@
 				1596CEDF15C1ABAA001097AE /* lab1.ma in Resources */,
 				1596CEE115C1B048001097AE /* Jimmy Hendrix  – Voodoo Child.mp3 in Resources */,
 				154E7C1115C7431F00D3DE50 /* florence_cover.jpg in Resources */,
+				1577831115CA78C30029F11A /* florence_machine_cover.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -357,6 +376,9 @@
 				154E7C0815C739B600D3DE50 /* PizzaViewController.m in Sources */,
 				154E7C0B15C739D100D3DE50 /* PizzaControl.m in Sources */,
 				154E7C1415C7445900D3DE50 /* SineWaveView.m in Sources */,
+				157782F815C9FFAE0029F11A /* PizzaSpiralView.m in Sources */,
+				1577830C15CA32390029F11A /* CoverImageView.m in Sources */,
+				1577830F15CA76A20029F11A /* ExperimentView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
