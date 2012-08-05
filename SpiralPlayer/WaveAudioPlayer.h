@@ -20,7 +20,6 @@
     id<WaveAudioPlayerDelegate> delegate_;
     AVAudioPlayer* audioPlayer_;
     MPMediaItem* mediaItem_;
-
 }
 
 

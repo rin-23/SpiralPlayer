@@ -40,23 +40,24 @@
 }
 
 - (void) getDataPoints {
-    NSString* path = [[NSBundle mainBundle] pathForResource:@"xx" ofType:@"ma"];
+    NSString* path = [[NSBundle mainBundle] pathForResource:@"sineWaveDataPoints" ofType:@"txt"];
     NSString* content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL];
     NSArray* lines = [content componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-    numOfDataPoints_ = [(NSString*)[lines objectAtIndex:0] intValue];
+    numOfDataPoints_ = [lines count];//[(NSString*)[lines objectAtIndex:0] intValue];
     NSLog(@"Capacity: %i", numOfDataPoints_);
     
     self.dataPoints = [[NSMutableArray alloc] initWithCapacity:numOfDataPoints_];    
-    for (int i = 1; i < numOfDataPoints_; i += 1) {
+    for (int i = 0; i < numOfDataPoints_-1; i += 1) {
         NSArray* coordinates = [(NSString*)[lines objectAtIndex:i] componentsSeparatedByString:@" "];
         float x_f = [[coordinates objectAtIndex:0] floatValue];
         float y_f = [[coordinates objectAtIndex:1] floatValue];
         int x = (int)(x_f+0.5);
-        int y = (int)(y_f+0.5) + 130;
-        //NSLog(@"Read a point X:%i, Y:%i", x, y);
+        int y = (int)(y_f+0.5);
+       // NSLog(@"Read a point X:%i, Y:%i", x, y);
         CGPoint point = CGPointMake(x, y);
         [self.dataPoints addObject:[NSValue valueWithCGPoint:point]];
     }
+    NSLog(@"Done reading data points from file");
      
 //    // every second of track is a pixel
 //    for (int x = START_POINT_X; x < START_POINT_X + tracklength_/2; x++) {
@@ -78,9 +79,17 @@
 - (void) drawRect:(CGRect)rect {
     // Drawing code
     //self.dataPoints = [[self getDataPoints] retain];
-    
+    NSLog(@"Started Drawing");
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextClearRect(context, rect);
+    CGImageRef maskImage;
+    
+    CGContextSaveGState(context);
+    
+    CGContextSetRGBFillColor (context, 0, 0, 0, 0);
+    CGContextFillRect(context, rect);
+    
+    CGContextSetRGBStrokeColor(context, 1, 1, 1, 1);
+
     CGContextBeginPath(context);
     CGContextSetLineWidth(context, 2);
     CGColorRef leftcolor = [[UIColor whiteColor] CGColor];
@@ -108,7 +117,19 @@
 //        pastPoint = currentPoint;
     }
     CGContextStrokePath(context);
+    maskImage = CGBitmapContextCreateImage(context);
     NSLog(@"Path Length: %f", self.pathLength);
+    CGContextRestoreGState(context);
+    CGImageRef cgimage = [UIImage imageNamed:@"lana"].CGImage;
+    
+    CGContextTranslateCTM(context, 0, rect.size.height);
+    CGContextScaleCTM(context, 1.0, -1.0);
+    
+    CGContextClipToMask(context, rect, maskImage); 
+    //Draw Album Cover
+    
+    CGContextDrawImage(context, rect, cgimage);
+    NSLog(@"Finished Drawing");
    
 }
 

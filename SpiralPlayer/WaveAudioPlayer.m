@@ -26,7 +26,7 @@
     return self;
 }
 
--(void) loadNextAudioAsset:(NSURL*) url {
+- (void) loadNextAudioAsset:(NSURL*) url {
     NSError *error;
     [[AVAudioSession sharedInstance] setDelegate: self];
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error: nil];
@@ -72,7 +72,6 @@
         [delegate_ finishedConvertingToPCM];        
     }
 }
-
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
     [delegate_ waveAudioPlayerDidFinishPlaying];    
@@ -190,7 +189,6 @@
          
 	}];
 	NSLog (@"bottom of convertTapped:");
-    
 }
 
 

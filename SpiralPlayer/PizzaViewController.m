@@ -8,7 +8,7 @@
 
 #import "PizzaViewController.h"
 #import "SineWaveView.h"
-#import "PizzaSpiralView.h"
+#import "PizzaControl.h"
 #import "ExperimentView.h"
 
 @implementation PizzaViewController
@@ -42,23 +42,19 @@
 
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 
-    ExperimentView* expView = [[ExperimentView alloc] initWithFrame:CGRectMake(0, 0, 768, 768)];
-    expView.center = CGPointMake(768/2, 1024/2);
-    [self.view addSubview:expView];
-    [expView release];
+//    ExperimentView* expView = [[ExperimentView alloc] initWithFrame:CGRectMake(0, 0, 768, 768)];
+//    expView.center = CGPointMake(768/2, 1024/2);
+//    [self.view addSubview:expView];
+//    [expView release];
     
-//    PizzaSpiralView* pizzaSpiralView = [[PizzaSpiralView alloc] initWithFrame:CGRectMake(0, 0, 1024, 768)];
-//    [self.view addSubview:pizzaSpiralView];
-//    [pizzaSpiralView release];
+    PizzaControl* pizzaSpiralView = [[PizzaControl alloc] initWithFrame:CGRectMake(0, 0, 768, 768)];
+    pizzaSpiralView.center = CGPointMake(768/2, 1024/2);
+    [self.view addSubview:pizzaSpiralView];
+    [pizzaSpiralView release];
     
-//    UIView* view = [[UIView alloc] initWithFrame:CGRectMake(200, 200, 200, 200)];
-//    view.backgroundColor = [UIColor whiteColor];
-//    [self.view addSubview:view];
-//    [view release];
     
 //    SineWaveView* sine = [[SineWaveView alloc] initWithFrame:CGRectMake(0, 0, 1024, 768)];
 //    [self.view addSubview:sine];

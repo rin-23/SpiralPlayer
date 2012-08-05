@@ -14,19 +14,16 @@
     self = [super init];
     if (self) {
  
-        [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(updateProgressBar) userInfo:nil repeats:YES];
+       [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(updateProgressBar) userInfo:nil repeats:YES];
                 
         audioPlayer_ = [[WaveAudioPlayer alloc] init];
         NSURL* audioUrl = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Jimmy Hendrix  – Voodoo Child" ofType:@"mp3"]];
         [audioPlayer_ loadNextAudioAsset:audioUrl];
         [audioPlayer_.player setNumberOfLoops:10];
-        
-//        UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 1024, 768)];
-//        imageView.image = [UIImage imageNamed:@"pinkfloyd.jpg"];
-//        [self.view addSubview:imageView];
-//        [imageView release];
-    
-        curveControl_ = [[CurveControl alloc] initWithFrame:CGRectMake(0, 0, 768, 1024)];
+
+   
+        curveControl_ = [[CurveControl alloc] initWithFrame:CGRectMake(0, 0, 768, 768)];
+        curveControl_.center = CGPointMake(768/2, 1024/2);
         curveControl_.tracklength = [audioPlayer_.player duration];
         // curveControl_.tracklength =300;
         NSLog(@"Track Duration: %f", curveControl_.tracklength);
