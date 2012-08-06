@@ -1,4 +1,6 @@
 #import "CurveControl.h"
+#import "Utilities.h"
+
 
 #define START_POINT_X 100
 #define START_POINT_Y 400
@@ -14,7 +16,7 @@
 
 @implementation CurveControl
 
-@synthesize dataPoints = dataPoints_, pathLength = pathLength_, thumb = thumb_, thumbCurrentPosition = thumbCurrentPosition_, gridHashTable = gridHashTable_, tracklength = tracklength_, value = value_;
+@synthesize dataPoints = dataPoints_, pathLength = pathLength_, thumb = thumb_, thumbCurrentPosition = thumbCurrentPosition_, gridHashTable = gridHashTable_, tracklength = tracklength_, value = value_, drawingPoints = drawingPoints_;
 
 - (id) initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -43,19 +45,38 @@
     NSString* path = [[NSBundle mainBundle] pathForResource:@"sineWaveDataPoints" ofType:@"txt"];
     NSString* content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL];
     NSArray* lines = [content componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-    numOfDataPoints_ = [lines count];//[(NSString*)[lines objectAtIndex:0] intValue];
+    numOfDataPoints_ = [lines count] - 1;//[(NSString*)[lines objectAtIndex:0] intValue];
     NSLog(@"Capacity: %i", numOfDataPoints_);
     
-    self.dataPoints = [[NSMutableArray alloc] initWithCapacity:numOfDataPoints_];    
-    for (int i = 0; i < numOfDataPoints_-1; i += 1) {
+    self.dataPoints = [[NSMutableArray alloc] initWithCapacity:numOfDataPoints_];  
+    self.drawingPoints = [[NSMutableArray alloc] initWithCapacity:numOfDataPoints_];
+    
+    //Starting Point
+    NSArray* coordinates = [(NSString*)[lines objectAtIndex:0] componentsSeparatedByString:@" "];
+    float x_f = [[coordinates objectAtIndex:0] floatValue];
+    float y_f = [[coordinates objectAtIndex:1] floatValue];
+    int old_x = (int)(x_f+0.5);
+    int old_y = (int)(y_f+0.5);
+ 
+    
+    for (int i = 1; i < numOfDataPoints_; i += 1) {
         NSArray* coordinates = [(NSString*)[lines objectAtIndex:i] componentsSeparatedByString:@" "];
         float x_f = [[coordinates objectAtIndex:0] floatValue];
         float y_f = [[coordinates objectAtIndex:1] floatValue];
         int x = (int)(x_f+0.5);
         int y = (int)(y_f+0.5);
-       // NSLog(@"Read a point X:%i, Y:%i", x, y);
+   
+        double distance = sqrt(pow(x-old_x, 2) + pow(y-old_y, 2));
+        if (distance > 2) {
+            NSMutableArray* extraPoints = [[Utilities sharedInstance] intepolateFromPoint:CGPointMake(old_x, old_y) toPoint:CGPointMake(x, y)];
+            [self.dataPoints addObjectsFromArray:extraPoints];
+        }
+        // NSLog(@"Read a point X:%i, Y:%i", x, y);
         CGPoint point = CGPointMake(x, y);
         [self.dataPoints addObject:[NSValue valueWithCGPoint:point]];
+        [self.drawingPoints addObject:[NSValue valueWithCGPoint:point]];
+        old_x = x;
+        old_y = y;
     }
     NSLog(@"Done reading data points from file");
      
@@ -73,6 +94,8 @@
     //return [marray autorelease];
     
 }
+
+
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
@@ -96,14 +119,14 @@
     //CGColorRef rightcolor = [[UIColor redColor] CGColor];
     //CGContextSetStrokeColorWithColor(context, leftcolor);
 
-    CGPoint currentPoint = [(NSValue*)[self.dataPoints objectAtIndex:0] CGPointValue];
+    CGPoint currentPoint = [(NSValue*)[self.drawingPoints objectAtIndex:0] CGPointValue];
     self.thumb.center = currentPoint;
     CGContextMoveToPoint(context, currentPoint.x, currentPoint.y);
     [self hashPointToGrid:currentPoint];
     //CGPoint pastPoint = startPoint;
-    for (int i = 0; i < [self.dataPoints count]; i++) {
+    for (int i = 0; i < [self.drawingPoints count]; i++) {
         //draw line
-        currentPoint = [(NSValue*)[self.dataPoints objectAtIndex:i] CGPointValue];
+        currentPoint = [(NSValue*)[self.drawingPoints objectAtIndex:i] CGPointValue];
         
         //if (i%2 == 0) CGContextSetStrokeColorWithColor(context, leftcolor);
         //else CGContextSetStrokeColorWithColor(context, leftcolor);
@@ -253,8 +276,8 @@
 
 - (void) setTracklength:(double)tracklength {
     [self getDataPoints];
-    secondsPerPoint_ = tracklength/numOfDataPoints_;
-    milisecondsPerPoint_ = (tracklength * 1000)/numOfDataPoints_;
+    secondsPerPoint_ = tracklength/[self.dataPoints count];
+    milisecondsPerPoint_ = (tracklength * 1000)/[self.dataPoints count];
 }
 
                                                               
@@ -280,7 +303,6 @@
 //    [self.dataPoints replaceObjectAtIndex:currentMovingPointIndex_ withObject:touchPointValue];
 //    [self setNeedsDisplay];
           
-
     return YES; 
     
 }
