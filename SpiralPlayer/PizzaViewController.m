@@ -45,15 +45,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-//    ExperimentView* expView = [[ExperimentView alloc] initWithFrame:CGRectMake(0, 0, 768, 768)];
-//    expView.center = CGPointMake(768/2, 1024/2);
-//    [self.view addSubview:expView];
-//    [expView release];
+    ExperimentView* expView = [[ExperimentView alloc] initWithFrame:CGRectMake(0, 0, 768, 768)];
+    expView.center = CGPointMake(768/2, 1024/2);
+    [self.view addSubview:expView];
+    [expView release];
     
-    PizzaControl* pizzaSpiralView = [[PizzaControl alloc] initWithFrame:CGRectMake(0, 0, 768, 768)];
-    pizzaSpiralView.center = CGPointMake(768/2, 1024/2);
-    [self.view addSubview:pizzaSpiralView];
-    [pizzaSpiralView release];
+//    PizzaControl* pizzaSpiralView = [[PizzaControl alloc] initWithFrame:CGRectMake(0, 0, 768, 768)];
+//    pizzaSpiralView.center = CGPointMake(768/2, 1024/2);
+//    [self.view addSubview:pizzaSpiralView];
+//    [pizzaSpiralView release];
     
     
 //    SineWaveView* sine = [[SineWaveView alloc] initWithFrame:CGRectMake(0, 0, 1024, 768)];

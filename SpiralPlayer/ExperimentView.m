@@ -8,7 +8,6 @@
 
 #import "ExperimentView.h"
 
-
 @interface ExperimentView (PrivateMethods)
 - (void) drawSpiral:(CGRect)rect;
 - (void) drawSineWave:(CGRect)rect;
@@ -71,7 +70,7 @@
         
         //if (i%2 == 0) { CGContextSetStrokeColorWithColor(context, leftcolor);
         //} else {
-        // CGContextSetStrokeColorWithColor(context, rightcolor);
+        //CGContextSetStrokeColorWithColor(context, rightcolor);
         //}
         
         CGContextAddLineToPoint(context, newX, newY);
@@ -82,11 +81,14 @@
     CGContextRestoreGState(context);
     /****************************END CREATE A MASK********************************/
     
-    CGImageRef cgimage = [UIImage imageNamed:@"morcheeba-skye"].CGImage;
+    //CGImageRef cgimage = [UIImage imageNamed:@"morcheeba-skye"].CGImage;
+    CGImageRef cgimage = [UIImage imageNamed:@"lana"].CGImage;
+
     CGContextTranslateCTM(context, 0, rect.size.height);
     CGContextScaleCTM(context, 1.0, -1.0);
     CGContextClipToMask(context, rect, maskImage); 
     CGContextDrawImage(context, rect, cgimage);
+
 }
 
 - (void) drawSineWave:(CGRect) rect {
@@ -94,14 +96,14 @@
     CGImageRef maskImage;
     
     /**************************BEGIN CREATE A PIZZA LAYER MASK******************/
-    double angle_deg = 20;
+    double angle_deg = 40;
     double angle_rad = angle_deg * (M_PI/180);
     int height = rect.size.height/2;
     int width = 2*(height * tan(angle_rad/2));   
     CGSize layerSize = CGSizeMake(width, height);
     
     CGContextSaveGState(context);
-    
+ 
 //    CGContextSetRGBFillColor (context, 0, 0, 0, 0);
 //    CGContextFillRect(context, rect);
     
@@ -150,20 +152,14 @@
     
     maskImage = CGBitmapContextCreateImage(context);
     CGImageRef cgimage = [UIImage imageNamed:@"morcheeba-skye"].CGImage;
+    //CGImageRef cgimage = [UIImage imageNamed:@"lana"].CGImage;
     CGContextTranslateCTM(context, 0, rect.size.height);
     CGContextScaleCTM(context, 1.0, -1.0);
     CGContextClipToMask(context, rect, maskImage); 
     CGContextDrawImage(context, rect, cgimage);
 }
 
-- (void) drawBySpiralByPieces:(CGRect)rect {
 
-
-}
-
-
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
 - (void) drawRect:(CGRect)rect {
     [self drawSineWave:rect];   
     //[self drawSpiral:rect];   

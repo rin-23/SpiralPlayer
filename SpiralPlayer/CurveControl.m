@@ -1,6 +1,6 @@
 #import "CurveControl.h"
 #import "Utilities.h"
-
+#import "DataPointsManager.h"
 
 #define START_POINT_X 100
 #define START_POINT_Y 400
@@ -18,7 +18,8 @@
 
 @synthesize dataPoints = dataPoints_, pathLength = pathLength_, thumb = thumb_, thumbCurrentPosition = thumbCurrentPosition_, gridHashTable = gridHashTable_, tracklength = tracklength_, value = value_, drawingPoints = drawingPoints_;
 
-- (id) initWithFrame:(CGRect)frame {
+
+- (id) initWithFrame:(CGRect)frame dataPointsFile:(NSString*)fileName ofType:(NSString*)type {
     self = [super initWithFrame:frame];
     if (self) {
                                                                      
@@ -36,6 +37,10 @@
         [thumb_ addTarget:self action:@selector(dragThumbEnded:withEvent:) forControlEvents:UIControlEventTouchUpInside|UIControlEventTouchUpOutside];
         [thumb_ setImage:[UIImage imageNamed:@"handle"] forState:UIControlStateNormal];
         [self addSubview:thumb_];
+        
+        NSMutableDictionary* pointsDictionary = [[DataPointsManager sharedInstance] getPointsForFile:fileName ofType:type];
+        self.dataPoints = [pointsDictionary objectForKey:@"dataPoints"];
+        self.drawingPoints =[pointsDictionary objectForKey:@"drawingPoints"];
     }
     
     return self;
@@ -79,20 +84,6 @@
         old_y = y;
     }
     NSLog(@"Done reading data points from file");
-     
-//    // every second of track is a pixel
-//    for (int x = START_POINT_X; x < START_POINT_X + tracklength_/2; x++) {
-//        CGPoint point = CGPointMake(x, START_POINT_Y);
-//        [marray addObject:[NSValue valueWithCGPoint:point]];
-//    }
-//    
-//    for (int y = START_POINT_Y; y < START_POINT_Y + tracklength_/2; y++) {
-//        CGPoint point = CGPointMake(START_POINT_X + tracklength_/2, y);
-//        [marray addObject:[NSValue valueWithCGPoint:point]];
-//    }
-//       
-    //return [marray autorelease];
-    
 }
 
 
@@ -101,8 +92,16 @@
 // An empty implementation adversely affects performance during animation.
 - (void) drawRect:(CGRect)rect {
     // Drawing code
+    
+    
     //self.dataPoints = [[self getDataPoints] retain];
     NSLog(@"Started Drawing");
+    double angle_deg = 20;
+    double angle_rad = angle_deg * (M_PI/180);
+    int height = rect.size.height/2;
+    int width = 2*(height * tan(angle_rad/2));   
+    CGSize layerSize = CGSizeMake(width, height);
+
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGImageRef maskImage;
     
@@ -116,30 +115,32 @@
     CGContextBeginPath(context);
     CGContextSetLineWidth(context, 2);
     CGColorRef leftcolor = [[UIColor whiteColor] CGColor];
-    //CGColorRef rightcolor = [[UIColor redColor] CGColor];
-    //CGContextSetStrokeColorWithColor(context, leftcolor);
+//  CGColorRef rightcolor = [[UIColor redColor] CGColor];
+//  CGContextSetStrokeColorWithColor(context, leftcolor);
 
     CGPoint currentPoint = [(NSValue*)[self.drawingPoints objectAtIndex:0] CGPointValue];
     self.thumb.center = currentPoint;
     CGContextMoveToPoint(context, currentPoint.x, currentPoint.y);
     [self hashPointToGrid:currentPoint];
-    //CGPoint pastPoint = startPoint;
+//  CGPoint pastPoint = startPoint;
     for (int i = 0; i < [self.drawingPoints count]; i++) {
         //draw line
         currentPoint = [(NSValue*)[self.drawingPoints objectAtIndex:i] CGPointValue];
         
-        //if (i%2 == 0) CGContextSetStrokeColorWithColor(context, leftcolor);
-        //else CGContextSetStrokeColorWithColor(context, leftcolor);
+//      if (i%2 == 0) CGContextSetStrokeColorWithColor(context, leftcolor);
+//      else CGContextSetStrokeColorWithColor(context, leftcolor);
         
         CGContextSetStrokeColorWithColor(context, leftcolor);
         CGContextAddLineToPoint(context, currentPoint.x, currentPoint.y); 
         [self hashPointToGrid:currentPoint];
-        //calculate total length of the line as we draw it
-//        float curLength = sqrtf(pow(currentPoint.x-pastPoint.x, 2) + pow(currentPoint.y - pastPoint.y, 2));
-//        self.pathLength += curLength; 
-//        pastPoint = currentPoint;
+//      calculate total length of the line as we draw it
+//      float curLength = sqrtf(pow(currentPoint.x-pastPoint.x, 2) + pow(currentPoint.y - pastPoint.y, 2));
+//      self.pathLength += curLength; 
+//      pastPoint = currentPoint;
     }
+    
     CGContextStrokePath(context);
+      
     maskImage = CGBitmapContextCreateImage(context);
     NSLog(@"Path Length: %f", self.pathLength);
     CGContextRestoreGState(context);
@@ -175,6 +176,7 @@
         [self.gridHashTable setValue:values_array forKey:key];       
     }
 }
+
 - (NSValue*) getClosestGridPointToPoint:(CGPoint)touchPoint {
     int bucket_x = floor(touchPoint.x / X_NUM_OF_CELLS);
     int bucket_y = floor(touchPoint.y / Y_NUM_OF_CELLS);
@@ -275,7 +277,7 @@
 }
 
 - (void) setTracklength:(double)tracklength {
-    [self getDataPoints];
+    //[self getDataPoints];
     secondsPerPoint_ = tracklength/[self.dataPoints count];
     milisecondsPerPoint_ = (tracklength * 1000)/[self.dataPoints count];
 }

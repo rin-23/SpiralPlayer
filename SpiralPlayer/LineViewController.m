@@ -13,7 +13,7 @@
 - (id) init { 
     self = [super init];
     if (self) {
- 
+
        [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(updateProgressBar) userInfo:nil repeats:YES];
                 
         audioPlayer_ = [[WaveAudioPlayer alloc] init];
@@ -22,8 +22,9 @@
         [audioPlayer_.player setNumberOfLoops:10];
 
    
-        curveControl_ = [[CurveControl alloc] initWithFrame:CGRectMake(0, 0, 768, 768)];
-        curveControl_.center = CGPointMake(768/2, 1024/2);
+        curveControl_ = [[CurveControl alloc] initWithFrame:CGRectMake(0,256/2, 768, 768) dataPointsFile:@"sineWaveDataPoints" ofType:@"txt"];
+        
+        //curveControl_.center = CGPointMake(768/2, 1024/2);
         curveControl_.tracklength = [audioPlayer_.player duration];
         // curveControl_.tracklength =300;
         NSLog(@"Track Duration: %f", curveControl_.tracklength);

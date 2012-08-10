@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "LineViewController.h"
 #import "PizzaViewController.h"
+#import "SpaceViewController.h"
 @class ViewController;
 @class LineViewController;
 

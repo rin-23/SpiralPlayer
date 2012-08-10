@@ -22,8 +22,7 @@
     [super dealloc];
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
     
@@ -36,6 +35,9 @@
     //Pizza View Controller
     //self.viewController = [[PizzaViewController alloc] init];
     
+    //Space View Controller
+    //self.viewController = [[SpaceViewController alloc] init];
+        
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     return YES;

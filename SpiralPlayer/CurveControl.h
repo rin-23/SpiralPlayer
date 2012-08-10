@@ -24,7 +24,7 @@
     CGPoint currentMovingPoint_;
     int currentMovingPointIndex_;
     
-    int lastPointIndex_;
+    int lastPointIndex_;   
     
 } 
 
@@ -36,5 +36,7 @@
 @property (nonatomic, retain) NSDictionary* gridHashTable; 
 @property (nonatomic, assign) double tracklength;
 @property (nonatomic, assign) double value;
+
+- (id) initWithFrame:(CGRect)frame dataPointsFile:(NSString*)fileName ofType:(NSString*)type;
 
 @end
