@@ -1,33 +1,33 @@
-#import "CurveControl.h"
-#import "Utilities.h"
+#import "PolyLineControl.h"
 #import "DataPointsManager.h"
-
+#import <QuartzCore/QuartzCore.h>
 #define START_POINT_X 100
 #define START_POINT_Y 400
 
 #define X_NUM_OF_CELLS 32
 #define Y_NUM_OF_CELLS 32
 
-@interface CurveControl(PrivateMethods)
+@interface PolyLineControl(PrivateMethods)
 - (NSMutableArray*) getDataPoints;
-- (NSValue*) getClosestGridPointToPoint:(CGPoint) touchpoint;
-- (void) hashPointToGrid:(CGPoint)point;
 @end
 
-@implementation CurveControl
+@implementation PolyLineControl
 
 @synthesize dataPoints = dataPoints_, pathLength = pathLength_, thumb = thumb_, thumbCurrentPosition = thumbCurrentPosition_, gridHashTable = gridHashTable_, tracklength = tracklength_, value = value_, drawingPoints = drawingPoints_;
 
 
+-(id) initSineWaveWithFrame:(CGRect)frame  {
+    return [self initWithFrame:frame dataPointsFile:@"sineWaveDataPoints" ofType:@"txt"];
+}
+
 - (id) initWithFrame:(CGRect)frame dataPointsFile:(NSString*)fileName ofType:(NSString*)type {
     self = [super initWithFrame:frame];
     if (self) {
-                                                                     
-        // Initialization code
         self.pathLength = 0; 
+        self.backgroundColor = [UIColor clearColor];
         
         // Initialize hast table for all of the points
-        self.gridHashTable = [[NSMutableDictionary alloc] init];
+        self.gridHashTable = [[GridHashTable alloc] init];
         
         // Thumb control
         thumb_ = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -35,191 +35,119 @@
         [thumb_ addTarget:self action:@selector(dragThumbBegan:withEvent:) forControlEvents:UIControlEventTouchDown];
         [thumb_ addTarget:self action:@selector(dragThumbContinue:withEvent:) forControlEvents:UIControlEventTouchDragInside|UIControlEventTouchDragOutside];
         [thumb_ addTarget:self action:@selector(dragThumbEnded:withEvent:) forControlEvents:UIControlEventTouchUpInside|UIControlEventTouchUpOutside];
+        thumb_.opaque = YES;
         [thumb_ setImage:[UIImage imageNamed:@"handle"] forState:UIControlStateNormal];
         [self addSubview:thumb_];
         
+        UIButton* moveButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        //moveButton.backgroundColor = [UIColor greenColor];
+        moveButton.frame = CGRectMake(0, 0, 55, 55);
+        [moveButton addTarget:self action:@selector(dragMoveBegan:withEvent:) forControlEvents:UIControlEventTouchDown];
+        [moveButton addTarget:self action:@selector(dragMoveContinue:withEvent:) forControlEvents:UIControlEventTouchDragInside|UIControlEventTouchDragOutside];
+        [moveButton addTarget:self action:@selector(dragMoveEnded:withEvent:) forControlEvents:UIControlEventTouchUpInside|UIControlEventTouchUpOutside];
+        [moveButton setImage:[UIImage imageNamed:@"move.gif"] forState:UIControlStateNormal];
+        moveButton.opaque = YES;
+        [self addSubview:moveButton];
+         
+        
+        
+        //Get Data Points
         NSMutableDictionary* pointsDictionary = [[DataPointsManager sharedInstance] getPointsForFile:fileName ofType:type];
         self.dataPoints = [pointsDictionary objectForKey:@"dataPoints"];
         self.drawingPoints =[pointsDictionary objectForKey:@"drawingPoints"];
     }
-    
     return self;
 }
 
-- (void) getDataPoints {
-    NSString* path = [[NSBundle mainBundle] pathForResource:@"sineWaveDataPoints" ofType:@"txt"];
-    NSString* content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL];
-    NSArray* lines = [content componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-    numOfDataPoints_ = [lines count] - 1;//[(NSString*)[lines objectAtIndex:0] intValue];
-    NSLog(@"Capacity: %i", numOfDataPoints_);
-    
-    self.dataPoints = [[NSMutableArray alloc] initWithCapacity:numOfDataPoints_];  
-    self.drawingPoints = [[NSMutableArray alloc] initWithCapacity:numOfDataPoints_];
-    
-    //Starting Point
-    NSArray* coordinates = [(NSString*)[lines objectAtIndex:0] componentsSeparatedByString:@" "];
-    float x_f = [[coordinates objectAtIndex:0] floatValue];
-    float y_f = [[coordinates objectAtIndex:1] floatValue];
-    int old_x = (int)(x_f+0.5);
-    int old_y = (int)(y_f+0.5);
- 
-    
-    for (int i = 1; i < numOfDataPoints_; i += 1) {
-        NSArray* coordinates = [(NSString*)[lines objectAtIndex:i] componentsSeparatedByString:@" "];
-        float x_f = [[coordinates objectAtIndex:0] floatValue];
-        float y_f = [[coordinates objectAtIndex:1] floatValue];
-        int x = (int)(x_f+0.5);
-        int y = (int)(y_f+0.5);
-   
-        double distance = sqrt(pow(x-old_x, 2) + pow(y-old_y, 2));
-        if (distance > 2) {
-            NSMutableArray* extraPoints = [[Utilities sharedInstance] intepolateFromPoint:CGPointMake(old_x, old_y) toPoint:CGPointMake(x, y)];
-            [self.dataPoints addObjectsFromArray:extraPoints];
-        }
-        // NSLog(@"Read a point X:%i, Y:%i", x, y);
-        CGPoint point = CGPointMake(x, y);
-        [self.dataPoints addObject:[NSValue valueWithCGPoint:point]];
-        [self.drawingPoints addObject:[NSValue valueWithCGPoint:point]];
-        old_x = x;
-        old_y = y;
-    }
-    NSLog(@"Done reading data points from file");
-}
 
-
-
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
 - (void) drawRect:(CGRect)rect {
-    // Drawing code
-    
-    
-    //self.dataPoints = [[self getDataPoints] retain];
     NSLog(@"Started Drawing");
-    double angle_deg = 20;
+
+    [self.gridHashTable clear];
+    
+    double angle_deg = 30;
     double angle_rad = angle_deg * (M_PI/180);
-    int height = rect.size.height/2;
+    int height = rect.size.height;
     int width = 2*(height * tan(angle_rad/2));   
-    CGSize layerSize = CGSizeMake(width, height);
+    //CGSize layerSize = CGSizeMake(width, height);
 
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGImageRef maskImage;
+    //CGImageRef maskImage;
     
     CGContextSaveGState(context);
     
     CGContextSetRGBFillColor (context, 0, 0, 0, 0);
     CGContextFillRect(context, rect);
-    
+ 
     CGContextSetRGBStrokeColor(context, 1, 1, 1, 1);
 
     CGContextBeginPath(context);
     CGContextSetLineWidth(context, 2);
-    CGColorRef leftcolor = [[UIColor whiteColor] CGColor];
-//  CGColorRef rightcolor = [[UIColor redColor] CGColor];
-//  CGContextSetStrokeColorWithColor(context, leftcolor);
-
     CGPoint currentPoint = [(NSValue*)[self.drawingPoints objectAtIndex:0] CGPointValue];
     self.thumb.center = currentPoint;
     CGContextMoveToPoint(context, currentPoint.x, currentPoint.y);
-    [self hashPointToGrid:currentPoint];
-//  CGPoint pastPoint = startPoint;
+    [self.gridHashTable hashPointToGrid:currentPoint];
+    //  CGPoint pastPoint = startPoint;
     for (int i = 0; i < [self.drawingPoints count]; i++) {
         //draw line
         currentPoint = [(NSValue*)[self.drawingPoints objectAtIndex:i] CGPointValue];
-        
-//      if (i%2 == 0) CGContextSetStrokeColorWithColor(context, leftcolor);
-//      else CGContextSetStrokeColorWithColor(context, leftcolor);
-        
-        CGContextSetStrokeColorWithColor(context, leftcolor);
         CGContextAddLineToPoint(context, currentPoint.x, currentPoint.y); 
-        [self hashPointToGrid:currentPoint];
+        [self.gridHashTable hashPointToGrid:currentPoint];
+        
 //      calculate total length of the line as we draw it
 //      float curLength = sqrtf(pow(currentPoint.x-pastPoint.x, 2) + pow(currentPoint.y - pastPoint.y, 2));
 //      self.pathLength += curLength; 
 //      pastPoint = currentPoint;
     }
-    
     CGContextStrokePath(context);
       
-    maskImage = CGBitmapContextCreateImage(context);
-    NSLog(@"Path Length: %f", self.pathLength);
+    //maskImage = CGBitmapContextCreateImage(context);
+    //NSLog(@"Path Length: %f", self.pathLength);
     CGContextRestoreGState(context);
-    CGImageRef cgimage = [UIImage imageNamed:@"lana"].CGImage;
-    
-    CGContextTranslateCTM(context, 0, rect.size.height);
-    CGContextScaleCTM(context, 1.0, -1.0);
-    
-    CGContextClipToMask(context, rect, maskImage); 
-    //Draw Album Cover
-    
-    CGContextDrawImage(context, rect, cgimage);
-    NSLog(@"Finished Drawing");
-   
-}
-
-#pragma mark - HASH TABLE METHODS
-
-- (void) hashPointToGrid:(CGPoint)point {
-    int bucket_x = floor(point.x / X_NUM_OF_CELLS);
-    int bucket_y = floor(point.y / Y_NUM_OF_CELLS);
-
-    NSString* key = [NSString stringWithFormat:@"%i-%i", bucket_x, bucket_y];
-    NSValue* value = [NSValue valueWithCGPoint:point];
-    
-    NSMutableArray* values_array = [self.gridHashTable objectForKey:key];
-    if (values_array == nil) { //key doesnt exists so create
-        values_array = [[NSMutableArray alloc] initWithObjects:value, nil];
-        [self.gridHashTable setValue:values_array forKey:key];
-        [values_array release];
-    } else { 
-        [values_array addObject:value];
-        [self.gridHashTable setValue:values_array forKey:key];       
-    }
-}
-
-- (NSValue*) getClosestGridPointToPoint:(CGPoint)touchPoint {
-    int bucket_x = floor(touchPoint.x / X_NUM_OF_CELLS);
-    int bucket_y = floor(touchPoint.y / Y_NUM_OF_CELLS);
-    NSString* key = [NSString stringWithFormat:@"%i-%i", bucket_x, bucket_y];
-    NSMutableArray* values_array = [self.gridHashTable objectForKey:key];
-
-    if (values_array == nil) { 
-        return nil; // no point found
-    } else { 
-        float min_distance;
-        float cur_distance;
-        CGPoint currentPoint;
-        CGPoint minPoint;
-        //find the closest point to the touchPoint
-        for (int i = 0 ; i < [values_array count]; i++) {
-            currentPoint = [(NSValue*)[values_array objectAtIndex:i] CGPointValue];
-            cur_distance = sqrtf(pow(currentPoint.x-touchPoint.x, 2) + pow(currentPoint.y - touchPoint.y, 2));
-            if (i == 0) { 
-                min_distance = cur_distance; 
-                minPoint = currentPoint;
-            } else {
-                if (min_distance > cur_distance) {
-                    min_distance = cur_distance;
-                    minPoint = currentPoint; 
-                }
-            }
-        }
-        return [NSValue valueWithCGPoint:minPoint];        
-    }
+//    CGImageRef cgimage = [UIImage imageNamed:@"lana"].CGImage;
+//    CGContextTranslateCTM(context, 0, rect.size.height);
+//    CGContextScaleCTM(context, 1.0, -1.0);
+//    CGContextClipToMask(context, rect, maskImage); 
+//    CGContextDrawImage(context, rect, cgimage);
+    NSLog(@"Finished Drawing");   
 }
 
 
+#pragma mark - MOVE BUTTON TOUCH EVEN HANDLERS
+- (void) dragMoveBegan:(UIControl*)control withEvent:(UIEvent*)event {
+    CGPoint touchPoint =[[[event allTouches] anyObject] locationInView:self.superview];
+    CGRect frame = self.frame;
+    frame.origin = touchPoint;
+    self.frame = frame;
+    
+}
+
+- (void) dragMoveContinue:(UIControl*)control withEvent:(UIEvent*)event{
+    CGPoint touchPoint =[[[event allTouches] anyObject] locationInView:self.superview];
+    CGRect frame = self.frame;
+    frame.origin = touchPoint;
+    self.frame = frame;
+    
+}
+
+- (void) dragMoveEnded:(UIControl*)control withEvent:(UIEvent*)event{
+    CGPoint touchPoint =[[[event allTouches] anyObject] locationInView:self.superview];
+    CGRect frame = self.frame;
+    frame.origin = touchPoint;
+    self.frame = frame;
+    
+}
 #pragma mark - THUMB NEEDLE TOUCH EVENT HANDLERS
 
 /* Handle event of first touch of the thumb needle */
 - (void) dragThumbBegan:(UIControl*)control withEvent:(UIEvent*)event {
     NSLog(@"DRAG STARTED");    
     CGPoint touchPoint =[[[event allTouches] anyObject] locationInView:self];
-    NSValue* closestTrackValue = [self getClosestGridPointToPoint:touchPoint];
+    NSValue* closestTrackValue = [self.gridHashTable getClosestGridPointToPoint:touchPoint];
     if (closestTrackValue == nil) {
         NSLog(@"Touched outside of the track area");
     } else {
-        CGPoint closestTrackPoint = [[self getClosestGridPointToPoint:touchPoint] CGPointValue];
+        CGPoint closestTrackPoint = [[self.gridHashTable getClosestGridPointToPoint:touchPoint] CGPointValue];
         self.thumbCurrentPosition = closestTrackPoint;        
         NSLog(@"Closes track point is X:%0.1f Y:%0.1f", closestTrackPoint.x, closestTrackPoint.y);
         [self sendActionsForControlEvents:UIControlEventValueChanged];
@@ -230,11 +158,11 @@
 - (void) dragThumbContinue:(UIControl*)control withEvent:(UIEvent*)event {
     NSLog(@"DRAG CONTINUED");
     CGPoint touchPoint =[[[event allTouches] anyObject] locationInView:self];
-    NSValue* closestTrackValue = [self getClosestGridPointToPoint:touchPoint];
+    NSValue* closestTrackValue = [self.gridHashTable getClosestGridPointToPoint:touchPoint];
     if (closestTrackValue == nil) {
         NSLog(@"Touched outside of the track area");
     } else {
-        CGPoint closestTrackPoint = [[self getClosestGridPointToPoint:touchPoint] CGPointValue];
+        CGPoint closestTrackPoint = [[self.gridHashTable getClosestGridPointToPoint:touchPoint] CGPointValue];
         self.thumbCurrentPosition = closestTrackPoint;
         [self sendActionsForControlEvents:UIControlEventValueChanged];
         NSLog(@"Closes track point is X:%0.1f Y:%0.1f", closestTrackPoint.x, closestTrackPoint.y);
@@ -245,11 +173,11 @@
 - (void) dragThumbEnded:(UIControl*)control withEvent:(UIEvent*)event {
     NSLog(@"DRAG ENDED");
     CGPoint touchPoint =[[[event allTouches] anyObject] locationInView:self];
-    NSValue* closestTrackValue = [self getClosestGridPointToPoint:touchPoint];
+    NSValue* closestTrackValue = [self.gridHashTable getClosestGridPointToPoint:touchPoint];
     if (closestTrackValue == nil) {
         NSLog(@"Touched outside of the track area");
     } else {
-        CGPoint closestTrackPoint = [[self getClosestGridPointToPoint:touchPoint] CGPointValue];
+        CGPoint closestTrackPoint = [[self.gridHashTable getClosestGridPointToPoint:touchPoint] CGPointValue];
         self.thumbCurrentPosition = closestTrackPoint;
         [self sendActionsForControlEvents:UIControlEventValueChanged];
         NSLog(@"Closes track point is X:%0.1f Y:%0.1f", closestTrackPoint.x, closestTrackPoint.y);
@@ -257,6 +185,17 @@
 }
 
 #pragma mark - PUBLIC GETTERS AND SETTERS
+
+- (void)correctLayerPosition {
+	CGPoint position = self.layer.position;
+	CGPoint anchorPoint = self.layer.anchorPoint;
+	CGRect bounds = self.bounds;
+	// 0.5, 0.5 is the default anchorPoint; calculate the difference
+	// and multiply by the bounds of the view
+	position.x = (0.5 * bounds.size.width) + (anchorPoint.x - 0.5) * bounds.size.width;
+	position.y = (0.5 * bounds.size.height) + (anchorPoint.y - 0.5) * bounds.size.height;
+	self.layer.position = position;
+}
 
 - (double) value {
     int point = [dataPoints_ indexOfObject:[NSValue valueWithCGPoint:self.thumbCurrentPosition]];
@@ -317,11 +256,11 @@
     
     NSLog(@"end touch track");
     CGPoint touchPoint = [touch locationInView:self];
-    NSValue* closestTrackValue = [self getClosestGridPointToPoint:touchPoint];
+    NSValue* closestTrackValue = [self.gridHashTable getClosestGridPointToPoint:touchPoint];
     if (closestTrackValue == nil) {
         NSLog(@"Touched outside of the track area");
     } else {
-        CGPoint closestTrackPoint = [[self getClosestGridPointToPoint:touchPoint] CGPointValue];
+        CGPoint closestTrackPoint = [[self.gridHashTable getClosestGridPointToPoint:touchPoint] CGPointValue];
         self.thumbCurrentPosition = closestTrackPoint;
         [self sendActionsForControlEvents:UIControlEventValueChanged];
         NSLog(@"Closes track point is X:%0.1f Y:%0.1f", closestTrackPoint.x, closestTrackPoint.y);

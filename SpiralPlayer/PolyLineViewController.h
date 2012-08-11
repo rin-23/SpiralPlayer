@@ -7,13 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CurveControl.h"
+#import "PolyLineControl.h"
 #import "WaveAudioPlayer.h"
-@interface LineViewController : UIViewController {
+@interface PolyLineViewController : UIViewController {
     WaveAudioPlayer* audioPlayer_;
-    CurveControl* curveControl_;
-    UIView* view;
-    
+    PolyLineControl* curveControl_;
+    UIView* view;    
 }
 
 

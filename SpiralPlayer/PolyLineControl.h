@@ -7,14 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface CurveControl : UIControl {
+#import "GridHashTable.h"
+@interface PolyLineControl : UIControl {
     UIButton* thumb_; //seek thumb button
     CGPoint thumbCurrentPosition_; //current x, y coordinates of the thumb
     NSMutableArray* dataPoints_; //contains all of the data points that will be drawn
     NSMutableArray* drawingPoints_;
     float pathLength_; //length of the path created by data points
-    NSDictionary* gridHashTable_; //hash table of all of the data points
+    GridHashTable* gridHashTable_; //hash table of all of the data points
     double tracklength_;
     double value_;
     int numOfDataPoints_;
@@ -33,10 +33,13 @@
 @property (nonatomic, assign) float pathLength;
 @property (nonatomic, retain) UIButton* thumb;
 @property (nonatomic, assign) CGPoint thumbCurrentPosition;
-@property (nonatomic, retain) NSDictionary* gridHashTable; 
+@property (nonatomic, retain) GridHashTable* gridHashTable; 
 @property (nonatomic, assign) double tracklength;
 @property (nonatomic, assign) double value;
 
 - (id) initWithFrame:(CGRect)frame dataPointsFile:(NSString*)fileName ofType:(NSString*)type;
+- (id) initSineWaveWithFrame:(CGRect)frame; 
+- (void)correctLayerPosition;
+
 
 @end

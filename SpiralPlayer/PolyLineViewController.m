@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "LineViewController.h"
+#import "PolyLineViewController.h"
 #import <QuartzCore/QuartzCore.h>
-@implementation LineViewController
+@implementation PolyLineViewController
 
 - (id) init { 
     self = [super init];
@@ -21,18 +21,29 @@
         [audioPlayer_ loadNextAudioAsset:audioUrl];
         [audioPlayer_.player setNumberOfLoops:10];
 
-   
-        curveControl_ = [[CurveControl alloc] initWithFrame:CGRectMake(0,256/2, 768, 768) dataPointsFile:@"sineWaveDataPoints" ofType:@"txt"];
+        CGSize polyLineSize = CGSizeMake(200, 768/2);
         
-        //curveControl_.center = CGPointMake(768/2, 1024/2);
+        curveControl_ = [[PolyLineControl alloc] initWithFrame:CGRectMake(0, 0, polyLineSize.width, polyLineSize.height) dataPointsFile:@"sineWaveDataPoints" ofType:@"txt"];     
         curveControl_.tracklength = [audioPlayer_.player duration];
-        // curveControl_.tracklength =300;
         NSLog(@"Track Duration: %f", curveControl_.tracklength);
         [curveControl_ addTarget:self action:@selector(curveValueChanged) forControlEvents:UIControlEventValueChanged];
         [self.view addSubview:curveControl_];
         [curveControl_ release];
-       
-        [audioPlayer_.player play];
+        
+        PolyLineControl* polyLineControl = [[PolyLineControl alloc] initWithFrame:CGRectMake(0, 0, polyLineSize.width, polyLineSize.height) dataPointsFile:@"sineWaveDataPoints" ofType:@"txt"];
+        [self.view addSubview:polyLineControl];
+        [polyLineControl release];
+        
+        CATransform3D moveToCenter = CATransform3DMakeTranslation(768/2 - polyLineSize.width/2, 1024/2, 0);
+        CATransform3D rotate = CATransform3DRotate(moveToCenter, 30*(M_PI/180), 0, 0, 1);
+                
+        curveControl_.layer.transform = moveToCenter;
+        
+        polyLineControl.layer.anchorPoint = CGPointMake(0.5, 0.0);
+        polyLineControl.layer.transform = rotate;
+        [polyLineControl correctLayerPosition];
+        
+       //[audioPlayer_.player play];
     }
     return self;
 }
@@ -56,13 +67,6 @@
 #pragma mark - View lifecycle
 
 /*
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView
-{
-}
-*/
-
-/*
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
@@ -70,15 +74,13 @@
 }
 */
 
-- (void)viewDidUnload
-{
+- (void)viewDidUnload {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
     return UIInterfaceOrientationIsPortrait(interfaceOrientation);
 }

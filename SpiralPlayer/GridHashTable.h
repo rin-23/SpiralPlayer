@@ -8,6 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@interface GridHashTable : NSObject
+@interface GridHashTable : NSObject {
+    NSMutableDictionary* gridHashTable_; //hash table of all of the data points
+    
+}
 
+@property (nonatomic, retain) NSMutableDictionary* gridHashTable; 
+
+- (void) hashPointToGrid:(CGPoint)point;
+- (NSValue*) getClosestGridPointToPoint:(CGPoint)touchPoint;
+- (void) clear;
 @end
