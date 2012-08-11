@@ -7,6 +7,7 @@
 //
 
 #import "SpaceViewController.h"
+#import "PolyLineControl.h"
 
 @implementation SpaceViewController
 
@@ -19,11 +20,9 @@
     return self;
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
     // Release any cached data, images, etc that aren't in use.
 }
 
@@ -42,7 +41,7 @@
     scrollView_.delegate = self;
     scrollView_.bounces = NO;
     scrollView_.minimumZoomScale=1;
-    scrollView_.maximumZoomScale=10;
+    scrollView_.maximumZoomScale=8;
     [self.view addSubview:scrollView_];
     [scrollView_ release];
     
@@ -51,16 +50,21 @@
     mainView_.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
     [scrollView_ addSubview:mainView_];
     [mainView_ release];
-    
-    
-    
-    for (int i = 0; i<4;i++) {
-        ZoomableView* zoomableView_ = [[ZoomableView alloc] initWithFrame:CGRectMake(190*i + 1*i + 1, 0, 190, 190)];
+       
+//    for (int i = 0; i<4;i++) {
+//        ZoomableView* zoomableView_ = [[ZoomableView alloc] initWithFrame:CGRectMake(190*i + 1*i + 1, 0, 190, 190)];
+//        [array_ addObject:zoomableView_];
+//        [mainView_ addSubview:zoomableView_];
+//        [zoomableView_ release];
+//    }
+           
+    for (int i = 0; i < 3; i++) {
+        PolyLineControl* zoomableView_ = [[PolyLineControl alloc] initSineWaveWithFrame:CGRectMake(250*i + 1*i + 1, 0, 250, 768/2)];
+        zoomableView_.transform = CGAffineTransformMakeScale(0.3, 0.3);
         [array_ addObject:zoomableView_];
         [mainView_ addSubview:zoomableView_];
         [zoomableView_ release];
     }
-    
     
     
 }
@@ -69,7 +73,8 @@
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale {
     scale *= [[[scrollView window] screen] scale];
     [mainView_ setContentScaleFactor:scale];
-    for (ZoomableView* zoom in array_) {
+    //for (ZoomableView* zoom in array_) {
+    for (PolyLineControl* zoom in array_) {
         [zoom setContentScaleFactor:scale];
     }
     
@@ -88,7 +93,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
-	return YES;
+	 return UIInterfaceOrientationIsPortrait(interfaceOrientation);
 }
 
 

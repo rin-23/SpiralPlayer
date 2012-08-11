@@ -29,14 +29,14 @@
     //SpiralViewController
     //self.viewController = [[[ViewController alloc] initWithNibName:@"ViewController" bundle:nil] autorelease];
 
-    //LineViewController
-    self.viewController = [[LineViewController alloc] init];
+    //PolyLineViewController
+    //self.viewController = [[PolyLineViewController alloc] init];
     
     //Pizza View Controller
     //self.viewController = [[PizzaViewController alloc] init];
     
     //Space View Controller
-    //self.viewController = [[SpaceViewController alloc] init];
+    self.viewController = [[SpaceViewController alloc] init];
         
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];

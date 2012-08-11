@@ -19,5 +19,6 @@
 
 + (DataPointsManager*) sharedInstance;
 - (NSMutableDictionary*) getPointsForFile:(NSString*)fileName ofType:(NSString*)type;
-
+- (NSMutableArray*) intepolateFromValue:(NSValue *)p0 toValue:(NSValue *)p1;
+- (NSMutableArray*) intepolateFromPoint:(CGPoint) p0 toPoint:(CGPoint) p1;
 @end

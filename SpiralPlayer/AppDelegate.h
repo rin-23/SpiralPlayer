@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LineViewController.h"
+#import "PolyLineViewController.h"
 #import "PizzaViewController.h"
 #import "SpaceViewController.h"
 @class ViewController;
-@class LineViewController;
+@class PolyLineViewController;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

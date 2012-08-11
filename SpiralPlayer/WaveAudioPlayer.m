@@ -26,6 +26,11 @@
     return self;
 }
 
+
+/*
+ * Play next AVAsset Audio item
+ */ 
+
 - (void) loadNextAudioAsset:(NSURL*) url {
     NSError *error;
     [[AVAudioSession sharedInstance] setDelegate: self];

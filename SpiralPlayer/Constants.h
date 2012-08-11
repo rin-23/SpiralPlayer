@@ -23,4 +23,11 @@
 
 #define EXPORT_NAME @"exported.caf"
 
+//GridHashTable
+#define kSTART_POINT_X 100
+#define kSTART_POINT_Y 400
+
+#define kX_NUM_OF_CELLS 32
+#define kY_NUM_OF_CELLS 32
+
 #endif
