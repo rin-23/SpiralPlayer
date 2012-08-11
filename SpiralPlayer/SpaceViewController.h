@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ZoomableView.h"
+#import "PolyLineAudioUnitView.h"
 #import <QuartzCore/QuartzCore.h>
 @interface SpaceViewController : UIViewController <UIScrollViewDelegate> {
     UIScrollView* scrollView_;

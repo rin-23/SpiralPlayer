@@ -28,7 +28,7 @@
         
         // Initialize hast table for all of the points
         self.gridHashTable = [[GridHashTable alloc] init];
-        
+         
         // Thumb control
         thumb_ = [UIButton buttonWithType:UIButtonTypeCustom];
         thumb_.frame=CGRectMake(0, 0, 50, 52);
@@ -79,7 +79,7 @@
     CGContextSetRGBFillColor (context, 0, 0, 0, 0);
     CGContextFillRect(context, rect);
  
-    CGContextSetRGBStrokeColor(context, 1, 1, 1, 1);
+    CGContextSetRGBStrokeColor(context, 1, 1, 1, 1);    
 
     CGContextBeginPath(context);
     CGContextSetLineWidth(context, 2);

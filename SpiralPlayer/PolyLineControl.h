@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "GridHashTable.h"
 @interface PolyLineControl : UIControl {
+    
     UIButton* thumb_; //seek thumb button
     CGPoint thumbCurrentPosition_; //current x, y coordinates of the thumb
     NSMutableArray* dataPoints_; //contains all of the data points that will be drawn
