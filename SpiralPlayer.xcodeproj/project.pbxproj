@@ -47,8 +47,8 @@
 		1596CEDB15C0D6D1001097AE /* pinkfloyd.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1596CEDA15C0D6D1001097AE /* pinkfloyd.jpg */; };
 		1596CEDD15C0DC92001097AE /* lab2.ma in Resources */ = {isa = PBXBuildFile; fileRef = 1596CEDC15C0DC92001097AE /* lab2.ma */; };
 		1596CEDF15C1ABAA001097AE /* lab1.ma in Resources */ = {isa = PBXBuildFile; fileRef = 1596CEDE15C1ABAA001097AE /* lab1.ma */; };
-		1596CEE115C1B048001097AE /* Jimmy Hendrix  – Voodoo Child.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1596CEE015C1B048001097AE /* Jimmy Hendrix  – Voodoo Child.mp3 */; };
-		15C0829C15BA06E40031679E /* song.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 15C0829B15BA06E40031679E /* song.mp3 */; };
+		1596CEE115C1B048001097AE /* hendrix.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1596CEE015C1B048001097AE /* hendrix.mp3 */; };
+		15C0829C15BA06E40031679E /* Zaz.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 15C0829B15BA06E40031679E /* Zaz.mp3 */; };
 		15CF25C515AD5411007CA929 /* WaveAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 15CF25C415AD5411007CA929 /* WaveAudioPlayer.m */; };
 		15D2CEA215B0BFEF006966AF /* appIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 15D2CEA115B0BFEF006966AF /* appIcon.png */; };
 		15D2CEAA15B0CB5A006966AF /* eject.gif in Resources */ = {isa = PBXBuildFile; fileRef = 15D2CEA915B0CB5A006966AF /* eject.gif */; };
@@ -59,6 +59,9 @@
 		15D77B6815D4AAD9003162A3 /* GridHashTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 15D77B6715D4AAD9003162A3 /* GridHashTable.m */; };
 		15D77B7515D5C8D3003162A3 /* move.gif in Resources */ = {isa = PBXBuildFile; fileRef = 15D77B7415D5C8D3003162A3 /* move.gif */; };
 		15D77B7815D5F65B003162A3 /* PolyLineAudioUnitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 15D77B7715D5F65B003162A3 /* PolyLineAudioUnitView.m */; };
+		15D77B8315D94717003162A3 /* playbutton.gif in Resources */ = {isa = PBXBuildFile; fileRef = 15D77B8215D94717003162A3 /* playbutton.gif */; };
+		15D77B8615D949D9003162A3 /* moveButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 15D77B8515D949D9003162A3 /* moveButton.png */; };
+		15D77B9015D95573003162A3 /* life.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 15D77B8F15D95573003162A3 /* life.mp3 */; };
 		15E163F6158B1AD900CC8FAC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15E163F3158B1AD900CC8FAC /* AudioToolbox.framework */; };
 		15E163F8158B1AD900CC8FAC /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15E163F5158B1AD900CC8FAC /* CoreAudio.framework */; };
 /* End PBXBuildFile section */
@@ -117,8 +120,8 @@
 		1596CEDA15C0D6D1001097AE /* pinkfloyd.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pinkfloyd.jpg; sourceTree = "<group>"; };
 		1596CEDC15C0DC92001097AE /* lab2.ma */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = lab2.ma; sourceTree = "<group>"; };
 		1596CEDE15C1ABAA001097AE /* lab1.ma */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = lab1.ma; sourceTree = "<group>"; };
-		1596CEE015C1B048001097AE /* Jimmy Hendrix  – Voodoo Child.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Jimmy Hendrix  – Voodoo Child.mp3"; sourceTree = "<group>"; };
-		15C0829B15BA06E40031679E /* song.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = song.mp3; sourceTree = "<group>"; };
+		1596CEE015C1B048001097AE /* hendrix.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hendrix.mp3; sourceTree = "<group>"; };
+		15C0829B15BA06E40031679E /* Zaz.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Zaz.mp3; sourceTree = "<group>"; };
 		15CF25C315AD5410007CA929 /* WaveAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaveAudioPlayer.h; sourceTree = "<group>"; };
 		15CF25C415AD5411007CA929 /* WaveAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaveAudioPlayer.m; sourceTree = "<group>"; };
 		15D2CEA115B0BFEF006966AF /* appIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = appIcon.png; path = ../appIcon.png; sourceTree = "<group>"; };
@@ -136,6 +139,9 @@
 		15D77B7415D5C8D3003162A3 /* move.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = move.gif; sourceTree = "<group>"; };
 		15D77B7615D5F65B003162A3 /* PolyLineAudioUnitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyLineAudioUnitView.h; sourceTree = "<group>"; };
 		15D77B7715D5F65B003162A3 /* PolyLineAudioUnitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PolyLineAudioUnitView.m; sourceTree = "<group>"; };
+		15D77B8215D94717003162A3 /* playbutton.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = playbutton.gif; sourceTree = "<group>"; };
+		15D77B8515D949D9003162A3 /* moveButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = moveButton.png; sourceTree = "<group>"; };
+		15D77B8F15D95573003162A3 /* life.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = life.mp3; sourceTree = "<group>"; };
 		15E163F3158B1AD900CC8FAC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		15E163F5158B1AD900CC8FAC /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -243,6 +249,8 @@
 		157D3F8015A7D4CE009064CF /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				15D77B8515D949D9003162A3 /* moveButton.png */,
+				15D77B8215D94717003162A3 /* playbutton.gif */,
 				15D77B7415D5C8D3003162A3 /* move.gif */,
 				15D77B5915D44B0D003162A3 /* lana190.png */,
 				1596CEDA15C0D6D1001097AE /* pinkfloyd.jpg */,
@@ -263,8 +271,9 @@
 		157D3F8115A7D4E0009064CF /* Music Files */ = {
 			isa = PBXGroup;
 			children = (
-				1596CEE015C1B048001097AE /* Jimmy Hendrix  – Voodoo Child.mp3 */,
-				15C0829B15BA06E40031679E /* song.mp3 */,
+				15D77B8F15D95573003162A3 /* life.mp3 */,
+				1596CEE015C1B048001097AE /* hendrix.mp3 */,
+				15C0829B15BA06E40031679E /* Zaz.mp3 */,
 			);
 			name = "Music Files";
 			sourceTree = "<group>";
@@ -418,7 +427,7 @@
 				157D3F7F15A7D369009064CF /* pause1-150x150.png in Resources */,
 				15D2CEA215B0BFEF006966AF /* appIcon.png in Resources */,
 				15D2CEAA15B0CB5A006966AF /* eject.gif in Resources */,
-				15C0829C15BA06E40031679E /* song.mp3 in Resources */,
+				15C0829C15BA06E40031679E /* Zaz.mp3 in Resources */,
 				1596CECC15C0C021001097AE /* pinkfloyd4.ma in Resources */,
 				1596CECD15C0C021001097AE /* pinkfloyd3.ma in Resources */,
 				1596CECE15C0C021001097AE /* pinkfloyd2.ma in Resources */,
@@ -431,7 +440,7 @@
 				1596CEDB15C0D6D1001097AE /* pinkfloyd.jpg in Resources */,
 				1596CEDD15C0DC92001097AE /* lab2.ma in Resources */,
 				1596CEDF15C1ABAA001097AE /* lab1.ma in Resources */,
-				1596CEE115C1B048001097AE /* Jimmy Hendrix  – Voodoo Child.mp3 in Resources */,
+				1596CEE115C1B048001097AE /* hendrix.mp3 in Resources */,
 				154E7C1115C7431F00D3DE50 /* florence_cover.jpg in Resources */,
 				1577831115CA78C30029F11A /* florence_machine_cover.png in Resources */,
 				150AE12B15CB5EA700C1ED0F /* morcheeba-skye.png in Resources */,
@@ -439,6 +448,9 @@
 				150AE14615CF2EF100C1ED0F /* sineWaveDataPoints.txt in Resources */,
 				15D77B5A15D44B0D003162A3 /* lana190.png in Resources */,
 				15D77B7515D5C8D3003162A3 /* move.gif in Resources */,
+				15D77B8315D94717003162A3 /* playbutton.gif in Resources */,
+				15D77B8615D949D9003162A3 /* moveButton.png in Resources */,
+				15D77B9015D95573003162A3 /* life.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

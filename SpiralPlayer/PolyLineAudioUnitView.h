@@ -12,6 +12,9 @@
 @interface PolyLineAudioUnitView : UIView {
     PolyLineControl* control_;
     WaveAudioPlayer* audioPlayer_;
+    UIButton* moveButton_;
+    UIButton* playButton_;
+    
 }
 
 @property (nonatomic, retain) PolyLineControl* control;

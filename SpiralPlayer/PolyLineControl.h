@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GridHashTable.h"
+#import "WaveAudioPlayer.h"
 @interface PolyLineControl : UIControl {
     
     UIButton* thumb_; //seek thumb button
@@ -25,7 +26,11 @@
     CGPoint currentMovingPoint_;
     int currentMovingPointIndex_;
     
-    int lastPointIndex_;   
+    int lastPointIndex_;  
+    
+    //UIButton* playButton_;
+    //UIButton* moveButton_;
+
     
 } 
 
@@ -37,6 +42,8 @@
 @property (nonatomic, retain) GridHashTable* gridHashTable; 
 @property (nonatomic, assign) double tracklength;
 @property (nonatomic, assign) double value;
+//@property (nonatomic, retain) UIButton* playButton;
+//@property (nonatomic, retain) UIButton* moveButton;
 
 - (id) initWithFrame:(CGRect)frame dataPointsFile:(NSString*)fileName ofType:(NSString*)type;
 - (id) initSineWaveWithFrame:(CGRect)frame; 

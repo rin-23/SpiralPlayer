@@ -13,7 +13,7 @@
 
 @implementation PolyLineControl
 
-@synthesize dataPoints = dataPoints_, pathLength = pathLength_, thumb = thumb_, thumbCurrentPosition = thumbCurrentPosition_, gridHashTable = gridHashTable_, tracklength = tracklength_, value = value_, drawingPoints = drawingPoints_;
+@synthesize dataPoints = dataPoints_, pathLength = pathLength_, thumb = thumb_, thumbCurrentPosition = thumbCurrentPosition_, gridHashTable = gridHashTable_, tracklength = tracklength_, value = value_, drawingPoints = drawingPoints_/*, playButton = playButton_, moveButton = moveButton_*/;
 
 
 -(id) initSineWaveWithFrame:(CGRect)frame  {
@@ -23,6 +23,7 @@
 - (id) initWithFrame:(CGRect)frame dataPointsFile:(NSString*)fileName ofType:(NSString*)type {
     self = [super initWithFrame:frame];
     if (self) {
+               
         self.pathLength = 0; 
         self.backgroundColor = [UIColor clearColor];
         
@@ -39,17 +40,7 @@
         [thumb_ setImage:[UIImage imageNamed:@"handle"] forState:UIControlStateNormal];
         [self addSubview:thumb_];
         
-        UIButton* moveButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        //moveButton.backgroundColor = [UIColor greenColor];
-        moveButton.frame = CGRectMake(0, 0, 55, 55);
-        [moveButton addTarget:self action:@selector(dragMoveBegan:withEvent:) forControlEvents:UIControlEventTouchDown];
-        [moveButton addTarget:self action:@selector(dragMoveContinue:withEvent:) forControlEvents:UIControlEventTouchDragInside|UIControlEventTouchDragOutside];
-        [moveButton addTarget:self action:@selector(dragMoveEnded:withEvent:) forControlEvents:UIControlEventTouchUpInside|UIControlEventTouchUpOutside];
-        [moveButton setImage:[UIImage imageNamed:@"move.gif"] forState:UIControlStateNormal];
-        moveButton.opaque = YES;
-        [self addSubview:moveButton];
-         
-        
+      
         
         //Get Data Points
         NSMutableDictionary* pointsDictionary = [[DataPointsManager sharedInstance] getPointsForFile:fileName ofType:type];
@@ -58,6 +49,7 @@
     }
     return self;
 }
+
 
 
 - (void) drawRect:(CGRect)rect {
@@ -113,30 +105,6 @@
 }
 
 
-#pragma mark - MOVE BUTTON TOUCH EVEN HANDLERS
-- (void) dragMoveBegan:(UIControl*)control withEvent:(UIEvent*)event {
-    CGPoint touchPoint =[[[event allTouches] anyObject] locationInView:self.superview];
-    CGRect frame = self.frame;
-    frame.origin = touchPoint;
-    self.frame = frame;
-    
-}
-
-- (void) dragMoveContinue:(UIControl*)control withEvent:(UIEvent*)event{
-    CGPoint touchPoint =[[[event allTouches] anyObject] locationInView:self.superview];
-    CGRect frame = self.frame;
-    frame.origin = touchPoint;
-    self.frame = frame;
-    
-}
-
-- (void) dragMoveEnded:(UIControl*)control withEvent:(UIEvent*)event{
-    CGPoint touchPoint =[[[event allTouches] anyObject] locationInView:self.superview];
-    CGRect frame = self.frame;
-    frame.origin = touchPoint;
-    self.frame = frame;
-    
-}
 #pragma mark - THUMB NEEDLE TOUCH EVENT HANDLERS
 
 /* Handle event of first touch of the thumb needle */

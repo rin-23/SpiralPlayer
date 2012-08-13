@@ -58,8 +58,8 @@
 //        [zoomableView_ release];
 //    }
            
-    for (int i = 0; i < 3; i++) {
-        PolyLineAudioUnitView* zoomableView_ = [[PolyLineAudioUnitView alloc] initWithFrame:CGRectMake(250*i + 1*i + 1, 0, 250, 768/2)];
+    for (int i = 0; i < 3; i++) {       
+        PolyLineAudioUnitView* zoomableView_ = [[PolyLineAudioUnitView alloc] initWithFrame:CGRectMake(250*i + 1*i + 1, 0, 250, 768/2 + 70)];
         zoomableView_.transform = CGAffineTransformMakeScale(0.3, 0.3);
         [array_ addObject:zoomableView_];
         [mainView_ addSubview:zoomableView_];
@@ -74,8 +74,9 @@
     scale *= [[[scrollView window] screen] scale];
     [mainView_ setContentScaleFactor:scale];
     //for (ZoomableView* zoom in array_) {
-    for (PolyLineControl* zoom in array_) {
+    for (PolyLineAudioUnitView* zoom in array_) {
         [zoom setContentScaleFactor:scale];
+        [zoom.control setContentScaleFactor:scale];
     }
     
 }

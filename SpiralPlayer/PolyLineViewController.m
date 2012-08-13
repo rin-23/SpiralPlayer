@@ -17,7 +17,7 @@
        [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(updateProgressBar) userInfo:nil repeats:YES];
                 
         audioPlayer_ = [[WaveAudioPlayer alloc] init];
-        NSURL* audioUrl = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Jimmy Hendrix  – Voodoo Child" ofType:@"mp3"]];
+        NSURL* audioUrl = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"hendrix" ofType:@"mp3"]];
         [audioPlayer_ loadNextAudioAsset:audioUrl];
         [audioPlayer_.player setNumberOfLoops:10];
 
