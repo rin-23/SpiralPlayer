@@ -10,7 +10,9 @@
 
 @interface ZhengControl : UIControl {
     
-    NSMutableArray* segmentArray_;
+    NSMutableArray* segmentViewsArray_;
+    NSMutableArray* segmentObjectsArray_;
+
     //Draw Wheel Vars
     double angleSizeRad;
     int angleSizeDeg;
@@ -22,7 +24,10 @@
     int beginTouchAngleDeg_;
     int currentLevel_;
     int currentQuarter_;
-    int indexOffset;
+    
+    int indexOffset_;
+    
+    int leading_;
 
     
 }
@@ -31,5 +36,6 @@
 @property (nonatomic, assign) int numOfSectionsTotal;
 @property (nonatomic, retain) UIView* container;
 @property (nonatomic, assign) CGAffineTransform startTransform;
-@property (nonatomic, retain) NSMutableArray* segmentArray;
+@property (nonatomic, retain) NSMutableArray* segmentViewsArray;
+@property (nonatomic, retain) NSMutableArray* segmentObjectsArray;
 @end

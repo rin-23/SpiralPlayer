@@ -21,6 +21,7 @@
 		151A42F615538F9D003BF64A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 151A42F515538F9D003BF64A /* ViewController.m */; };
 		151A42F915538F9D003BF64A /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 151A42F715538F9D003BF64A /* ViewController.xib */; };
 		1533A54315853ED200E27069 /* handle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1533A54215853ED200E27069 /* handle@2x.png */; };
+		1544340F15E49B8200FEBAC0 /* SegmentObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1544340E15E49B8200FEBAC0 /* SegmentObject.m */; };
 		1544D94615A229EB00AE7C63 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1544D94515A229EB00AE7C63 /* CoreMedia.framework */; };
 		1544D94915A22A0E00AE7C63 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1544D94815A22A0E00AE7C63 /* MediaPlayer.framework */; };
 		154E7BD815C4CB4D00D3DE50 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 154E7BD715C4CB4C00D3DE50 /* QuartzCore.framework */; };
@@ -100,6 +101,8 @@
 		151A42F515538F9D003BF64A /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		151A42F815538F9D003BF64A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
 		1533A54215853ED200E27069 /* handle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "handle@2x.png"; sourceTree = "<group>"; };
+		1544340D15E49B8200FEBAC0 /* SegmentObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentObject.h; sourceTree = "<group>"; };
+		1544340E15E49B8200FEBAC0 /* SegmentObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentObject.m; sourceTree = "<group>"; };
 		1544D94515A229EB00AE7C63 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		1544D94815A22A0E00AE7C63 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		154E7BD715C4CB4C00D3DE50 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -418,6 +421,8 @@
 				15DA9A7015E411E5002FF037 /* ZhengControl.m */,
 				15DA9A7415E42F96002FF037 /* SegmentView.h */,
 				15DA9A7515E42F97002FF037 /* SegmentView.m */,
+				1544340D15E49B8200FEBAC0 /* SegmentObject.h */,
+				1544340E15E49B8200FEBAC0 /* SegmentObject.m */,
 			);
 			name = Zheng;
 			sourceTree = "<group>";
@@ -543,6 +548,7 @@
 				15DA9A5815E18EF3002FF037 /* ZhengViewController.m in Sources */,
 				15DA9A7115E411E6002FF037 /* ZhengControl.m in Sources */,
 				15DA9A7615E42F98002FF037 /* SegmentView.m in Sources */,
+				1544340F15E49B8200FEBAC0 /* SegmentObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

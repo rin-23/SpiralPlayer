@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SegmentView : UIView{
+@interface SegmentView : UIView <UIGestureRecognizerDelegate>{
     
 }
 
-@property (nonatomic, retain) UIImageView *imageView;
+@property (nonatomic, retain) UIImageView* imageView;
+@property (nonatomic, retain) UIImageView* signImageView;
 @property (nonatomic, assign) int index;
 
 @end
