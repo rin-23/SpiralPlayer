@@ -36,7 +36,10 @@
     //self.viewController = [[PizzaViewController alloc] init];
     
     //Space View Controller
-    self.viewController = [[SpaceViewController alloc] init];
+    //self.viewController = [[SpaceViewController alloc] init];
+    
+    //Zheng View Controller
+    self.viewController = [[ZhengViewController alloc] init];
         
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];

@@ -48,6 +48,14 @@
 		1596CEDD15C0DC92001097AE /* lab2.ma in Resources */ = {isa = PBXBuildFile; fileRef = 1596CEDC15C0DC92001097AE /* lab2.ma */; };
 		1596CEDF15C1ABAA001097AE /* lab1.ma in Resources */ = {isa = PBXBuildFile; fileRef = 1596CEDE15C1ABAA001097AE /* lab1.ma */; };
 		1596CEE115C1B048001097AE /* hendrix.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1596CEE015C1B048001097AE /* hendrix.mp3 */; };
+		15A2D6A615E47C9C00DDB8E4 /* icon0.png in Resources */ = {isa = PBXBuildFile; fileRef = 15A2D69E15E47C9C00DDB8E4 /* icon0.png */; };
+		15A2D6A715E47C9C00DDB8E4 /* icon1.png in Resources */ = {isa = PBXBuildFile; fileRef = 15A2D69F15E47C9C00DDB8E4 /* icon1.png */; };
+		15A2D6A815E47C9C00DDB8E4 /* icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = 15A2D6A015E47C9C00DDB8E4 /* icon2.png */; };
+		15A2D6A915E47C9C00DDB8E4 /* icon3.png in Resources */ = {isa = PBXBuildFile; fileRef = 15A2D6A115E47C9C00DDB8E4 /* icon3.png */; };
+		15A2D6AA15E47C9C00DDB8E4 /* icon4.png in Resources */ = {isa = PBXBuildFile; fileRef = 15A2D6A215E47C9C00DDB8E4 /* icon4.png */; };
+		15A2D6AB15E47C9C00DDB8E4 /* icon5.png in Resources */ = {isa = PBXBuildFile; fileRef = 15A2D6A315E47C9C00DDB8E4 /* icon5.png */; };
+		15A2D6AC15E47C9C00DDB8E4 /* icon6.png in Resources */ = {isa = PBXBuildFile; fileRef = 15A2D6A415E47C9C00DDB8E4 /* icon6.png */; };
+		15A2D6AD15E47C9C00DDB8E4 /* icon7.png in Resources */ = {isa = PBXBuildFile; fileRef = 15A2D6A515E47C9C00DDB8E4 /* icon7.png */; };
 		15C0829C15BA06E40031679E /* Zaz.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 15C0829B15BA06E40031679E /* Zaz.mp3 */; };
 		15CF25C515AD5411007CA929 /* WaveAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 15CF25C415AD5411007CA929 /* WaveAudioPlayer.m */; };
 		15D2CEA215B0BFEF006966AF /* appIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 15D2CEA115B0BFEF006966AF /* appIcon.png */; };
@@ -62,6 +70,11 @@
 		15D77B8315D94717003162A3 /* playbutton.gif in Resources */ = {isa = PBXBuildFile; fileRef = 15D77B8215D94717003162A3 /* playbutton.gif */; };
 		15D77B8615D949D9003162A3 /* moveButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 15D77B8515D949D9003162A3 /* moveButton.png */; };
 		15D77B9015D95573003162A3 /* life.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 15D77B8F15D95573003162A3 /* life.mp3 */; };
+		15DA9A5815E18EF3002FF037 /* ZhengViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15DA9A5715E18EF3002FF037 /* ZhengViewController.m */; };
+		15DA9A7115E411E6002FF037 /* ZhengControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 15DA9A7015E411E5002FF037 /* ZhengControl.m */; };
+		15DA9A7315E4249E002FF037 /* segment.png in Resources */ = {isa = PBXBuildFile; fileRef = 15DA9A7215E4249E002FF037 /* segment.png */; };
+		15DA9A7615E42F98002FF037 /* SegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 15DA9A7515E42F97002FF037 /* SegmentView.m */; };
+		15DA9A7815E443F4002FF037 /* segment_black.png in Resources */ = {isa = PBXBuildFile; fileRef = 15DA9A7715E443F4002FF037 /* segment_black.png */; };
 		15E163F6158B1AD900CC8FAC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15E163F3158B1AD900CC8FAC /* AudioToolbox.framework */; };
 		15E163F8158B1AD900CC8FAC /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15E163F5158B1AD900CC8FAC /* CoreAudio.framework */; };
 /* End PBXBuildFile section */
@@ -121,6 +134,14 @@
 		1596CEDC15C0DC92001097AE /* lab2.ma */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = lab2.ma; sourceTree = "<group>"; };
 		1596CEDE15C1ABAA001097AE /* lab1.ma */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = lab1.ma; sourceTree = "<group>"; };
 		1596CEE015C1B048001097AE /* hendrix.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hendrix.mp3; sourceTree = "<group>"; };
+		15A2D69E15E47C9C00DDB8E4 /* icon0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon0.png; sourceTree = "<group>"; };
+		15A2D69F15E47C9C00DDB8E4 /* icon1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon1.png; sourceTree = "<group>"; };
+		15A2D6A015E47C9C00DDB8E4 /* icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon2.png; sourceTree = "<group>"; };
+		15A2D6A115E47C9C00DDB8E4 /* icon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon3.png; sourceTree = "<group>"; };
+		15A2D6A215E47C9C00DDB8E4 /* icon4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon4.png; sourceTree = "<group>"; };
+		15A2D6A315E47C9C00DDB8E4 /* icon5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon5.png; sourceTree = "<group>"; };
+		15A2D6A415E47C9C00DDB8E4 /* icon6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon6.png; sourceTree = "<group>"; };
+		15A2D6A515E47C9C00DDB8E4 /* icon7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon7.png; sourceTree = "<group>"; };
 		15C0829B15BA06E40031679E /* Zaz.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Zaz.mp3; sourceTree = "<group>"; };
 		15CF25C315AD5410007CA929 /* WaveAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaveAudioPlayer.h; sourceTree = "<group>"; };
 		15CF25C415AD5411007CA929 /* WaveAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaveAudioPlayer.m; sourceTree = "<group>"; };
@@ -142,6 +163,14 @@
 		15D77B8215D94717003162A3 /* playbutton.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = playbutton.gif; sourceTree = "<group>"; };
 		15D77B8515D949D9003162A3 /* moveButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = moveButton.png; sourceTree = "<group>"; };
 		15D77B8F15D95573003162A3 /* life.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = life.mp3; sourceTree = "<group>"; };
+		15DA9A5615E18EF3002FF037 /* ZhengViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZhengViewController.h; sourceTree = "<group>"; };
+		15DA9A5715E18EF3002FF037 /* ZhengViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZhengViewController.m; sourceTree = "<group>"; };
+		15DA9A6F15E411E5002FF037 /* ZhengControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZhengControl.h; sourceTree = "<group>"; };
+		15DA9A7015E411E5002FF037 /* ZhengControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZhengControl.m; sourceTree = "<group>"; };
+		15DA9A7215E4249E002FF037 /* segment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = segment.png; sourceTree = "<group>"; };
+		15DA9A7415E42F96002FF037 /* SegmentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentView.h; sourceTree = "<group>"; };
+		15DA9A7515E42F97002FF037 /* SegmentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentView.m; sourceTree = "<group>"; };
+		15DA9A7715E443F4002FF037 /* segment_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = segment_black.png; sourceTree = "<group>"; };
 		15E163F3158B1AD900CC8FAC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		15E163F5158B1AD900CC8FAC /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -202,6 +231,7 @@
 		151A42E815538F9D003BF64A /* SpiralPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				15DA9A5115E18D90002FF037 /* Zheng */,
 				15D54C8E15D2F55700A42E87 /* Space */,
 				15D7FA7215CF3DE4009318C6 /* Spiral */,
 				154E7C0415C7399D00D3DE50 /* Pizza */,
@@ -249,6 +279,16 @@
 		157D3F8015A7D4CE009064CF /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				15A2D69E15E47C9C00DDB8E4 /* icon0.png */,
+				15A2D69F15E47C9C00DDB8E4 /* icon1.png */,
+				15A2D6A015E47C9C00DDB8E4 /* icon2.png */,
+				15A2D6A115E47C9C00DDB8E4 /* icon3.png */,
+				15A2D6A215E47C9C00DDB8E4 /* icon4.png */,
+				15A2D6A315E47C9C00DDB8E4 /* icon5.png */,
+				15A2D6A415E47C9C00DDB8E4 /* icon6.png */,
+				15A2D6A515E47C9C00DDB8E4 /* icon7.png */,
+				15DA9A7715E443F4002FF037 /* segment_black.png */,
+				15DA9A7215E4249E002FF037 /* segment.png */,
 				15D77B8515D949D9003162A3 /* moveButton.png */,
 				15D77B8215D94717003162A3 /* playbutton.gif */,
 				15D77B7415D5C8D3003162A3 /* move.gif */,
@@ -369,6 +409,19 @@
 			name = Spiral;
 			sourceTree = "<group>";
 		};
+		15DA9A5115E18D90002FF037 /* Zheng */ = {
+			isa = PBXGroup;
+			children = (
+				15DA9A5615E18EF3002FF037 /* ZhengViewController.h */,
+				15DA9A5715E18EF3002FF037 /* ZhengViewController.m */,
+				15DA9A6F15E411E5002FF037 /* ZhengControl.h */,
+				15DA9A7015E411E5002FF037 /* ZhengControl.m */,
+				15DA9A7415E42F96002FF037 /* SegmentView.h */,
+				15DA9A7515E42F97002FF037 /* SegmentView.m */,
+			);
+			name = Zheng;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -451,6 +504,16 @@
 				15D77B8315D94717003162A3 /* playbutton.gif in Resources */,
 				15D77B8615D949D9003162A3 /* moveButton.png in Resources */,
 				15D77B9015D95573003162A3 /* life.mp3 in Resources */,
+				15DA9A7315E4249E002FF037 /* segment.png in Resources */,
+				15DA9A7815E443F4002FF037 /* segment_black.png in Resources */,
+				15A2D6A615E47C9C00DDB8E4 /* icon0.png in Resources */,
+				15A2D6A715E47C9C00DDB8E4 /* icon1.png in Resources */,
+				15A2D6A815E47C9C00DDB8E4 /* icon2.png in Resources */,
+				15A2D6A915E47C9C00DDB8E4 /* icon3.png in Resources */,
+				15A2D6AA15E47C9C00DDB8E4 /* icon4.png in Resources */,
+				15A2D6AB15E47C9C00DDB8E4 /* icon5.png in Resources */,
+				15A2D6AC15E47C9C00DDB8E4 /* icon6.png in Resources */,
+				15A2D6AD15E47C9C00DDB8E4 /* icon7.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,6 +540,9 @@
 				15D77B6115D4A3B3003162A3 /* DataPointsManager.m in Sources */,
 				15D77B6815D4AAD9003162A3 /* GridHashTable.m in Sources */,
 				15D77B7815D5F65B003162A3 /* PolyLineAudioUnitView.m in Sources */,
+				15DA9A5815E18EF3002FF037 /* ZhengViewController.m in Sources */,
+				15DA9A7115E411E6002FF037 /* ZhengControl.m in Sources */,
+				15DA9A7615E42F98002FF037 /* SegmentView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -555,7 +621,7 @@
 				INFOPLIST_FILE = "SpiralPlayer/SpiralPlayer-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -568,7 +634,7 @@
 				INFOPLIST_FILE = "SpiralPlayer/SpiralPlayer-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

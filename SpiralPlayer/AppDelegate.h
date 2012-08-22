@@ -10,8 +10,10 @@
 #import "PolyLineViewController.h"
 #import "PizzaViewController.h"
 #import "SpaceViewController.h"
+#import "ZhengViewController.h"
 @class ViewController;
 @class PolyLineViewController;
+@class ZhengViewController;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

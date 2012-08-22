@@ -40,6 +40,7 @@
         [thumb_ setImage:[UIImage imageNamed:@"handle"] forState:UIControlStateNormal];
         [self addSubview:thumb_];
         
+        cgimage = [UIImage imageNamed:@"lana"].CGImage;
       
         
         //Get Data Points
@@ -53,55 +54,62 @@
 
 
 - (void) drawRect:(CGRect)rect {
-    NSLog(@"Started Drawing");
+        //NSLog(@"Started Drawing");
 
-    [self.gridHashTable clear];
-    
-    double angle_deg = 30;
-    double angle_rad = angle_deg * (M_PI/180);
-    int height = rect.size.height;
-    int width = 2*(height * tan(angle_rad/2));   
-    //CGSize layerSize = CGSizeMake(width, height);
-
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    //CGImageRef maskImage;
-    
-    CGContextSaveGState(context);
-    
-    CGContextSetRGBFillColor (context, 0, 0, 0, 0);
-    CGContextFillRect(context, rect);
- 
-    CGContextSetRGBStrokeColor(context, 1, 1, 1, 1);    
-
-    CGContextBeginPath(context);
-    CGContextSetLineWidth(context, 2);
-    CGPoint currentPoint = [(NSValue*)[self.drawingPoints objectAtIndex:0] CGPointValue];
-    self.thumb.center = currentPoint;
-    CGContextMoveToPoint(context, currentPoint.x, currentPoint.y);
-    [self.gridHashTable hashPointToGrid:currentPoint];
-    //  CGPoint pastPoint = startPoint;
-    for (int i = 0; i < [self.drawingPoints count]; i++) {
-        //draw line
-        currentPoint = [(NSValue*)[self.drawingPoints objectAtIndex:i] CGPointValue];
-        CGContextAddLineToPoint(context, currentPoint.x, currentPoint.y); 
-        [self.gridHashTable hashPointToGrid:currentPoint];
+        CGContextRef context = UIGraphicsGetCurrentContext();
+   
+        //NSLog(@"FUCK THAT");
+        [self.gridHashTable clear];
         
-//      calculate total length of the line as we draw it
-//      float curLength = sqrtf(pow(currentPoint.x-pastPoint.x, 2) + pow(currentPoint.y - pastPoint.y, 2));
-//      self.pathLength += curLength; 
-//      pastPoint = currentPoint;
-    }
-    CGContextStrokePath(context);
-      
-    //maskImage = CGBitmapContextCreateImage(context);
-    //NSLog(@"Path Length: %f", self.pathLength);
-    CGContextRestoreGState(context);
-//    CGImageRef cgimage = [UIImage imageNamed:@"lana"].CGImage;
-//    CGContextTranslateCTM(context, 0, rect.size.height);
-//    CGContextScaleCTM(context, 1.0, -1.0);
-//    CGContextClipToMask(context, rect, maskImage); 
-//    CGContextDrawImage(context, rect, cgimage);
-    NSLog(@"Finished Drawing");   
+        //double angle_deg = 30;
+        //double angle_rad = angle_deg * (M_PI/180);
+        //int height = rect.size.height;
+        //int width = 2*(height * tan(angle_rad/2));   
+        //CGSize layerSize = CGSizeMake(width, height);
+
+
+           
+        CGContextSaveGState(context);
+   
+        CGContextSetRGBFillColor (context, 0, 0, 0, 0);
+        CGContextFillRect(context, rect);
+     
+        CGContextSetRGBStrokeColor(context, 1, 1, 1, 1);    
+
+        CGContextBeginPath(context);
+        CGContextSetLineWidth(context, 2);
+        CGPoint currentPoint = [(NSValue*)[self.drawingPoints objectAtIndex:0] CGPointValue];
+        self.thumb.center = currentPoint;
+        CGContextMoveToPoint(context, currentPoint.x, currentPoint.y);
+        [self.gridHashTable hashPointToGrid:currentPoint];
+        //  CGPoint pastPoint = startPoint;
+        for (int i = 0; i < [self.drawingPoints count]; i += 1) {
+            //draw line
+            currentPoint = [(NSValue*)[self.drawingPoints objectAtIndex:i] CGPointValue];
+            CGContextAddLineToPoint(context, currentPoint.x, currentPoint.y); 
+            [self.gridHashTable hashPointToGrid:currentPoint];
+            
+    //      calculate total length of the line as we draw it
+    //      float curLength = sqrtf(pow(currentPoint.x-pastPoint.x, 2) + pow(currentPoint.y - pastPoint.y, 2));
+    //      self.pathLength += curLength; 
+    //      pastPoint = currentPoint;
+        }
+        CGContextStrokePath(context);
+          
+        maskImage = CGBitmapContextCreateImage(context);
+        
+        //NSLog(@"Path Length: %f", self.pathLength);
+        CGContextRestoreGState(context);
+
+    
+    
+    CGContextTranslateCTM(context, 0, rect.size.height);
+    CGContextScaleCTM(context, 1.0, -1.0);
+    CGContextClipToMask(context, rect, maskImage); 
+    CGContextDrawImage(context, rect, cgimage);
+   // NSLog(@"Finished Drawing");
+    
+    CGImageRelease(maskImage);
 }
 
 

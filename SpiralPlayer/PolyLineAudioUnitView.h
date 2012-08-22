@@ -17,7 +17,10 @@
     
 }
 
+- (id)initWithFrame:(CGRect)frame andAudio:(NSString*) audioFile;
 @property (nonatomic, retain) PolyLineControl* control;
 @property (nonatomic, retain) WaveAudioPlayer* audioPlayer;
+
+- (void)correctLayerPosition;
 
 @end

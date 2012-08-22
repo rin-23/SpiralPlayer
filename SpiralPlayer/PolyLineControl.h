@@ -30,6 +30,10 @@
     
     //UIButton* playButton_;
     //UIButton* moveButton_;
+    
+    CGImageRef maskImage;
+    CGImageRef cgimage;
+    
 
     
 } 
@@ -42,6 +46,7 @@
 @property (nonatomic, retain) GridHashTable* gridHashTable; 
 @property (nonatomic, assign) double tracklength;
 @property (nonatomic, assign) double value;
+
 //@property (nonatomic, retain) UIButton* playButton;
 //@property (nonatomic, retain) UIButton* moveButton;
 

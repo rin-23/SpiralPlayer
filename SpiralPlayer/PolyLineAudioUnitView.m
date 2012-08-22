@@ -12,7 +12,7 @@
 
 @synthesize control = control_, audioPlayer = audioPlayer_;
 
-- (id)initWithFrame:(CGRect)frame 
+- (id)initWithFrame:(CGRect)frame andAudio:(NSString*) audioFile
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -21,9 +21,8 @@
         
         [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(updateProgressBar) userInfo:nil repeats:YES];
 
-        
         self.audioPlayer = [[WaveAudioPlayer alloc] init];
-        NSURL* audioUrl = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"life" ofType:@"mp3"]];
+        NSURL* audioUrl = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:audioFile ofType:@"mp3"]];
         [self.audioPlayer loadNextAudioAsset:audioUrl];
         [self.audioPlayer.player setNumberOfLoops:10];
         
@@ -45,15 +44,34 @@
         
         playButton_ = [UIButton buttonWithType:UIButtonTypeCustom];
         playButton_.frame = CGRectMake(moveButton_.frame.origin.x+ moveButton_.frame.size.width + 20, self.control.frame.origin.y + self.control.frame.size.height+10, 55, 55);
+        playButton_.opaque = YES;
         [playButton_ addTarget:self action:@selector(playButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [playButton_ setImage:[UIImage imageNamed:@"play1-150x150.png"] forState:UIControlStateNormal];
         [playButton_ setImage:[UIImage imageNamed:@"pause1-150x150"] forState:UIControlStateSelected];
         [playButton_ setImage:[UIImage imageNamed:@"play1-150x150.png"] forState:UIControlStateHighlighted];
         [self addSubview:playButton_];
+        
+        UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotaionGesture:)];
+        [self addGestureRecognizer:rotationGesture];
+        [rotationGesture release];
   
     }
     return self;
 }
+
+
+#pragma mark - GESTURE RECOGNIZER
+- (void) handleRotaionGesture:(UIRotationGestureRecognizer*)sender {
+        NSLog(@"Rotation");
+    
+        CGAffineTransform tr = CGAffineTransformMakeScale(0.3, 0.3);
+        CGAffineTransform tr2 = CGAffineTransformRotate(tr, sender.rotation);
+   //     CGAffineTransform myTransform = CGAffineTransformRotate(, sender.rotation);  
+        //CGAffineTransform myTransform = CGAffineTransformMakeRotation(sender.rotation);
+        self.transform = tr2;
+
+}
+
 
 -(void) playButtonClicked { 
     if (audioPlayer_.player == nil) return;
@@ -74,7 +92,7 @@
     CGRect frame = self.frame;
     frame.origin = CGPointMake(touchPoint.x, touchPoint.y - self.frame.size.height);
     self.frame = frame;
-    
+    // [self correctLayerPosition];
 }
 
 - (void) dragMoveContinue:(UIControl*)control withEvent:(UIEvent*)event{
@@ -82,6 +100,7 @@
     CGRect frame = self.frame;
     frame.origin = CGPointMake(touchPoint.x, touchPoint.y - self.frame.size.height);
     self.frame = frame;
+
     
 }
 
@@ -90,6 +109,7 @@
     CGRect frame = self.frame;
     frame.origin = CGPointMake(touchPoint.x, touchPoint.y - self.frame.size.height);
     self.frame = frame;
+
     
 }
 
@@ -99,6 +119,17 @@
 
 - (void) curveValueChanged { 
     self.audioPlayer.player.currentTime = self.control.value;
+}
+
+- (void)correctLayerPosition {
+	CGPoint position = self.layer.position;
+	CGPoint anchorPoint = self.layer.anchorPoint;
+	CGRect bounds = self.bounds;
+	// 0.5, 0.5 is the default anchorPoint; calculate the difference
+	// and multiply by the bounds of the view
+	position.x = (0.5 * bounds.size.width) + (anchorPoint.x - 0.5) * bounds.size.width;
+	position.y = (0.5 * bounds.size.height) + (anchorPoint.y - 0.5) * bounds.size.height;
+	self.layer.position = position;
 }
 
 
