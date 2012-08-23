@@ -10,17 +10,15 @@
 
 @implementation SegmentView
 
-@synthesize imageView, index, signImageView;
+@synthesize index, bgColor, image = image_;
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        self.bgColor = [UIColor whiteColor].CGColor;  
         self.backgroundColor = [UIColor clearColor];
-        self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"segment.png"]];
-        
-        
+                
         UISwipeGestureRecognizer *recognizer;
         recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)];
         recognizer.cancelsTouchesInView = YES;
@@ -28,16 +26,6 @@
         [self addGestureRecognizer:recognizer];
         [recognizer release];
         
-        self.signImageView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 15, 40, 40)];
-        //[self.imageView addSubview:self.signImageView];
-        [self addSubview:self.signImageView];
-        [self.signImageView release];
-               
-
-       
-        
-        //[self addSubview:self.imageView];
-        //[self.imageView release];        
     }
     return self;
 }
@@ -64,7 +52,6 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetRGBFillColor (context, 0, 0, 0, 0);
     CGContextFillRect(context, rect);
-
     CGContextBeginPath (context);
     CGContextSetRGBStrokeColor(context, 1, 1, 1, 1);  
     CGContextSetLineWidth(context, 1);
@@ -72,16 +59,13 @@
     CGContextAddLineToPoint(context, 0, 0);
     CGContextAddLineToPoint(context, 0, rect.size.height);
     CGContextAddLineToPoint(context, rect.size.width, rect.size.height/2);
-    CGContextSetRGBFillColor (context, 1, 1, 1, 1);
+    //CGContextSetRGBFillColor (context, 1, 1, 1, 1);
+    CGContextSetFillColorWithColor(context, self.bgColor);
     CGContextFillPath(context);
     CGContextStrokePath(context);
-    
-
 }
 
-
 - (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent *)event {
-    NSLog(@"Touch Began For Segment");    
     [super touchesBegan:touches withEvent:event];
 }
 
@@ -92,5 +76,6 @@
 - (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent *)event {
     [super touchesEnded:touches withEvent:event];
 }
+
 
 @end

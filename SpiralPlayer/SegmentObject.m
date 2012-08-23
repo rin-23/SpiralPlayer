@@ -10,4 +10,6 @@
 
 @implementation SegmentObject
 
+@synthesize image = image_, index = index_;
+
 @end

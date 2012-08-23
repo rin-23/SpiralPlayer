@@ -24,12 +24,14 @@
     int beginTouchAngleDeg_;
     int currentLevel_;
     int currentQuarter_;
+    double total_angle_rad;
+    int total_angle_deg; 
+    
     
     int indexOffset_;
     
     int leading_;
-
-    
+   
 }
 
 @property (nonatomic, assign) int numOfSectionsVisible;

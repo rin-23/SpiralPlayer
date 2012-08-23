@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @interface SegmentView : UIView <UIGestureRecognizerDelegate>{
+    UIImage* image_;
     
 }
 
-@property (nonatomic, retain) UIImageView* imageView;
-@property (nonatomic, retain) UIImageView* signImageView;
 @property (nonatomic, assign) int index;
+@property (nonatomic, assign) CGColorRef bgColor;
+@property (nonatomic, retain) UIImage* image;
 
 @end

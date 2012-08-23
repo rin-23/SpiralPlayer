@@ -8,8 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SegmentObject : NSObject {
-    
+@interface SegmentObject : NSObject {    
+    UIImage* image_;      
+    int index_;
 }
+
+@property (nonatomic, retain) UIImage* image;
+@property (nonatomic, assign) int index;
 
 @end
