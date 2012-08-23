@@ -10,7 +10,7 @@
 
 @implementation SegmentView
 
-@synthesize index, bgColor, image = image_;
+@synthesize index, bgColor, image = image_, object = object_;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -43,7 +43,6 @@
 - (void) handleSwipeFrom:(UISwipeGestureRecognizer *)recognizer {
     NSLog(@"Swipe received 2.");
 }
-
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

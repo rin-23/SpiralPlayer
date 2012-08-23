@@ -92,6 +92,7 @@
         [segObject release];
     }
         
+         
     //container.userInteractionEnabled = NO;
     [self addSubview:container];
     [container release];
