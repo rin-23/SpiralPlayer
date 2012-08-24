@@ -4,9 +4,9 @@
 
 
 @interface SpiralControl(PrivateMethods)
-- (void) setCurrentAngleDegrees: (double) angleDeg;
-- (void) setCurrentAngleRadians: (double) angleRad;
-- (void) setCurrentArcLength:    (double) arclength;
+- (void) setCurrentAngleDegrees:(double) angleDeg;
+- (void) setCurrentAngleRadians:(double) angleRad;
+- (void) setCurrentArcLength:   (double) arclength;
 - (void) updateNeedlePosition;
 - (void) drawSpiral;
 - (void) numOfTurns;

@@ -10,8 +10,7 @@
 #import "SegmentObject.h"
 @interface SegmentView : UIView <UIGestureRecognizerDelegate>{
     UIImage* image_;
-    SegmentObject* object_;
-    
+    SegmentObject* object_;    
 }
 
 @property (nonatomic, assign) int index;

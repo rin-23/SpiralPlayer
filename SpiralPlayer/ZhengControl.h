@@ -17,8 +17,6 @@
     double angleSizeRad;
     int angleSizeDeg;
 
-    int lastAngleDeg;
-    
     //Touches Var
     double beginTouchAngleRad_;
     int beginTouchAngleDeg_;
@@ -26,7 +24,6 @@
     int currentQuarter_;
     double total_angle_rad;
     int total_angle_deg; 
-    
     
     int indexOffset_;
     

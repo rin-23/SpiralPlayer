@@ -36,76 +36,72 @@
         self.segmentObjectsArray = [[NSMutableArray alloc] initWithCapacity:self.numOfSectionsTotal];
         [self drawWheel];     
     }
-    return self;
-    
+    return self;    
 }
 
 - (void) check {
     NSLog(@"check");
-    
 }
 
 - (void) drawWheel {
     self.container = [[UIView alloc] initWithFrame:self.frame];
     
     angleSizeRad = 2*M_PI/self.numOfSectionsVisible; 
-    angleSizeDeg = (int)((angleSizeRad *(180.0/M_PI)) + 0.5) ;
+    angleSizeDeg = (int)((angleSizeRad*(180.0/M_PI))+0.5) ;
     
-    int segmentwidth = self.frame.size.width/2;
-    int segmentheight = 2*(segmentwidth * tan(angleSizeRad/2));   
-   
-    int s = 5;
+    int segmentheight = self.frame.size.height/2;
+    int segmentwidth = 2*(segmentheight * tan(angleSizeRad/2));   
+    NSLog(@"Segment W:%i H:%i", segmentwidth, segmentheight);
+    //int s = 5;
     
-    for (int i = -s; i < self.numOfSectionsVisible - s; i++) {
-        int l = i + s;        
-
+    for (int i = 0; i < self.numOfSectionsVisible; i++) {
         SegmentObject* segObject = [[SegmentObject alloc] init];
-        segObject.image = [UIImage imageNamed:[NSString stringWithFormat:@"%i",l]];
+        segObject.image = [[UIImage imageNamed:[NSString stringWithFormat:@"%i", i]] retain];
+        segObject.index = i;
         [segmentObjectsArray_ addObject:segObject];
         [segObject release];
         
         SegmentView* im = [[SegmentView alloc] initWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
-        im.bgColor = [self randomColor];
-        im.layer.anchorPoint = CGPointMake(1.0f, 0.5f);
+        //im.bgColor = [self randomColor];
+        im.object = segObject;
+        im.layer.anchorPoint = CGPointMake(0.5f, 0.0f);
         im.layer.position = CGPointMake(container.bounds.size.width/2.0-container.frame.origin.x, 
                                         container.bounds.size.height/2.0-container.frame.origin.y); 
-        im.transform = CGAffineTransformMakeRotation(-angleSizeRad*i);
-        im.tag = l;
+        im.transform = CGAffineTransformMakeRotation(-angleSizeRad*(i + 1));
+        im.tag = i;
 
-        UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(segmentwidth/4, segmentheight/2 - 20, 40, 40)];
+        UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(segmentwidth/2, segmentheight/2, 40, 40)];
         label.backgroundColor = [UIColor clearColor];
-        label.text = [NSString stringWithFormat:@"%i", l];
+        label.text = [NSString stringWithFormat:@"%i", i];
         label.font = [UIFont boldSystemFontOfSize:25.0f];
         [im addSubview:label];
         [label release];
               
         [container addSubview:im];
-        [im release];
+        [im release];        
         
         [segmentViewsArray_ addObject:im];
     }    
         
     for (int i = self.numOfSectionsVisible; i < self.numOfSectionsTotal; i++) {
         SegmentObject* segObject = [[SegmentObject alloc] init];
-        segObject.image = [UIImage imageNamed:[NSString stringWithFormat:@"%i", i]];
+        segObject.image = [[UIImage imageNamed:[NSString stringWithFormat:@"%i", i]]retain];
+        segObject.index = i;
         [segmentObjectsArray_ addObject:segObject];
         [segObject release];
-    }
-        
+    }        
          
-    //container.userInteractionEnabled = NO;
     [self addSubview:container];
     [container release];
         
-    int i = self.numOfSectionsVisible-1;
     SegmentView* im = [[SegmentView alloc] initWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
-    im.bgColor = [UIColor blackColor].CGColor;
+    im.bgColor = [UIColor whiteColor].CGColor;
      
-    im.layer.anchorPoint = CGPointMake(1.0f, 0.5f);
+    im.layer.anchorPoint = CGPointMake(0.5f, 0.0f);
     im.layer.position = CGPointMake(container.bounds.size.width/2.0-container.frame.origin.x, 
                                     container.bounds.size.height/2.0-container.frame.origin.y); 
-    im.transform = CGAffineTransformMakeRotation(angleSizeRad*(i-1));
-    im.tag = i;
+    //im.transform = CGAffineTransformMakeRotation(angleSizeRad*(i-1));
+    //im.tag = i;
         
     [self addSubview:im];
     [im release];            
@@ -119,9 +115,9 @@
 }
 
 - (BOOL) beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
-    // 1 - Get touch position
+ 
     CGPoint touchPoint = [touch locationInView:self];
-    // 2 - Calculate distance from center
+    
     float x = touchPoint.x - container.center.x;
     float y = touchPoint.y - container.center.y;
     double cur_level_angle = atan((double)abs(y)/abs(x));
@@ -153,6 +149,7 @@
 }
 
 - (BOOL) continueTrackingWithTouch:(UITouch*)touch withEvent:(UIEvent*)event {
+    
     CGPoint pt = [touch locationInView:self];
     float x = pt.x  - container.center.x;
     float y = pt.y  - container.center.y;
@@ -179,47 +176,55 @@
     total_angle_rad = cur_level_angle + 2*currentLevel_*M_PI - beginTouchAngleRad_;  
     total_angle_deg = (int)(total_angle_rad *(180.0/M_PI) +0.5);
     
-    int newIndex = floor(total_angle_deg/angleSizeDeg);
+    int newIndex = floor(total_angle_rad/angleSizeRad);
     int indexDelta = newIndex - indexOffset_;
     NSLog(@"New Index:%i Old Index:%i", newIndex, indexOffset_);
-    
-    if (indexDelta > 0) {
+    NSLog(@"Degrees %i", total_angle_deg);    
+    if (indexDelta > 0) { 
         NSLog(@"Index Delta is POZITIVE");
-        for (int j = 0; j < indexDelta; j++) {
-            NSLog(@"Leading %i: %i", j, leading_);
-            SegmentView* segment = [segmentViewsArray_ objectAtIndex:(leading_ % self.numOfSectionsVisible)];
-            NSLog(@"Segment Tag:%i", segment.tag);
-            segment.bgColor = [self randomColor];
-            [segment setNeedsDisplay];
-            leading_ += 1;
-        }
-        // NSLog(@"************************************************");
+//        for (int j = 0; j < indexDelta; j++) {
+//            NSLog(@"Leading %i: %i", j, leading_);
+//            SegmentView* segment = [segmentViewsArray_ objectAtIndex:(leading_ % self.numOfSectionsVisible)];
+//            segment.object = [segmentObjectsArray_ objectAtIndex:leading_ + self.numOfSectionsVisible];
+//            NSLog(@"Segment Tag:%i Segment Object Index: %i", segment.tag, segment.object.index);
+//            [segment setNeedsDisplay];
+//            leading_ += 1;
+//        }
         indexOffset_ = newIndex;        
     } else if (indexDelta < 0) {
-        // NSLog(@"Index Delta is NEGATIVE");
+        NSLog(@"Index Delta is NEGATIVE");
+//        for (int j = 0; j < abs(indexDelta); j++) {
+//            NSLog(@"Leading %i: %i", j, leading_);
+//            SegmentView* segment = [segmentViewsArray_ objectAtIndex:(leading_ % self.numOfSectionsVisible)];
+//            segment.object = [segmentObjectsArray_ objectAtIndex:leading_ + self.numOfSectionsVisible];
+//            NSLog(@"Segment Tag:%i Segment Object Index: %i", segment.tag, segment.object.index);
+//            [segment setNeedsDisplay];
+//            leading_ -= 1;
+//        }
+       indexOffset_ = newIndex;  
     } else {
-        // NSLog(@"Index Delta is ZERO");
+        //NSLog(@"Index Delta is ZERO");
     }
         
     NSLog(@"Total: %i, Index: %i", total_angle_deg, indexOffset_);
     NSLog(@"************************************************");
     
-    //NSLog(@"%i - %f -  %f - %i", currentQuarter_, cur_level_angle * (180.0/M_PI), angleDifference, deg);
-
-    container.transform = CGAffineTransformRotate(startTransform, total_angle_rad);
-    
+    //container.transform = CGAffineTransformRotate(startTransform, total_angle_rad);
     return YES;
 }
 
 - (void) endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     NSLog(@"End Tracking");
+    if (leading_ + self.numOfSectionsVisible > 23) {
+        return;
+    }
     int k = (total_angle_deg/angleSizeDeg) + 1;
     total_angle_deg = k*angleSizeDeg - total_angle_deg;
     total_angle_rad = total_angle_deg * (M_PI/180.0);
     container.transform = CGAffineTransformRotate(container.transform, total_angle_rad);    
     SegmentView* segment = [segmentViewsArray_ objectAtIndex:(leading_ % self.numOfSectionsVisible)];
-    NSLog(@"Segment Tag:%i", segment.tag);
-    segment.bgColor = [self randomColor];
+    segment.object = [segmentObjectsArray_ objectAtIndex:leading_ + self.numOfSectionsVisible];
+    NSLog(@"Segment Tag:%i Segment Object Index: %i", segment.tag, segment.object.index);
     [segment setNeedsDisplay];
     leading_ += 1;
     indexOffset_ += 1;

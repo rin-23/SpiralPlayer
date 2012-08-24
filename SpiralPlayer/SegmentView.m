@@ -8,7 +8,7 @@
 
 #import "SegmentView.h"
 
-@implementation SegmentView
+@implementation SegmentView 
 
 @synthesize index, bgColor, image = image_, object = object_;
 
@@ -18,14 +18,13 @@
         // Initialization code
         self.bgColor = [UIColor whiteColor].CGColor;  
         self.backgroundColor = [UIColor clearColor];
-                
+               
         UISwipeGestureRecognizer *recognizer;
         recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)];
         recognizer.cancelsTouchesInView = YES;
         [recognizer setDirection:UISwipeGestureRecognizerDirectionRight];
         [self addGestureRecognizer:recognizer];
         [recognizer release];
-        
     }
     return self;
 }
@@ -49,19 +48,40 @@
 - (void)drawRect:(CGRect)rect {
     // Drawing code
     CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextSaveGState(context);
     CGContextSetRGBFillColor (context, 0, 0, 0, 0);
     CGContextFillRect(context, rect);
-    CGContextBeginPath (context);
+    CGContextBeginPath (context);               
     CGContextSetRGBStrokeColor(context, 1, 1, 1, 1);  
     CGContextSetLineWidth(context, 1);
-    CGContextMoveToPoint(context, rect.size.width, rect.size.height/2);
-    CGContextAddLineToPoint(context, 0, 0);
-    CGContextAddLineToPoint(context, 0, rect.size.height);
-    CGContextAddLineToPoint(context, rect.size.width, rect.size.height/2);
-    //CGContextSetRGBFillColor (context, 1, 1, 1, 1);
-    CGContextSetFillColorWithColor(context, self.bgColor);
+    CGContextMoveToPoint(context, rect.size.width/2, 0);
+    CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
+    //CGContextAddLineToPoint(context, 0, rect.size.height);
+    CGPoint p1 = CGPointMake(rect.size.width/2, 0);
+    CGPoint p2 = CGPointMake(rect.size.width/2, rect.size.height);
+    CGFloat radius = sqrtf(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
+    double totalAngle = 45.0 * (M_PI/180.0);
+    CGContextAddArc(context, rect.size.width/2, 0, radius-2, (M_PI - totalAngle)/2, (M_PI - totalAngle)/2 + totalAngle , 0);
+    
+    CGContextMoveToPoint(context, 0, rect.size.height);
+    CGContextAddLineToPoint(context, rect.size.width/2, 0);
+    CGContextSetRGBFillColor (context, 1, 1, 1, 1);
+    //CGContextSetFillColorWithColor(context, self.bgColor);
     CGContextFillPath(context);
     CGContextStrokePath(context);
+    
+    CGImageRef maskImage = CGBitmapContextCreateImage(context);
+       
+    CGContextRestoreGState(context);
+    
+    CGContextTranslateCTM(context, 0, rect.size.height);
+    CGContextScaleCTM(context, 1.0, -1.0);
+   
+    CGContextClipToMask(context, rect, maskImage); 
+    CGContextDrawImage(context, rect, self.object.image.CGImage);
+    CGImageRelease(maskImage);
+
 }
 
 - (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent *)event {
