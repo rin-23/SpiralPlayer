@@ -18,7 +18,7 @@
         // Initialization code
         self.bgColor = [UIColor whiteColor].CGColor;  
         self.backgroundColor = [UIColor clearColor];
-               
+                
         UISwipeGestureRecognizer *recognizer;
         recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)];
         recognizer.cancelsTouchesInView = YES;
@@ -27,6 +27,10 @@
         [recognizer release];
     }
     return self;
+}
+
+- (int) index {
+    return self.object.index;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
@@ -84,6 +88,17 @@
 
 }
 
+- (NSComparisonResult) compareIndexes:(SegmentView*)otherEvenet {
+    if (self.index < otherEvenet.index) {
+        return NSOrderedAscending;
+    } else if (self.index> otherEvenet.index) {
+        return NSOrderedDescending;
+    } else {
+        return NSOrderedSame;
+    }
+}
+
+
 - (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent *)event {
     [super touchesBegan:touches withEvent:event];
 }
@@ -95,6 +110,7 @@
 - (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent *)event {
     [super touchesEnded:touches withEvent:event];
 }
+
 
 
 @end

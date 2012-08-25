@@ -10,24 +10,30 @@
 
 @interface ZhengControl : UIControl {
     
-    NSMutableArray* segmentViewsArray_;
+    NSMutableArray* slidingWindow_;
     NSMutableArray* segmentObjectsArray_;
 
     //Draw Wheel Vars
-    double angleSizeRad;
-    int angleSizeDeg;
-
+    double anglePerSector_;
+    
     //Touches Var
     double beginTouchAngleRad_;
-    int beginTouchAngleDeg_;
     int currentLevel_;
     int currentQuarter_;
-    double total_angle_rad;
-    int total_angle_deg; 
+    
+    double current_rad; 
+    double total_rad;  
     
     int indexOffset_;
-    
     int leading_;
+    
+    //Window indexes and sizes    
+    double windowAngleSpanRad_;
+    int windowStartIndex_;
+    int windowEndIndex_;
+    int windowSize_;
+    
+    
    
 }
 
@@ -35,6 +41,6 @@
 @property (nonatomic, assign) int numOfSectionsTotal;
 @property (nonatomic, retain) UIView* container;
 @property (nonatomic, assign) CGAffineTransform startTransform;
-@property (nonatomic, retain) NSMutableArray* segmentViewsArray;
+@property (nonatomic, retain) NSMutableArray* slidingWindow;
 @property (nonatomic, retain) NSMutableArray* segmentObjectsArray;
 @end

@@ -13,9 +13,11 @@
     SegmentObject* object_;    
 }
 
-@property (nonatomic, assign) int index;
+@property (nonatomic, readonly) int index;
 @property (nonatomic, assign) CGColorRef bgColor;
 @property (nonatomic, retain) UIImage* image;
 @property (nonatomic, retain) SegmentObject* object;
+
+- (NSComparisonResult) compareIndexes:(SegmentView*)otherEvenet;
 
 @end
