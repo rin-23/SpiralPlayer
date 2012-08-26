@@ -47,6 +47,7 @@
 
 - (void) drawWheel {
     self.container = [[UIView alloc] initWithFrame:self.frame];
+    self.container.userInteractionEnabled = NO;
     
     anglePerSector_ = 2*M_PI/self.numOfSectionsVisible;
     windowAngleSpanRad_ = anglePerSector_ * (self.numOfSectionsTotal - self.numOfSectionsVisible);
@@ -95,6 +96,7 @@
     [container release];
         
     SegmentView* im = [[SegmentView alloc] initWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
+    im.userInteractionEnabled = NO;
     im.bgColor = [UIColor whiteColor].CGColor;
     im.layer.anchorPoint = CGPointMake(0.5f, 0.0f);
     im.layer.position = CGPointMake(container.bounds.size.width/2.0-container.frame.origin.x, 
@@ -146,12 +148,14 @@
 }
 
 - (BOOL) continueTrackingWithTouch:(UITouch*)touch withEvent:(UIEvent*)event {
-    
     CGPoint pt = [touch locationInView:self];
     float x = pt.x  - container.center.x;
     float y = pt.y  - container.center.y;
     double cur_level_angle = atan((double)abs(y)/abs(x));
     
+    int oldQuarter = currentQuarter_;
+    int oldLevel = currentLevel_;
+    double oldcurrentrad = current_rad;
     if  (x >= 0 && y >= 0) {
         cur_level_angle = cur_level_angle; //I quarter - do nothing.
         if (currentQuarter_ == 4) currentLevel_ += 1;
@@ -176,7 +180,10 @@
     //check if we havent violated size constraints
     if (current_rad < 0 || current_rad > windowAngleSpanRad_) {
         NSLog(@"        TRIED TO MOVE OUT OF BOUNDS");
-        current_rad = total_rad;
+        NSLog(@"        TotalDeg:%i", [self toDeg:current_rad]);
+        current_rad = oldcurrentrad;
+        currentLevel_ = oldLevel;
+        currentQuarter_ = oldQuarter;
         return NO; 
     } 
     
@@ -272,20 +279,20 @@
 
 
 - (void) touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event {
-    //NSLog(@"Touch Began For Container");
-    UITouch *touch = [[event allTouches] anyObject];
-    [self beginTrackingWithTouch:touch withEvent:event];    
+    [super touchesBegan:touches withEvent:event];   
 }
 
 - (void) touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event {
-    //NSLog(@"Touch Continue For Container");
+    NSLog(@"Touch Continue For Container");
     UITouch *touch = [[event allTouches] anyObject];
-    [self continueTrackingWithTouch:touch withEvent:event];   
+    [super touchesMoved:touches withEvent:event];
 }
 
 - (void) touchesEnded:(NSSet*)touches withEvent:(UIEvent *)event {
+    NSLog(@"Touch Ended For Container");
     UITouch *touch = [[event allTouches] anyObject];
-    [self endTrackingWithTouch:touch withEvent:event];  
+    total_rad = current_rad;
+    [super touchesEnded:touches withEvent:event];
 
 }
 

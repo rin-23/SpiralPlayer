@@ -97,19 +97,19 @@
         return NSOrderedSame;
     }
 }
-
-
-- (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent *)event {
-    [super touchesBegan:touches withEvent:event];
-}
-
-- (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent *)event {
-    [super touchesMoved:touches withEvent:event];
-}
-
-- (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent *)event {
-    [super touchesEnded:touches withEvent:event];
-}
+//
+//
+//- (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent *)event {
+//    [super touchesBegan:touches withEvent:event];
+//}
+//
+//- (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent *)event {
+//    [super touchesMoved:touches withEvent:event];
+//}
+//
+//- (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent *)event {
+//    [super touchesEnded:touches withEvent:event];
+//}
 
 
 
