@@ -69,6 +69,7 @@
 		156EC35215EB62F200D3EAEA /* segmentData.txt in Resources */ = {isa = PBXBuildFile; fileRef = 156EC35115EB62F200D3EAEA /* segmentData.txt */; };
 		156EC35515EB6DAD00D3EAEA /* CoverSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 156EC35415EB6DAC00D3EAEA /* CoverSegment.m */; };
 		156EC35B15EB7CB400D3EAEA /* SegmentAudioUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 156EC35A15EB7CB300D3EAEA /* SegmentAudioUnit.m */; };
+		156EC35E15EBBE6E00D3EAEA /* PlayListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 156EC35D15EBBE6E00D3EAEA /* PlayListView.m */; };
 		1577830F15CA76A20029F11A /* ExperimentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1577830E15CA76A20029F11A /* ExperimentView.m */; };
 		1577831115CA78C30029F11A /* florence_machine_cover.png in Resources */ = {isa = PBXBuildFile; fileRef = 1577831015CA78C20029F11A /* florence_machine_cover.png */; };
 		157D3F7B15A7D216009064CF /* choose_song_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 157D3F7A15A7D216009064CF /* choose_song_btn.png */; };
@@ -196,6 +197,8 @@
 		156EC35415EB6DAC00D3EAEA /* CoverSegment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoverSegment.m; sourceTree = "<group>"; };
 		156EC35915EB7CB300D3EAEA /* SegmentAudioUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentAudioUnit.h; sourceTree = "<group>"; };
 		156EC35A15EB7CB300D3EAEA /* SegmentAudioUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentAudioUnit.m; sourceTree = "<group>"; };
+		156EC35C15EBBE6D00D3EAEA /* PlayListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayListView.h; sourceTree = "<group>"; };
+		156EC35D15EBBE6E00D3EAEA /* PlayListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayListView.m; sourceTree = "<group>"; };
 		1577830D15CA76A10029F11A /* ExperimentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExperimentView.h; sourceTree = "<group>"; };
 		1577830E15CA76A20029F11A /* ExperimentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExperimentView.m; sourceTree = "<group>"; };
 		1577831015CA78C20029F11A /* florence_machine_cover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = florence_machine_cover.png; sourceTree = "<group>"; };
@@ -549,6 +552,8 @@
 				156EC35415EB6DAC00D3EAEA /* CoverSegment.m */,
 				156EC35915EB7CB300D3EAEA /* SegmentAudioUnit.h */,
 				156EC35A15EB7CB300D3EAEA /* SegmentAudioUnit.m */,
+				156EC35C15EBBE6D00D3EAEA /* PlayListView.h */,
+				156EC35D15EBBE6E00D3EAEA /* PlayListView.m */,
 			);
 			name = Zheng;
 			sourceTree = "<group>";
@@ -715,6 +720,7 @@
 				156EC33415EB1E9600D3EAEA /* ContainerView.m in Sources */,
 				156EC35515EB6DAD00D3EAEA /* CoverSegment.m in Sources */,
 				156EC35B15EB7CB400D3EAEA /* SegmentAudioUnit.m in Sources */,
+				156EC35E15EBBE6E00D3EAEA /* PlayListView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -54,12 +54,12 @@
         self.dataPoints = [pointsDictionary objectForKey:@"dataPoints"];
         self.drawingPoints =[pointsDictionary objectForKey:@"drawingPoints"];
                 
-        
-        UISwipeGestureRecognizer *recognizer;
-        recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)];
-        [recognizer setDirection:UISwipeGestureRecognizerDirectionUp];
-        [self addGestureRecognizer:recognizer];
-        [recognizer release];
+//        
+//        UISwipeGestureRecognizer *recognizer;
+//        recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)];
+//        [recognizer setDirection:UISwipeGestureRecognizerDirectionUp];
+//        [self addGestureRecognizer:recognizer];
+//        [recognizer release];
         
 
     }
@@ -74,19 +74,19 @@
 - (double) toRad:(int) deg { return deg*(M_PI/180.0); }
 - (int) toDeg:(double) rad { return (int)(rad*(180.0/M_PI) + 0.5); }
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    NSLog(@"Gesture 1");
-    return YES;
-}
+//- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+//    NSLog(@"Gesture 1");
+//    return YES;
+//}
+//
+//- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+//    NSLog(@"Gesture 2");
+//    return YES;
+//}
 
-- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    NSLog(@"Gesture 2");
-    return YES;
-}
-
-- (void) handleSwipeFrom:(UISwipeGestureRecognizer *)recognizer {
-    NSLog(@"Swipe received 2.");
-}
+//- (void) handleSwipeFrom:(UISwipeGestureRecognizer *)recognizer {
+//    NSLog(@"Swipe received 2.");
+//}
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

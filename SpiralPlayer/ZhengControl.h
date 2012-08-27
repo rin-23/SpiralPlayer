@@ -10,6 +10,7 @@
 #import "ContainerView.h"
 #import "SegmentView.h"
 #import "CoverSegment.h"
+#import "PlayListView.h"
 @interface ZhengControl : UIControl {
     NSMutableArray* slidingWindow_;
     NSMutableArray* segmentObjectsArray_;
@@ -35,6 +36,7 @@
     
     ContainerView* container_;
     CoverSegment* hidingSegment_;
+    PlayListView* playlist_;
 }
 
 @property (nonatomic, assign) int numOfSectionsVisible;

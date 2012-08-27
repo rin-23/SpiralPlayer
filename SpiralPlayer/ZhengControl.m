@@ -32,6 +32,15 @@
     self = [super initWithFrame:frame];
     if (self) {
         container_ = [[ContainerView alloc] initWithFrame:self.frame];
+        [self addSubview:container_];
+        [container_ release];
+        
+        playlist_  =[[PlayListView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width/3, frame.size.height/3)];
+        playlist_.center = CGPointMake(frame.size.width/2, frame.size.height/2);
+        playlist_.backgroundColor = [UIColor clearColor];
+        [self addSubview:playlist_];
+        [playlist_ release];
+        
         [self loadAlbums];
     }
     return self;    
@@ -40,8 +49,6 @@
 - (void) loadAlbums {
     self.numOfSectionsVisible = 8;
     self.numOfSectionsTotal = 24;
-    self.slidingWindow = [[NSMutableArray alloc] initWithCapacity:self.numOfSectionsVisible];
-    self.segmentObjectsArray = [[NSMutableArray alloc] initWithCapacity:self.numOfSectionsTotal];
     
     current_rad = 0.0f;
     total_rad = 0.0f;
@@ -77,10 +84,14 @@
         [unit.segmentView removeFromSuperview];
     }
     
+    self.slidingWindow = nil;
+    self.segmentObjectsArray = nil;
+    
     self.slidingWindow = [[NSMutableArray alloc] initWithCapacity:self.numOfSectionsVisible];
     self.segmentObjectsArray = [[NSMutableArray alloc] initWithCapacity:self.numOfSectionsTotal];
     
     container_.transform = CGAffineTransformIdentity;
+    anglePerSector_ = 2*M_PI/self.numOfSectionsVisible;
     windowAngleSpanRad_ = anglePerSector_ * (self.numOfSectionsTotal - self.numOfSectionsVisible);
     
     int segmentheight = self.frame.size.height/2;
@@ -104,7 +115,16 @@
         
         SegmentView* im = audioUnit.segmentView;
         im.userInteractionEnabled = YES;
+        
+        
+        UISwipeGestureRecognizer *recognizer;
+        recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)];
+        [recognizer setDirection:UISwipeGestureRecognizerDirectionUp];
+        [im addGestureRecognizer:recognizer];
+        [recognizer release];        
+        
         im.object = segObject;
+        
         im.layer.anchorPoint = CGPointMake(0.5f, 0.0f);
         im.layer.position = CGPointMake(container_.bounds.size.width/2.0-container_.frame.origin.x, 
                                         container_.bounds.size.height/2.0-container_.frame.origin.y); 
@@ -116,6 +136,8 @@
         [slidingWindow_ addObject:audioUnit];
     }    
     
+    [self bringSubviewToFront:playlist_];
+    
     for (int i = self.numOfSectionsVisible; i < self.numOfSectionsTotal; i++) {
         SegmentObject* segObject = [[SegmentObject alloc] init];
         segObject.image = [[UIImage imageNamed:[NSString stringWithFormat:@"%i", i]]retain];
@@ -123,16 +145,30 @@
         [segmentObjectsArray_ addObject:segObject];
         [segObject release];
     }        
+    
+     hidingSegment_.userInteractionEnabled = YES;
    
 }
 
+- (void) handleSwipeFrom:(UIGestureRecognizer *)recognizer {
+    SegmentView* segView = (SegmentView*)recognizer.view;
+    [playlist_ addSong:segView];    
+    
+    NSLog(@"Swipe received 2.");
+}
+
 - (void) drawWheel {
-    if (container_ !=nil) {
-        [container_ removeFromSuperview];
-        [hidingSegment_ removeFromSuperview];
+    for (SegmentAudioUnit* unit in self.slidingWindow) {
+        [unit.segmentView removeFromSuperview];
     }
+    
+    self.slidingWindow = nil;
+    self.segmentObjectsArray = nil;
+    self.slidingWindow = [[NSMutableArray alloc] initWithCapacity:self.numOfSectionsVisible];
+    self.segmentObjectsArray = [[NSMutableArray alloc] initWithCapacity:self.numOfSectionsTotal];
   
-    container_.userInteractionEnabled = YES;
+    container_.transform = CGAffineTransformIdentity;
+   
     anglePerSector_ = 2*M_PI/self.numOfSectionsVisible;
     windowAngleSpanRad_ = anglePerSector_ * (self.numOfSectionsTotal - self.numOfSectionsVisible);
         
@@ -189,15 +225,29 @@
         [segmentObjectsArray_ addObject:segObject];
         [segObject release];
     }                 
-    [self addSubview:container_];
-    [container_ release];
+  
+       
+    if (hidingSegment_ == nil) {
+        hidingSegment_ = [[CoverSegment alloc] initWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
+        UITapGestureRecognizer* goUp = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(levelUp)];
+        goUp.numberOfTapsRequired = 2;
+
+        [hidingSegment_ addGestureRecognizer:goUp];
+        [goUp release];        
+        hidingSegment_.layer.anchorPoint = CGPointMake(0.5f, 0.0f);
+        hidingSegment_.layer.position = CGPointMake(container_.bounds.size.width/2.0-container_.frame.origin.x, 
+                                                    container_.bounds.size.height/2.0-container_.frame.origin.y); 
+        [self addSubview:hidingSegment_];
+        [hidingSegment_ release];           
+    }
+    hidingSegment_.userInteractionEnabled = NO;
+    
         
-    hidingSegment_ = [[CoverSegment alloc] initWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
-    hidingSegment_.layer.anchorPoint = CGPointMake(0.5f, 0.0f);
-    hidingSegment_.layer.position = CGPointMake(container_.bounds.size.width/2.0-container_.frame.origin.x, 
-                                    container_.bounds.size.height/2.0-container_.frame.origin.y); 
-    [self addSubview:hidingSegment_];
-    [hidingSegment_ release];            
+    [self bringSubviewToFront:playlist_];
+}
+
+-(void)levelUp {
+    [self loadAlbums];    
 }
 
 -(void) segmentPressed:(UIGestureRecognizer*)gesture {
