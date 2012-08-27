@@ -11,6 +11,8 @@
 @interface SegmentView : UIButton <UIGestureRecognizerDelegate>{
     UIImage* image_;
     SegmentObject* object_;    
+    NSMutableArray* dataPoints_;
+    CGImageRef maskImage;
 }
 
 @property (nonatomic, readonly) int index;

@@ -8,8 +8,8 @@
 
 #import "ZhengControl.h"
 #import <QuartzCore/QuartzCore.h>
-#import "SegmentView.h"
 #include <stdlib.h>
+#import "Constants.h"
 #include "SegmentObject.h"
 #define ARC4RANDOM_MAX      0x100000000
 
@@ -18,33 +18,111 @@
 - (CGColorRef) randomColor;
 - (int) toDeg:(double)rad;
 - (double) toRad:(int)deg;
+-(void)loadAlbums;
+-(void)loadSongs;
+-(void)drawSongsWheel;
 @end
 
 @implementation ZhengControl 
 
-@synthesize numOfSectionsVisible, startTransform, numOfSectionsTotal, slidingWindow = slidingWindow_, segmentObjectsArray = segmentObjectsArray_;
+@synthesize numOfSectionsVisible, startTransform, numOfSectionsTotal, slidingWindow = slidingWindow_, segmentObjectsArray = segmentObjectsArray_, audioFilesArray = audioFilesArray_;
 
 -(id) initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.numOfSectionsVisible = 8;
-        self.numOfSectionsTotal = 24;
-        self.slidingWindow = [[NSMutableArray alloc] initWithCapacity:self.numOfSectionsVisible];
-        self.segmentObjectsArray = [[NSMutableArray alloc] initWithCapacity:self.numOfSectionsTotal];
-        
-        current_rad = 0.0f;
-        total_rad = 0.0f;
-        leading_ = 0;
-        
-        windowSize_ = self.numOfSectionsVisible;
-        windowStartIndex_ = 0;
-        windowEndIndex_ = windowStartIndex_ + windowSize_ - 1;    
-        [self drawWheel];     
+        [self loadAlbums];
     }
     return self;    
 }
 
+- (void) loadAlbums {
+    self.numOfSectionsVisible = 8;
+    self.numOfSectionsTotal = 24;
+    self.slidingWindow = [[NSMutableArray alloc] initWithCapacity:self.numOfSectionsVisible];
+    self.segmentObjectsArray = [[NSMutableArray alloc] initWithCapacity:self.numOfSectionsTotal];
+    
+    current_rad = 0.0f;
+    total_rad = 0.0f;
+    
+    
+    currentLevel_ = 0;
+    currentQuarter_ = 0;
+        
+    windowSize_ = self.numOfSectionsVisible;
+    windowStartIndex_ = 0;
+    windowEndIndex_ = windowStartIndex_ + windowSize_ - 1;    
+    [self drawWheel];  
+}
+
+-(void) loadSongs{
+    self.numOfSectionsVisible = 8;
+    self.numOfSectionsTotal = 12;
+       
+    current_rad = 0.0f;
+    total_rad = 0.0f;
+    
+    currentLevel_ = 0;
+    currentQuarter_ = 0;
+           
+    windowSize_ = self.numOfSectionsVisible;
+    windowStartIndex_ = 0;
+    windowEndIndex_ = windowStartIndex_ + windowSize_ - 1;    
+    [self drawSongsWheel];  
+}
+
+- (void) drawSongsWheel {    
+    for (SegmentView* view in self.slidingWindow) {
+        [view removeFromSuperview];
+    }
+    
+    self.slidingWindow = [[NSMutableArray alloc] initWithCapacity:self.numOfSectionsVisible];
+    self.segmentObjectsArray = [[NSMutableArray alloc] initWithCapacity:self.numOfSectionsTotal];
+    
+    container_.transform = CGAffineTransformIdentity;
+    windowAngleSpanRad_ = anglePerSector_ * (self.numOfSectionsTotal - self.numOfSectionsVisible);
+    
+    int segmentheight = self.frame.size.height/2;
+    int segmentwidth = 2*(segmentheight * tan(anglePerSector_/2));   
+    NSLog(@"Segment W:%i H:%i", segmentwidth, segmentheight);
+    
+    for (int i = 0; i < self.numOfSectionsVisible; i++) {
+        SegmentObject* segObject = [[SegmentObject alloc] init];
+        segObject.type = kSegmentTypeSong;
+        segObject.image = [[UIImage imageNamed:[NSString stringWithFormat:@"%i", i]] retain];
+        segObject.index = i;
+        segObject.audioName = [NSString stringWithFormat:@"%i", i];
+        [segmentObjectsArray_ addObject:segObject];
+        [segObject release];
+        
+        SegmentView* im = [[SegmentView alloc] initWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
+        im.userInteractionEnabled = YES;
+        im.object = segObject;
+        im.layer.anchorPoint = CGPointMake(0.5f, 0.0f);
+        im.layer.position = CGPointMake(container_.bounds.size.width/2.0-container_.frame.origin.x, 
+                                        container_.bounds.size.height/2.0-container_.frame.origin.y); 
+        im.transform = CGAffineTransformMakeRotation(-anglePerSector_*(i + 1));
+        
+        [container_ addSubview:im]; 
+        [im release];        
+        
+        [slidingWindow_ addObject:im];
+    }    
+    
+    for (int i = self.numOfSectionsVisible; i < self.numOfSectionsTotal; i++) {
+        SegmentObject* segObject = [[SegmentObject alloc] init];
+        segObject.image = [[UIImage imageNamed:[NSString stringWithFormat:@"%i", i]]retain];
+        segObject.index = i;
+        [segmentObjectsArray_ addObject:segObject];
+        [segObject release];
+    }        
+   
+}
+
 - (void) drawWheel {
+    if (container_ !=nil) {
+        [container_ removeFromSuperview];
+        [hidingSegment_ removeFromSuperview];
+    }
     container_ = [[ContainerView alloc] initWithFrame:self.frame];
     container_.userInteractionEnabled = YES;
     anglePerSector_ = 2*M_PI/self.numOfSectionsVisible;
@@ -56,6 +134,7 @@
    
     for (int i = 0; i < self.numOfSectionsVisible; i++) {
         SegmentObject* segObject = [[SegmentObject alloc] init];
+        segObject.type = kSegmentTypeAbum;
         segObject.image = [[UIImage imageNamed:[NSString stringWithFormat:@"%i", i]] retain];
         segObject.index = i;
         [segmentObjectsArray_ addObject:segObject];
@@ -65,8 +144,8 @@
         im.userInteractionEnabled = YES;
         //im.bgColor = [self randomColor];
         UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc]
-                                       initWithTarget:self action:@selector(segmentPressed)];
-        tap.numberOfTapsRequired = 1;
+                                       initWithTarget:self action:@selector(segmentPressed:)];
+        tap.numberOfTapsRequired = 2;
         [im addGestureRecognizer:tap];
         [tap release];
         
@@ -76,15 +155,13 @@
                                         container_.bounds.size.height/2.0-container_.frame.origin.y); 
         im.transform = CGAffineTransformMakeRotation(-anglePerSector_*(i + 1));
   
-        UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(segmentwidth/2, segmentheight/2, 40, 40)];
-        label.backgroundColor = [UIColor redColor];
-        label.text = [NSString stringWithFormat:@"%i", i];
-        label.font = [UIFont boldSystemFontOfSize:25.0f];
-        [im addSubview:label];
-        [label release];
-        
-        
-        
+//        UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(segmentwidth/2, segmentheight/2, 40, 40)];
+//        label.backgroundColor = [UIColor redColor];
+//        label.text = [NSString stringWithFormat:@"%i", i];
+//        label.font = [UIFont boldSystemFontOfSize:25.0f];
+//        [im addSubview:label];
+//        [label release];
+             
         [container_ addSubview:im]; 
         [im release];        
         
@@ -97,28 +174,30 @@
         segObject.index = i;
         [segmentObjectsArray_ addObject:segObject];
         [segObject release];
-    }        
-         
+    }                 
     [self addSubview:container_];
     [container_ release];
         
-    SegmentView* im = [[SegmentView alloc] initWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
-    im.userInteractionEnabled = NO;
-    im.bgColor = [UIColor whiteColor].CGColor;
-    im.layer.anchorPoint = CGPointMake(0.5f, 0.0f);
-    im.layer.position = CGPointMake(container_.bounds.size.width/2.0-container_.frame.origin.x, 
+    hidingSegment_ = [[SegmentView alloc] initWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
+    hidingSegment_.userInteractionEnabled = NO;
+    hidingSegment_.bgColor = [UIColor whiteColor].CGColor;
+    hidingSegment_.layer.anchorPoint = CGPointMake(0.5f, 0.0f);
+    hidingSegment_.layer.position = CGPointMake(container_.bounds.size.width/2.0-container_.frame.origin.x, 
                                     container_.bounds.size.height/2.0-container_.frame.origin.y); 
-    [self addSubview:im];
-    [im release];            
-}
--(void)fuck{
-    NSLog(@"FUCK");
-    
+    [self addSubview:hidingSegment_];
+    [hidingSegment_ release];            
 }
 
--(void) segmentPressed {
+-(void) segmentPressed:(UIGestureRecognizer*)gesture {
     NSLog(@"Segement Pressed");
-    
+    UITapGestureRecognizer* tapGesture = (UITapGestureRecognizer*) gesture;
+    SegmentView* segView = (SegmentView*)tapGesture.view;
+    for (SegmentView* view in slidingWindow_) {
+        if ([view isEqual:segView]) {
+            NSLog(@"Segment Index %i", view.index);
+            [self loadSongs];
+        }
+    }
 }
 
 - (double) toRad:(int) deg { return deg*(M_PI/180.0); }
@@ -158,7 +237,6 @@
     startTransform = container_.transform;
     
     currentLevel_ = 0;
-    indexOffset_ = 0;
     NSLog(@"BEGAIN TRACKING: Total Deg:%i BeginDeg:%i Quarter:%i Level:%i", [self toDeg:total_rad], [self toDeg:beginTouchAngleRad_], currentQuarter_, currentLevel_);
     return YES;
 }
@@ -235,40 +313,6 @@
         NSLog(@"        INDEX HASN'T CHANGED");
     }
     
-    
-    
-//    //int newIndex = floor(total_rad/anglePerSector_);
-//    //int indexDelta = newIndex - indexOffset_;
-//    //NSLog(@"        TotalDeg:%i NewIndex:%i OldIndex:%i", [self toDeg:current_rad], newIndex, indexOffset_);
-//  
-//    if (indexDelta > 0) { 
-//        NSLog(@"        Index Delta is POZITIVE");
-////        for (int j = 0; j < indexDelta; j++) {
-////            NSLog(@"Leading %i: %i", j, leading_);
-////            SegmentView* segment = [segmentViewsArray_ objectAtIndex:(leading_ % self.numOfSectionsVisible)];
-////            segment.object = [segmentObjectsArray_ objectAtIndex:leading_ + self.numOfSectionsVisible];
-////            NSLog(@"Segment Tag:%i Segment Object Index: %i", segment.tag, segment.object.index);
-////            [segment setNeedsDisplay];
-////            leading_ += 1;
-////        }
-//        //indexOffset_ = newIndex;        
-//
-//    } else if (indexDelta < 0) {
-//        NSLog(@"        Index Delta is NEGATIVE");
-////        for (int j = 0; j < abs(indexDelta); j++) {
-////            NSLog(@"Leading %i: %i", j, leading_);
-////            SegmentView* segment = [segmentViewsArray_ objectAtIndex:(leading_ % self.numOfSectionsVisible)];
-////            segment.object = [segmentObjectsArray_ objectAtIndex:leading_ + self.numOfSectionsVisible];
-////            NSLog(@"Segment Tag:%i Segment Object Index: %i", segment.tag, segment.object.index);
-////            [segment setNeedsDisplay];
-////            leading_ -= 1;
-////        }
-//       //indexOffset_ = newIndex;  
-//    } else {
-//        //NSLog(@"Index Delta is ZERO");
-//    }
-//        
-//    //NSLog(@"Total: %i, Index: %i", total_angle_deg, indexOffset_);
     NSLog(@"        ************************************************");
 //    
     container_.transform = CGAffineTransformRotate(startTransform, current);
@@ -278,19 +322,6 @@
 - (void) endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
       NSLog(@"END TRACKING");
       total_rad = current_rad;
-//    if (leading_ + self.numOfSectionsVisible > 23) {
-//        return;
-//    }
-//    int k = (total_angle_deg/angleSizeDeg) + 1;
-//    total_angle_deg = k*angleSizeDeg - total_angle_deg;
-//    total_angle_rad = total_angle_deg * (M_PI/180.0);
-//    container.transform = CGAffineTransformRotate(container.transform, total_angle_rad);    
-//    SegmentView* segment = [segmentViewsArray_ objectAtIndex:(leading_ % self.numOfSectionsVisible)];
-//    segment.object = [segmentObjectsArray_ objectAtIndex:leading_ + self.numOfSectionsVisible];
-//    NSLog(@"Segment Tag:%i Segment Object Index: %i", segment.tag, segment.object.index);
-//    [segment setNeedsDisplay];
-//    leading_ += 1;
-//    indexOffset_ += 1;
 }
 
 

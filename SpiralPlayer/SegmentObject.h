@@ -11,9 +11,13 @@
 @interface SegmentObject : NSObject {    
     UIImage* image_;      
     int index_;
+    int type_;
+    NSString* audioName_;
 }
 
 @property (nonatomic, retain) UIImage* image;
 @property (nonatomic, assign) int index;
+@property (nonatomic, assign) int type;
+@property (nonatomic, assign) NSString* audioName;
 
 @end

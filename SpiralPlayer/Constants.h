@@ -30,4 +30,7 @@
 #define kX_NUM_OF_CELLS 32
 #define kY_NUM_OF_CELLS 32
 
+
+#define kSegmentTypeAbum 1
+#define kSegmentTypeSong 2
 #endif

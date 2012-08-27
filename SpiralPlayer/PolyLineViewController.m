@@ -21,27 +21,27 @@
         [audioPlayer_ loadNextAudioAsset:audioUrl];
         [audioPlayer_.player setNumberOfLoops:10];
 
-        CGSize polyLineSize = CGSizeMake(200, 768/2);
+        CGSize polyLineSize = CGSizeMake(730/2, 730/2);
         
-        curveControl_ = [[PolyLineControl alloc] initWithFrame:CGRectMake(0, 0, polyLineSize.width, polyLineSize.height) dataPointsFile:@"sineWaveDataPoints" ofType:@"txt"];     
+        curveControl_ = [[PolyLineControl alloc] initWithFrame:CGRectMake(0, 0, polyLineSize.width, polyLineSize.height) dataPointsFile:@"segmentData" ofType:@"txt"];     
         curveControl_.tracklength = [audioPlayer_.player duration];
         NSLog(@"Track Duration: %f", curveControl_.tracklength);
         [curveControl_ addTarget:self action:@selector(curveValueChanged) forControlEvents:UIControlEventValueChanged];
         [self.view addSubview:curveControl_];
         [curveControl_ release];
         
-        PolyLineControl* polyLineControl = [[PolyLineControl alloc] initWithFrame:CGRectMake(0, 0, polyLineSize.width, polyLineSize.height) dataPointsFile:@"sineWaveDataPoints" ofType:@"txt"];
-        [self.view addSubview:polyLineControl];
-        [polyLineControl release];
-        
+//        PolyLineControl* polyLineControl = [[PolyLineControl alloc] initWithFrame:CGRectMake(0, 0, polyLineSize.width, polyLineSize.height) dataPointsFile:@"segmentData" ofType:@"txt"];
+//        [self.view addSubview:polyLineControl];
+//        [polyLineControl release];
+//        
         CATransform3D moveToCenter = CATransform3DMakeTranslation(768/2 - polyLineSize.width/2, 1024/2, 0);
         CATransform3D rotate = CATransform3DRotate(moveToCenter, 30*(M_PI/180), 0, 0, 1);
                 
         curveControl_.layer.transform = moveToCenter;
-        
-        polyLineControl.layer.anchorPoint = CGPointMake(0.5, 0.0);
-        polyLineControl.layer.transform = rotate;
-        [polyLineControl correctLayerPosition];
+//        
+//        polyLineControl.layer.anchorPoint = CGPointMake(0.5, 0.0);
+//        polyLineControl.layer.transform = rotate;
+//        [polyLineControl correctLayerPosition];
         
        //[audioPlayer_.player play];
     }

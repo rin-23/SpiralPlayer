@@ -10,16 +10,14 @@
 
 @implementation PizzaControl
 
-@synthesize radiusStep = radiusStep_, maxArcLength = maxArclength_, angleDeg = angleDeg_, angleRad = angleRad_;
+@synthesize angleDeg = angleDeg_, angleRad = angleRad_;
 
 - (id) initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
-    if (self) {
-        
-        self.maxArcLength = 45000;
-        self.radiusStep = 10 ;
-        self.angleDeg = 30;
-        self.angleRad = self.angleDeg * (M_PI/180);   
+    if (self) {        
+        self.angleDeg = 45;
+        self.angleRad = self.angleDeg * (M_PI/180);
+        dataPoints_ = [[NSMutableArray alloc] init];
     }
     
     return self;
@@ -33,13 +31,13 @@
     CGImageRef maskImage;
     
     //get the documents directory:
-//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//    NSString *documentsDirectory = [paths objectAtIndex:0];
-//    NSString *fileName = [NSString stringWithFormat:@"%@/newfile.txt", documentsDirectory];
-//    NSString *content = @"";
-//    [content writeToFile:fileName atomically:NO encoding:NSStringEncodingConversionAllowLossy error:nil];
-//    NSFileHandle *myHandle = [NSFileHandle fileHandleForUpdatingAtPath:fileName];
-
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *fileName = [NSString stringWithFormat:@"%@/newfile.txt", documentsDirectory];
+    NSString *content = @"";
+    [content writeToFile:fileName atomically:NO encoding:NSStringEncodingConversionAllowLossy error:nil];
+    NSFileHandle *myHandle = [NSFileHandle fileHandleForUpdatingAtPath:fileName];
+    
     /**************************BEGIN CREATE A PIZZA LAYER MASK******************/
     int height = rect.size.height/2;
     int width = 2*(height * tan(self.angleRad/2));   
@@ -47,8 +45,8 @@
     
     CGContextSaveGState(context);
     
-    //    CGContextSetRGBFillColor (context, 0, 0, 0, 0);
-    //    CGContextFillRect(context, rect);
+    CGContextSetRGBFillColor (context, 1, 0, 0, 1);
+    CGContextFillRect(context, rect);
     
     CGLayerRef pizzaSliceLayer = CGLayerCreateWithContext(context, layerSize, NULL); 
     CGContextRef pizzaSliceLayerContext = CGLayerGetContext(pizzaSliceLayer);
@@ -56,7 +54,7 @@
     CGContextSetRGBFillColor (pizzaSliceLayerContext, 0, 0, 0, 0);
     CGContextFillRect(pizzaSliceLayerContext, CGRectMake(0, 0, layerSize.width, layerSize.height));
     
-    int level = 30;
+    int level = 15;
     CGContextBeginPath(pizzaSliceLayerContext);
     CGContextSetRGBStrokeColor(pizzaSliceLayerContext, 1, 1, 1, 1);
     CGContextSetLineWidth(pizzaSliceLayerContext, 1);
@@ -64,29 +62,29 @@
     int old_y = rect.origin.y;
     double old_x = (((double)old_y/(double)layerSize.height) * (layerSize.width/2) * sin(((level*old_y) % 360) * M_PI/180)) + layerSize.width/2;
     [dataPoints_ addObject:[NSValue valueWithCGPoint:CGPointMake((int)(old_x +0.5), (int)old_y)]];
-
-//    [myHandle seekToEndOfFile];
-//    NSString* stringCoordinates = [NSString stringWithFormat:@"%i %i\n", (int)(old_x +0.5),(int)(old_y + 0.5)];
-//    [myHandle writeData:  [stringCoordinates dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [myHandle seekToEndOfFile];
+    NSString* stringCoordinates = [NSString stringWithFormat:@"%i %i\n", (int)(old_x +0.5),(int)(old_y + 0.5)];
+    [myHandle writeData:  [stringCoordinates dataUsingEncoding:NSUTF8StringEncoding]];
     
     for (double y = rect.origin.y; y < layerSize.height; y += 1) {
         x = ((y/(double)layerSize.height) * (layerSize.width/2) * sin(fmod(level*y, 360.0) * M_PI/180)) + layerSize.width/2;
         
         if (![dataPoints_ containsObject:[NSValue valueWithCGPoint:CGPointMake((int)(x+0.5), (int)(y+0.5))]]) {
-                [dataPoints_ addObject:[NSValue valueWithCGPoint:CGPointMake((int)(x+0.5), (int)(y+0.5))]];
-                //[myHandle seekToEndOfFile];
-                //NSString* stringCoordinates = [NSString stringWithFormat:@"%i %i\n", (int)(x+0.5),(int)(y+0.5)];
-                //[myHandle writeData: [stringCoordinates dataUsingEncoding:NSUTF8StringEncoding]];
-                CGContextMoveToPoint(pizzaSliceLayerContext, old_x, old_y);
-                CGContextAddLineToPoint(pizzaSliceLayerContext, x, y);
-                CGContextStrokePath(pizzaSliceLayerContext);
+            [dataPoints_ addObject:[NSValue valueWithCGPoint:CGPointMake((int)(x+0.5), (int)(y+0.5))]];
+            [myHandle seekToEndOfFile];
+            NSString* stringCoordinates = [NSString stringWithFormat:@"%i %i\n", (int)(x+0.5),(int)(y+0.5)];
+            [myHandle writeData: [stringCoordinates dataUsingEncoding:NSUTF8StringEncoding]];
+            CGContextMoveToPoint(pizzaSliceLayerContext, old_x, old_y);
+            CGContextAddLineToPoint(pizzaSliceLayerContext, x, y);
+            CGContextStrokePath(pizzaSliceLayerContext);
             
-                old_x = x; 
-                old_y = y;
+            old_x = x; 
+            old_y = y;
         }
         
-                
-      
+        
+        
     }
     CGContextRestoreGState(context);
     /**************************END CREATE A PIZZA LAYER MASK******************/
@@ -113,12 +111,12 @@
     CGContextClipToMask(context, rect, maskImage); 
     CGContextDrawImage(context, rect, cgimage);
     
-    //[myHandle closeFile];
-    
-//    NSString *filecontent = [[NSString alloc] initWithContentsOfFile:fileName
-//                                                    usedEncoding:nil
-//                                                           error:nil];
-//    NSLog(@"%@", filecontent);
+    [myHandle closeFile];
+
+    NSString *filecontent = [[NSString alloc] initWithContentsOfFile:fileName
+                                                    usedEncoding:nil
+                                                           error:nil];
+    NSLog(@"%@", filecontent);
 }
 
 

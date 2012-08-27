@@ -30,7 +30,7 @@
     //self.viewController = [[[ViewController alloc] initWithNibName:@"ViewController" bundle:nil] autorelease];
 
     //PolyLineViewController
-    //self.viewController = [[PolyLineViewController alloc] init];
+    self.viewController = [[PolyLineViewController alloc] init];
     
     //Pizza View Controller
     //self.viewController = [[PizzaViewController alloc] init];
@@ -39,7 +39,7 @@
     //self.viewController = [[SpaceViewController alloc] init];
     
     //Zheng View Controller
-    self.viewController = [[ZhengViewController alloc] init];
+    //self.viewController = [[ZhengViewController alloc] init];
         
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];

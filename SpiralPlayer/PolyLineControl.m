@@ -4,8 +4,8 @@
 #define START_POINT_X 100
 #define START_POINT_Y 400
 
-#define X_NUM_OF_CELLS 32
-#define Y_NUM_OF_CELLS 32
+#define X_NUM_OF_CELLS 10
+#define Y_NUM_OF_CELLS 10
 
 @interface PolyLineControl(PrivateMethods)
 - (NSMutableArray*) getDataPoints;
@@ -57,21 +57,10 @@
         //NSLog(@"Started Drawing");
 
         CGContextRef context = UIGraphicsGetCurrentContext();
-   
-        //NSLog(@"FUCK THAT");
         [self.gridHashTable clear];
-        
-        //double angle_deg = 30;
-        //double angle_rad = angle_deg * (M_PI/180);
-        //int height = rect.size.height;
-        //int width = 2*(height * tan(angle_rad/2));   
-        //CGSize layerSize = CGSizeMake(width, height);
-
-
            
         CGContextSaveGState(context);
-   
-        CGContextSetRGBFillColor (context, 0, 0, 0, 0);
+        CGContextSetRGBFillColor (context, 1, 0, 0, 1);
         CGContextFillRect(context, rect);
      
         CGContextSetRGBStrokeColor(context, 1, 1, 1, 1);    
@@ -103,13 +92,13 @@
 
     
     
-    CGContextTranslateCTM(context, 0, rect.size.height);
-    CGContextScaleCTM(context, 1.0, -1.0);
-    CGContextClipToMask(context, rect, maskImage); 
-    CGContextDrawImage(context, rect, cgimage);
+//    CGContextTranslateCTM(context, 0, rect.size.height);
+//    CGContextScaleCTM(context, 1.0, -1.0);
+//    CGContextClipToMask(context, rect, maskImage); 
+//    CGContextDrawImage(context, rect, cgimage);
    // NSLog(@"Finished Drawing");
     
-    CGImageRelease(maskImage);
+    //CGImageRelease(maskImage);
 }
 
 

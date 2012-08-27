@@ -10,6 +10,6 @@
 
 @implementation SegmentObject
 
-@synthesize image = image_, index = index_;
+@synthesize image = image_, index = index_, type = type_, audioName = audioName_;
 
 @end

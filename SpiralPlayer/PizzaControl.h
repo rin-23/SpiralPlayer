@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface PizzaControl : UIControl {    
-    double maxArclength_;
-    double radiusStep_;
     double angleDeg_;
     double angleRad_;
     
@@ -19,8 +17,8 @@
 }
 
 
-@property (nonatomic, assign) double maxArcLength;
-@property (nonatomic, assign) double radiusStep;
+
+
 @property (nonatomic, assign) double angleDeg;
 @property (nonatomic, assign) double angleRad;
 
