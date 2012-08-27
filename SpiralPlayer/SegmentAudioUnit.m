@@ -10,15 +10,35 @@
 
 
 @implementation SegmentAudioUnit 
-@synthesize segmentView = segmentView_, audioPlayer = audioPlayer_;
+@synthesize segmentView = segmentView_, audioPlayer = audioPlayer_, type;
 
 -(id)init {
     self = [super init];
     if (self) {
         [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(updateProgressBar) userInfo:nil repeats:YES];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivePlayNotification:) name:@"PlayClicked" object:nil];
+        
         self.audioPlayer = [[WaveAudioPlayer alloc] init];
     }
     return self;
+}
+
+- (void) receivePlayNotification:(NSNotification *) notification
+{
+    // [notification name] should always be @"TestNotification"
+    // unless you use this method for observation of other notifications
+    // as well.
+    
+    if ([[notification name] isEqualToString:@"PlayClicked"])
+        if ([notification.object isEqual:self]) {
+            NSLog(@"Sent to myself");
+        } else  {
+            NSLog(@"Need to pause audio");
+            if (self.audioPlayer.player.playing) {
+                [self.audioPlayer.player pause];
+            }
+        }
 }
     
 - (void) createAudioPlayer:(NSString*)audioName {
@@ -41,6 +61,11 @@
     [thumbDoubleTap release];
 }
 
+- (void) createAlbumSegmentViewWithFrame:(CGRect) rect {
+    self.segmentView = [[SegmentView alloc] initAlbumTypeWithFrame:rect];
+}
+
+
 -(void) sync {
     self.segmentView.tracklength = self.audioPlayer.player.duration;
 }
@@ -51,6 +76,7 @@
         [self.audioPlayer.player pause];
     } else {
         [self.audioPlayer.player play];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"PlayClicked" object:self];
 
     }
 }
@@ -64,6 +90,14 @@
 - (void) curveValueChanged { 
     self.audioPlayer.player.currentTime =  self.segmentView.value;
 }
-                        
+           
+- (void) dealloc
+{
+    // If you don't remove yourself as an observer, the Notification Center
+    // will continue to try and send notification objects to the deallocated
+    // object.
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [super dealloc];
+}
                         
 @end

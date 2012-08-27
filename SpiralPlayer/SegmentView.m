@@ -12,11 +12,23 @@
 
 @synthesize index, bgColor, image = image_, object = object_, dataPoints = dataPoints_, thumb = thumb_, thumbCurrentPosition = thumbCurrentPosition_, gridHashTable = gridHashTable_, tracklength = tracklength_, value = value_, drawingPoints = drawingPoints_;
 
+-(id) initAlbumTypeWithFrame:(CGRect)frame{
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.bgColor = [UIColor whiteColor].CGColor;  
+        self.backgroundColor = [UIColor clearColor];
+        type = kSegmentTypeAbum;
+    }
+    return self;
+}
+
+
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-  
+        type = kSegmentTypeSong;
+        
         self.bgColor = [UIColor whiteColor].CGColor;  
         self.backgroundColor = [UIColor clearColor];
                 
@@ -79,7 +91,6 @@
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
-
     
     // Drawing code
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -122,29 +133,36 @@
         //CGContextFillPath(context);
         //CGContextStrokePath(context);
         CGContextRestoreGState(context);
-        
-        //DRAW SINE WAVE
-        [self.gridHashTable clear];
-        CGContextSaveGState(context);
-        CGContextSetRGBStrokeColor(context, 1, 1, 1, 1);    
-        
-        CGContextSetLineWidth(context, 2);
-        CGPoint currentPoint = [(NSValue*)[self.drawingPoints objectAtIndex:0] CGPointValue];
-        self.thumb.center = currentPoint;
-        CGContextMoveToPoint(context, currentPoint.x, currentPoint.y);
-        [self.gridHashTable hashPointToGrid:currentPoint];
-        //  CGPoint pastPoint = startPoint;
-        for (int i = 0; i < [self.drawingPoints count]; i += 1) {
-            //draw line
-            currentPoint = [(NSValue*)[self.drawingPoints objectAtIndex:i] CGPointValue];
-            CGContextAddLineToPoint(context, currentPoint.x, currentPoint.y); 
-            [self.gridHashTable hashPointToGrid:currentPoint];
+        if (type == kSegmentTypeSong) {
             
+                //DRAW SINE WAVE
+                [self.gridHashTable clear];
+                CGContextSaveGState(context);
+                CGContextSetRGBStrokeColor(context, 1, 1, 1, 1);    
+                
+                CGContextSetLineWidth(context, 2);
+                CGPoint currentPoint = [(NSValue*)[self.drawingPoints objectAtIndex:0] CGPointValue];
+                self.thumb.center = currentPoint;
+                CGContextMoveToPoint(context, currentPoint.x, currentPoint.y);
+                [self.gridHashTable hashPointToGrid:currentPoint];
+                //  CGPoint pastPoint = startPoint;
+                for (int i = 0; i < [self.drawingPoints count]; i += 1) {
+                    //draw line
+                    currentPoint = [(NSValue*)[self.drawingPoints objectAtIndex:i] CGPointValue];
+                    CGContextAddLineToPoint(context, currentPoint.x, currentPoint.y); 
+                    [self.gridHashTable hashPointToGrid:currentPoint];
+                    
+                }
+                CGContextStrokePath(context);
+                
+                CGContextRestoreGState(context);
+        } else {
+                CGContextSetRGBFillColor (context, 1, 1, 1, 1);
+                CGContextSetFillColorWithColor(context, self.bgColor);
+                CGContextFillPath(context);
+
+                CGContextStrokePath(context);
         }
-        CGContextStrokePath(context);
-        
-        CGContextRestoreGState(context);
-        
       
         maskImage = CGBitmapContextCreateImage(context);
         //CGImageRetain(maskImage);    

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SegmentObject.h"
 #import "GridHashTable.h"
+#import "Constants.h"
 @interface SegmentView : UIControl <UIGestureRecognizerDelegate>{
     UIImage* image_;
     SegmentObject* object_;    
@@ -31,7 +32,8 @@
     int currentMovingPointIndex_;
     
     int lastPointIndex_;  
-
+    
+    int type;
 
 }
 
@@ -50,4 +52,5 @@
 @property (nonatomic, assign) double value;
 
 - (NSComparisonResult) compareIndexes:(SegmentView*)otherEvenet;
+-(id) initAlbumTypeWithFrame:(CGRect)frame;
 @end

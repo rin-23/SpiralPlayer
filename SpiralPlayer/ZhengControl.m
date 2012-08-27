@@ -31,6 +31,7 @@
 -(id) initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        container_ = [[ContainerView alloc] initWithFrame:self.frame];
         [self loadAlbums];
     }
     return self;    
@@ -38,7 +39,7 @@
 
 - (void) loadAlbums {
     self.numOfSectionsVisible = 8;
-    self.numOfSectionsTotal = 12;
+    self.numOfSectionsTotal = 24;
     self.slidingWindow = [[NSMutableArray alloc] initWithCapacity:self.numOfSectionsVisible];
     self.segmentObjectsArray = [[NSMutableArray alloc] initWithCapacity:self.numOfSectionsTotal];
     
@@ -58,7 +59,7 @@
 -(void) loadSongs{
     self.numOfSectionsVisible = 8;
     self.numOfSectionsTotal = 12;
-       
+    
     current_rad = 0.0f;
     total_rad = 0.0f;
     
@@ -72,8 +73,8 @@
 }
 
 - (void) drawSongsWheel {    
-    for (SegmentView* view in self.slidingWindow) {
-        [view removeFromSuperview];
+    for (SegmentAudioUnit* unit in self.slidingWindow) {
+        [unit.segmentView removeFromSuperview];
     }
     
     self.slidingWindow = [[NSMutableArray alloc] initWithCapacity:self.numOfSectionsVisible];
@@ -95,6 +96,7 @@
         [segObject release];
         
         SegmentAudioUnit* audioUnit = [[SegmentAudioUnit alloc] init];
+        audioUnit.type = kSegmentTypeSong;
         [audioUnit createAudioPlayer:[NSString stringWithFormat:@"%i", i]];
         [audioUnit createSegmentViewWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
         
@@ -111,7 +113,7 @@
         [container_ addSubview:im]; 
         [im release];        
         
-        [slidingWindow_ addObject:im];
+        [slidingWindow_ addObject:audioUnit];
     }    
     
     for (int i = self.numOfSectionsVisible; i < self.numOfSectionsTotal; i++) {
@@ -129,7 +131,7 @@
         [container_ removeFromSuperview];
         [hidingSegment_ removeFromSuperview];
     }
-    container_ = [[ContainerView alloc] initWithFrame:self.frame];
+  
     container_.userInteractionEnabled = YES;
     anglePerSector_ = 2*M_PI/self.numOfSectionsVisible;
     windowAngleSpanRad_ = anglePerSector_ * (self.numOfSectionsTotal - self.numOfSectionsVisible);
@@ -146,9 +148,13 @@
         [segmentObjectsArray_ addObject:segObject];
         [segObject release];
         
+//        SegmentAudioUnit* audioUnit = [[SegmentAudioUnit alloc] init];
+//        [audioUnit createAudioPlayer:[NSString stringWithFormat:@"%i", i]];
+//        [audioUnit createSegmentViewWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
+
         SegmentAudioUnit* audioUnit = [[SegmentAudioUnit alloc] init];
-        [audioUnit createAudioPlayer:[NSString stringWithFormat:@"%i", i]];
-        [audioUnit createSegmentViewWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
+        [audioUnit createAlbumSegmentViewWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
+        audioUnit.type = kSegmentTypeAbum;
         
         //SegmentView* im = [[SegmentView alloc] initWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
         
@@ -157,11 +163,11 @@
         
         im.userInteractionEnabled = YES;
         //im.bgColor = [self randomColor];
-//        UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc]
-//                                       initWithTarget:self action:@selector(segmentPressed:)];
-//        tap.numberOfTapsRequired = 2;
-//        [im addGestureRecognizer:tap];
-//        [tap release];
+        UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc]
+                                       initWithTarget:self action:@selector(segmentPressed:)];
+        tap.numberOfTapsRequired = 2;
+        [im addGestureRecognizer:tap];
+        [tap release];
         
         im.object = segObject;
         im.layer.anchorPoint = CGPointMake(0.5f, 0.0f);
@@ -197,13 +203,14 @@
 -(void) segmentPressed:(UIGestureRecognizer*)gesture {
     NSLog(@"Segement Pressed");
     UITapGestureRecognizer* tapGesture = (UITapGestureRecognizer*) gesture;
-    SegmentView* segView = (SegmentView*)tapGesture.view;
-    for (SegmentView* view in slidingWindow_) {
-        if ([view isEqual:segView]) {
-            NSLog(@"Segment Index %i", view.index);
-            [self loadSongs];
-        }
-    }
+    //SegmentView* segView = (SegmentView*)tapGesture.view;
+    [self loadSongs];
+    //    for (SegmentView* view in slidingWindow_) {
+//        if ([view isEqual:segView]) {
+//            NSLog(@"Segment Index %i", view.index);
+//            [self loadSongs];
+//        }
+//    }
 }
 
 - (double) toRad:(int) deg { return deg*(M_PI/180.0); }
@@ -302,9 +309,12 @@
             SegmentView* seg = audioUnit.segmentView;
             int newSegIndex = seg.index + windowSize_;
             seg.object = [segmentObjectsArray_ objectAtIndex:newSegIndex];
-            [audioUnit createAudioPlayer:[NSString stringWithFormat:@"%i", newSegIndex]];
-            [audioUnit sync];
-            [seg setNeedsDisplay];
+            
+            if (audioUnit.type == kSegmentTypeSong) {
+                [audioUnit createAudioPlayer:[NSString stringWithFormat:@"%i", newSegIndex]];
+                [audioUnit sync];
+            }
+                [seg setNeedsDisplay];
             //[slidingWindow_ replaceObjectAtIndex:0 withObject:audioUnit];
             [slidingWindow_ sortUsingSelector:@selector(compareIndexes:)];
         }
@@ -316,8 +326,10 @@
             SegmentView* seg = audioUnit.segmentView;
             int newSegIndex = seg.index - windowSize_;
             seg.object = [segmentObjectsArray_ objectAtIndex:newSegIndex];
-            [audioUnit createAudioPlayer:[NSString stringWithFormat:@"%i", newSegIndex]];
-            [audioUnit sync];
+            if (audioUnit.type == kSegmentTypeSong) {
+                [audioUnit createAudioPlayer:[NSString stringWithFormat:@"%i", newSegIndex]];
+                [audioUnit sync];
+            }
             [seg setNeedsDisplay];
             //[slidingWindow_ replaceObjectAtIndex:lastindex withObject:seg];
             [slidingWindow_ sortUsingSelector:@selector(compareIndexes:)];

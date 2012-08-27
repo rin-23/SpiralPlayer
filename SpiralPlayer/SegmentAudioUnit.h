@@ -16,9 +16,12 @@
     
 @property (nonatomic, retain) SegmentView* segmentView;
 @property (nonatomic, retain) WaveAudioPlayer* audioPlayer;
+@property (nonatomic, assign) int type;
 
 - (void) createAudioPlayer:(NSString*)audioName;
 - (void) createSegmentViewWithFrame:(CGRect) rect;
 - (NSComparisonResult) compareIndexes:(SegmentAudioUnit*)otherEvenet;
 - (void) sync;
+- (void) createAlbumSegmentViewWithFrame:(CGRect) rect;
+
 @end
