@@ -21,8 +21,7 @@
                 
         UISwipeGestureRecognizer *recognizer;
         recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)];
-        recognizer.cancelsTouchesInView = YES;
-        [recognizer setDirection:UISwipeGestureRecognizerDirectionRight];
+        [recognizer setDirection:UISwipeGestureRecognizerDirectionUp];
         [self addGestureRecognizer:recognizer];
         [recognizer release];
     }
@@ -32,6 +31,9 @@
 - (int) index {
     return self.object.index;
 }
+
+- (double) toRad:(int) deg { return deg*(M_PI/180.0); }
+- (int) toDeg:(double) rad { return (int)(rad*(180.0/M_PI) + 0.5); }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     NSLog(@"Gesture 1");
@@ -52,24 +54,38 @@
 - (void)drawRect:(CGRect)rect {
     // Drawing code
     CGContextRef context = UIGraphicsGetCurrentContext();
-    
+      
     CGContextSaveGState(context);
     CGContextSetRGBFillColor (context, 0, 0, 0, 0);
     CGContextFillRect(context, rect);
     CGContextBeginPath (context);               
     CGContextSetRGBStrokeColor(context, 1, 1, 1, 1);  
-    CGContextSetLineWidth(context, 1);
-    CGContextMoveToPoint(context, rect.size.width/2, 0);
-    CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
-    //CGContextAddLineToPoint(context, 0, rect.size.height);
-    CGPoint p1 = CGPointMake(rect.size.width/2, 0);
-    CGPoint p2 = CGPointMake(rect.size.width/2, rect.size.height);
-    CGFloat radius = sqrtf(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
-    double totalAngle = 45.0 * (M_PI/180.0);
-    CGContextAddArc(context, rect.size.width/2, 0, radius-2, (M_PI - totalAngle)/2, (M_PI - totalAngle)/2 + totalAngle , 0);
     
-    CGContextMoveToPoint(context, 0, rect.size.height);
-    CGContextAddLineToPoint(context, rect.size.width/2, 0);
+    CGContextSetLineWidth(context, 1);
+    CGPoint pT = CGPointMake(rect.size.width/2, 0);
+    CGPoint pL = CGPointMake(0, rect.size.height);
+    CGPoint pR = CGPointMake(rect.size.width, rect.size.height);
+        
+    CGPoint vectorL = CGPointMake(pL.x - pT.x, pL.y- pT.y);
+    CGPoint vectorR = CGPointMake(pR.x - pT.x, pR.y - pT.y);
+    
+    CGPoint halfwayL = CGPointMake(pT.x + 0.5*vectorL.x, pT.y + 0.5*vectorL.y);
+    CGPoint halfwayR = CGPointMake(pT.x + 0.5*vectorR.x, pT.y + 0.5*vectorR.y);
+    
+    CGContextMoveToPoint(context, halfwayR.x, halfwayR.y);
+    CGContextAddLineToPoint(context, pR.x, pR.y);
+    
+    CGFloat radius = rect.size.height;
+    CGFloat radius2 = sqrt(pow(halfwayR.x - pT.x, 2) + pow(halfwayR.y - pT.y, 2));
+    
+    double totalAngle = 45.0 * (M_PI/180.0);
+    CGContextAddArc(context, pT.x, pT.y, radius-2, (M_PI - totalAngle)/2, (M_PI - totalAngle)/2 + totalAngle, 0);
+    CGContextMoveToPoint(context, pL.x - 0.075*vectorL.x, pL.y - 0.075*vectorL.y);
+    CGContextAddLineToPoint(context, halfwayL.x, halfwayL.y);
+
+    CGContextAddArc(context, pT.x, pT.y, radius2, (M_PI - totalAngle)/2 + totalAngle, (M_PI - totalAngle)/2, 1);
+    
+    //CGContextAddLineToPoint(context, halfwayR.x, halfwayR.y);
     CGContextSetRGBFillColor (context, 1, 1, 1, 1);
     //CGContextSetFillColorWithColor(context, self.bgColor);
     CGContextFillPath(context);
@@ -88,6 +104,7 @@
 
 }
 
+
 - (NSComparisonResult) compareIndexes:(SegmentView*)otherEvenet {
     if (self.index < otherEvenet.index) {
         return NSOrderedAscending;
@@ -97,19 +114,23 @@
         return NSOrderedSame;
     }
 }
-//
-//
-//- (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent *)event {
-//    [super touchesBegan:touches withEvent:event];
-//}
-//
-//- (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent *)event {
-//    [super touchesMoved:touches withEvent:event];
-//}
-//
-//- (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent *)event {
-//    [super touchesEnded:touches withEvent:event];
-//}
+
+
+
+- (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent *)event {
+    NSLog(@"Segment View touch began");
+    [self.superview touchesBegan:touches withEvent:event];
+}
+
+- (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent *)event {
+    NSLog(@"Segment View touch moved");
+    [self.superview touchesMoved:touches withEvent:event];
+}
+
+- (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent *)event {
+    NSLog(@"Segment View touch ended");
+    [self.superview  touchesEnded:touches withEvent:event];
+}
 
 
 

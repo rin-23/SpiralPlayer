@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SegmentObject.h"
-@interface SegmentView : UIView <UIGestureRecognizerDelegate>{
+@interface SegmentView : UIButton <UIGestureRecognizerDelegate>{
     UIImage* image_;
     SegmentObject* object_;    
 }

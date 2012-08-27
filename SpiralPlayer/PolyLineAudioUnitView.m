@@ -19,6 +19,8 @@
         // Initialization code
         self.backgroundColor = [UIColor clearColor];
         
+        
+        
         [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(updateProgressBar) userInfo:nil repeats:YES];
 
         self.audioPlayer = [[WaveAudioPlayer alloc] init];

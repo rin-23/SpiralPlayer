@@ -44,12 +44,12 @@
     ZhengControl* control;
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        control = [[ZhengControl alloc] initWithFrame:CGRectMake(0, 0, 600, 600)];
+        control = [[ZhengControl alloc] initWithFrame:CGRectMake(0, 0, 730, 730)];
         control.center = CGPointMake(768/2, 1024/2);
     } else {
         control = [[ZhengControl alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
         control.center = CGPointMake(160, 240); 
-    }
+    }   
     [self.view addSubview:control];
     [control release];
     

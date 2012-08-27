@@ -22,12 +22,11 @@
 
 @implementation ZhengControl 
 
-@synthesize numOfSectionsVisible, container, startTransform, numOfSectionsTotal, slidingWindow = slidingWindow_, segmentObjectsArray = segmentObjectsArray_;
+@synthesize numOfSectionsVisible, startTransform, numOfSectionsTotal, slidingWindow = slidingWindow_, segmentObjectsArray = segmentObjectsArray_;
 
 -(id) initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-    
         self.numOfSectionsVisible = 8;
         self.numOfSectionsTotal = 24;
         self.slidingWindow = [[NSMutableArray alloc] initWithCapacity:self.numOfSectionsVisible];
@@ -46,9 +45,8 @@
 }
 
 - (void) drawWheel {
-    self.container = [[UIView alloc] initWithFrame:self.frame];
-    self.container.userInteractionEnabled = NO;
-    
+    container_ = [[ContainerView alloc] initWithFrame:self.frame];
+    container_.userInteractionEnabled = YES;
     anglePerSector_ = 2*M_PI/self.numOfSectionsVisible;
     windowAngleSpanRad_ = anglePerSector_ * (self.numOfSectionsTotal - self.numOfSectionsVisible);
         
@@ -64,21 +62,30 @@
         [segObject release];
         
         SegmentView* im = [[SegmentView alloc] initWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
+        im.userInteractionEnabled = YES;
         //im.bgColor = [self randomColor];
+        UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc]
+                                       initWithTarget:self action:@selector(segmentPressed)];
+        tap.numberOfTapsRequired = 1;
+        [im addGestureRecognizer:tap];
+        [tap release];
+        
         im.object = segObject;
         im.layer.anchorPoint = CGPointMake(0.5f, 0.0f);
-        im.layer.position = CGPointMake(container.bounds.size.width/2.0-container.frame.origin.x, 
-                                        container.bounds.size.height/2.0-container.frame.origin.y); 
+        im.layer.position = CGPointMake(container_.bounds.size.width/2.0-container_.frame.origin.x, 
+                                        container_.bounds.size.height/2.0-container_.frame.origin.y); 
         im.transform = CGAffineTransformMakeRotation(-anglePerSector_*(i + 1));
-
+  
         UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(segmentwidth/2, segmentheight/2, 40, 40)];
-        label.backgroundColor = [UIColor clearColor];
+        label.backgroundColor = [UIColor redColor];
         label.text = [NSString stringWithFormat:@"%i", i];
         label.font = [UIFont boldSystemFontOfSize:25.0f];
         [im addSubview:label];
         [label release];
-              
-        [container addSubview:im];
+        
+        
+        
+        [container_ addSubview:im]; 
         [im release];        
         
         [slidingWindow_ addObject:im];
@@ -92,17 +99,26 @@
         [segObject release];
     }        
          
-    [self addSubview:container];
-    [container release];
+    [self addSubview:container_];
+    [container_ release];
         
     SegmentView* im = [[SegmentView alloc] initWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
     im.userInteractionEnabled = NO;
     im.bgColor = [UIColor whiteColor].CGColor;
     im.layer.anchorPoint = CGPointMake(0.5f, 0.0f);
-    im.layer.position = CGPointMake(container.bounds.size.width/2.0-container.frame.origin.x, 
-                                    container.bounds.size.height/2.0-container.frame.origin.y); 
+    im.layer.position = CGPointMake(container_.bounds.size.width/2.0-container_.frame.origin.x, 
+                                    container_.bounds.size.height/2.0-container_.frame.origin.y); 
     [self addSubview:im];
     [im release];            
+}
+-(void)fuck{
+    NSLog(@"FUCK");
+    
+}
+
+-(void) segmentPressed {
+    NSLog(@"Segement Pressed");
+    
 }
 
 - (double) toRad:(int) deg { return deg*(M_PI/180.0); }
@@ -118,8 +134,8 @@
 - (BOOL) beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchPoint = [touch locationInView:self];
           
-    float x = touchPoint.x - container.center.x;
-    float y = touchPoint.y - container.center.y;
+    float x = touchPoint.x - container_.center.x;
+    float y = touchPoint.y - container_.center.y;
     double cur_level_angle = atan((double)abs(y)/abs(x));
     
     if  (x >= 0 && y >= 0) {
@@ -139,7 +155,7 @@
     }
     
     beginTouchAngleRad_ = cur_level_angle;
-    startTransform = container.transform;
+    startTransform = container_.transform;
     
     currentLevel_ = 0;
     indexOffset_ = 0;
@@ -149,8 +165,8 @@
 
 - (BOOL) continueTrackingWithTouch:(UITouch*)touch withEvent:(UIEvent*)event {
     CGPoint pt = [touch locationInView:self];
-    float x = pt.x  - container.center.x;
-    float y = pt.y  - container.center.y;
+    float x = pt.x  - container_.center.x;
+    float y = pt.y  - container_.center.y;
     double cur_level_angle = atan((double)abs(y)/abs(x));
     
     int oldQuarter = currentQuarter_;
@@ -255,7 +271,7 @@
 //    //NSLog(@"Total: %i, Index: %i", total_angle_deg, indexOffset_);
     NSLog(@"        ************************************************");
 //    
-    container.transform = CGAffineTransformRotate(startTransform, current);
+    container_.transform = CGAffineTransformRotate(startTransform, current);
     return YES;
 }
 
@@ -279,21 +295,33 @@
 
 
 - (void) touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event {
-    [super touchesBegan:touches withEvent:event];   
+    UITouch *touch = [[event allTouches] anyObject];
+    NSLog(@"Touch Began For Control");
+    continueTouch_ = YES;
+    [self beginTrackingWithTouch:touch withEvent:event];
+    //[super touchesBegan:touches withEvent:event];   
 }
 
 - (void) touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event {
-    NSLog(@"Touch Continue For Container");
+    NSLog(@"Touch Continue For Control");
     UITouch *touch = [[event allTouches] anyObject];
-    [super touchesMoved:touches withEvent:event];
+    if (continueTouch_) {
+        continueTouch_ = [self continueTrackingWithTouch:touch withEvent:event];
+    }
+
+    //[super touchesMoved:touches withEvent:event];
 }
 
 - (void) touchesEnded:(NSSet*)touches withEvent:(UIEvent *)event {
-    NSLog(@"Touch Ended For Container");
+    NSLog(@"Touch Ended For Control");
     UITouch *touch = [[event allTouches] anyObject];
     total_rad = current_rad;
-    [super touchesEnded:touches withEvent:event];
-
+    continueTouch_ = YES;
+    [self endTrackingWithTouch:touch withEvent:event];
+    
+    
+    
+    //[super touchesEnded:touches withEvent:event];
 }
 
 

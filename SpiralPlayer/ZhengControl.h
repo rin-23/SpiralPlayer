@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "ContainerView.h"
 @interface ZhengControl : UIControl {
-    
     NSMutableArray* slidingWindow_;
     NSMutableArray* segmentObjectsArray_;
 
@@ -33,13 +32,14 @@
     int windowEndIndex_;
     int windowSize_;
     
+    BOOL continueTouch_;
     
-   
+    ContainerView* container_;
 }
 
 @property (nonatomic, assign) int numOfSectionsVisible;
 @property (nonatomic, assign) int numOfSectionsTotal;
-@property (nonatomic, retain) UIView* container;
+
 @property (nonatomic, assign) CGAffineTransform startTransform;
 @property (nonatomic, retain) NSMutableArray* slidingWindow;
 @property (nonatomic, retain) NSMutableArray* segmentObjectsArray;
