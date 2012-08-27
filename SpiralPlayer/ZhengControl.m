@@ -10,7 +10,8 @@
 #import <QuartzCore/QuartzCore.h>
 #include <stdlib.h>
 #import "Constants.h"
-#include "SegmentObject.h"
+#import  "SegmentObject.h"
+#import "SegmentAudioUnit.h"
 #define ARC4RANDOM_MAX      0x100000000
 
 @interface ZhengControl()
@@ -37,7 +38,7 @@
 
 - (void) loadAlbums {
     self.numOfSectionsVisible = 8;
-    self.numOfSectionsTotal = 24;
+    self.numOfSectionsTotal = 12;
     self.slidingWindow = [[NSMutableArray alloc] initWithCapacity:self.numOfSectionsVisible];
     self.segmentObjectsArray = [[NSMutableArray alloc] initWithCapacity:self.numOfSectionsTotal];
     
@@ -86,15 +87,20 @@
     NSLog(@"Segment W:%i H:%i", segmentwidth, segmentheight);
     
     for (int i = 0; i < self.numOfSectionsVisible; i++) {
-        SegmentObject* segObject = [[SegmentObject alloc] init];
+        SegmentObject* segObject = [[SegmentObject alloc] initWithAudio:[NSString stringWithFormat:@"%i", i]];
         segObject.type = kSegmentTypeSong;
         segObject.image = [[UIImage imageNamed:[NSString stringWithFormat:@"%i", i]] retain];
         segObject.index = i;
-        segObject.audioName = [NSString stringWithFormat:@"%i", i];
         [segmentObjectsArray_ addObject:segObject];
         [segObject release];
         
-        SegmentView* im = [[SegmentView alloc] initWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
+        SegmentAudioUnit* audioUnit = [[SegmentAudioUnit alloc] init];
+        [audioUnit createAudioPlayer:[NSString stringWithFormat:@"%i", i]];
+        [audioUnit createSegmentViewWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
+        
+        //SegmentView* im = [[SegmentView alloc] initWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
+        
+        SegmentView* im = audioUnit.segmentView;
         im.userInteractionEnabled = YES;
         im.object = segObject;
         im.layer.anchorPoint = CGPointMake(0.5f, 0.0f);
@@ -140,14 +146,22 @@
         [segmentObjectsArray_ addObject:segObject];
         [segObject release];
         
-        SegmentView* im = [[SegmentView alloc] initWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
+        SegmentAudioUnit* audioUnit = [[SegmentAudioUnit alloc] init];
+        [audioUnit createAudioPlayer:[NSString stringWithFormat:@"%i", i]];
+        [audioUnit createSegmentViewWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
+        
+        //SegmentView* im = [[SegmentView alloc] initWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
+        
+        SegmentView* im = audioUnit.segmentView;
+
+        
         im.userInteractionEnabled = YES;
         //im.bgColor = [self randomColor];
-        UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc]
-                                       initWithTarget:self action:@selector(segmentPressed:)];
-        tap.numberOfTapsRequired = 2;
-        [im addGestureRecognizer:tap];
-        [tap release];
+//        UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc]
+//                                       initWithTarget:self action:@selector(segmentPressed:)];
+//        tap.numberOfTapsRequired = 2;
+//        [im addGestureRecognizer:tap];
+//        [tap release];
         
         im.object = segObject;
         im.layer.anchorPoint = CGPointMake(0.5f, 0.0f);
@@ -155,17 +169,11 @@
                                         container_.bounds.size.height/2.0-container_.frame.origin.y); 
         im.transform = CGAffineTransformMakeRotation(-anglePerSector_*(i + 1));
   
-//        UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(segmentwidth/2, segmentheight/2, 40, 40)];
-//        label.backgroundColor = [UIColor redColor];
-//        label.text = [NSString stringWithFormat:@"%i", i];
-//        label.font = [UIFont boldSystemFontOfSize:25.0f];
-//        [im addSubview:label];
-//        [label release];
-             
+      
         [container_ addSubview:im]; 
         [im release];        
         
-        [slidingWindow_ addObject:im];
+        [slidingWindow_ addObject:audioUnit];
     }    
         
     for (int i = self.numOfSectionsVisible; i < self.numOfSectionsTotal; i++) {
@@ -178,9 +186,7 @@
     [self addSubview:container_];
     [container_ release];
         
-    hidingSegment_ = [[SegmentView alloc] initWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
-    hidingSegment_.userInteractionEnabled = NO;
-    hidingSegment_.bgColor = [UIColor whiteColor].CGColor;
+    hidingSegment_ = [[CoverSegment alloc] initWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
     hidingSegment_.layer.anchorPoint = CGPointMake(0.5f, 0.0f);
     hidingSegment_.layer.position = CGPointMake(container_.bounds.size.width/2.0-container_.frame.origin.x, 
                                     container_.bounds.size.height/2.0-container_.frame.origin.y); 
@@ -282,7 +288,9 @@
     } 
     
     int newStartIndex = floor(current_rad/anglePerSector_);
-    int curStartIndex = ((SegmentView*)[slidingWindow_ objectAtIndex:0]).index;
+    SegmentAudioUnit* audioUnit = (SegmentAudioUnit*)[slidingWindow_ objectAtIndex:0];
+      
+    int curStartIndex = audioUnit.segmentView.index;
     int indexDelta = newStartIndex - curStartIndex;
     
     NSLog(@"        TotalDeg:%i NewIndex:%i CurIndex:%i", [self toDeg:current_rad], newStartIndex, curStartIndex);
@@ -290,22 +298,28 @@
     if (indexDelta > 0) {
         NSLog(@"        MOVED CLOCKWISE");
         for (int i = 0; i < indexDelta; i++) {
-            SegmentView* seg = [slidingWindow_ objectAtIndex:0];
+            SegmentAudioUnit* audioUnit = [slidingWindow_ objectAtIndex:0];
+            SegmentView* seg = audioUnit.segmentView;
             int newSegIndex = seg.index + windowSize_;
             seg.object = [segmentObjectsArray_ objectAtIndex:newSegIndex];
+            [audioUnit createAudioPlayer:[NSString stringWithFormat:@"%i", newSegIndex]];
+            [audioUnit sync];
             [seg setNeedsDisplay];
-            [slidingWindow_ replaceObjectAtIndex:0 withObject:seg];
+            //[slidingWindow_ replaceObjectAtIndex:0 withObject:audioUnit];
             [slidingWindow_ sortUsingSelector:@selector(compareIndexes:)];
         }
     } else if (indexDelta < 0) {
         NSLog(@"        MOVED COUNTER CLOKWISE");
         for (int i = 0; i < abs(indexDelta); i++) {
             int lastindex = [slidingWindow_ count] - 1;
-            SegmentView* seg = [slidingWindow_ objectAtIndex:lastindex];
+            SegmentAudioUnit* audioUnit = [slidingWindow_ objectAtIndex:lastindex];
+            SegmentView* seg = audioUnit.segmentView;
             int newSegIndex = seg.index - windowSize_;
             seg.object = [segmentObjectsArray_ objectAtIndex:newSegIndex];
+            [audioUnit createAudioPlayer:[NSString stringWithFormat:@"%i", newSegIndex]];
+            [audioUnit sync];
             [seg setNeedsDisplay];
-            [slidingWindow_ replaceObjectAtIndex:lastindex withObject:seg];
+            //[slidingWindow_ replaceObjectAtIndex:lastindex withObject:seg];
             [slidingWindow_ sortUsingSelector:@selector(compareIndexes:)];
         }
 

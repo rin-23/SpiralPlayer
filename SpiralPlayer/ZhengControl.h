@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ContainerView.h"
 #import "SegmentView.h"
-
+#import "CoverSegment.h"
 @interface ZhengControl : UIControl {
     NSMutableArray* slidingWindow_;
     NSMutableArray* segmentObjectsArray_;
@@ -34,7 +34,7 @@
     BOOL continueTouch_;
     
     ContainerView* container_;
-    SegmentView* hidingSegment_;
+    CoverSegment* hidingSegment_;
 }
 
 @property (nonatomic, assign) int numOfSectionsVisible;

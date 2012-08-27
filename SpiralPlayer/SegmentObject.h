@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "WaveAudioPlayer.h"
 @interface SegmentObject : NSObject {    
     UIImage* image_;      
     int index_;
@@ -19,5 +19,7 @@
 @property (nonatomic, assign) int index;
 @property (nonatomic, assign) int type;
 @property (nonatomic, assign) NSString* audioName;
+
+- (id) initWithAudio:(NSString*)audioName ;
 
 @end

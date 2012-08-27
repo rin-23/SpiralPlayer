@@ -37,7 +37,11 @@
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error: nil];
     UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;
     AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute,sizeof (audioRouteOverride),&audioRouteOverride);
-
+    if (audioPlayer_ != nil) {
+        [audioPlayer_ stop];
+        [audioPlayer_ release];
+    }
+    
     audioPlayer_= [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
     audioPlayer_.delegate = self;
     [self.player prepareToPlay]; 

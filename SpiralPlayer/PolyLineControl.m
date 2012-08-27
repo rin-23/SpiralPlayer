@@ -4,16 +4,13 @@
 #define START_POINT_X 100
 #define START_POINT_Y 400
 
-#define X_NUM_OF_CELLS 10
-#define Y_NUM_OF_CELLS 10
-
 @interface PolyLineControl(PrivateMethods)
 - (NSMutableArray*) getDataPoints;
 @end
 
 @implementation PolyLineControl
 
-@synthesize dataPoints = dataPoints_, pathLength = pathLength_, thumb = thumb_, thumbCurrentPosition = thumbCurrentPosition_, gridHashTable = gridHashTable_, tracklength = tracklength_, value = value_, drawingPoints = drawingPoints_/*, playButton = playButton_, moveButton = moveButton_*/;
+@synthesize dataPoints = dataPoints_, thumb = thumb_, thumbCurrentPosition = thumbCurrentPosition_, gridHashTable = gridHashTable_, tracklength = tracklength_, value = value_, drawingPoints = drawingPoints_/*, playButton = playButton_, moveButton = moveButton_*/;
 
 
 -(id) initSineWaveWithFrame:(CGRect)frame  {
@@ -23,8 +20,8 @@
 - (id) initWithFrame:(CGRect)frame dataPointsFile:(NSString*)fileName ofType:(NSString*)type {
     self = [super initWithFrame:frame];
     if (self) {
-               
-        self.pathLength = 0; 
+   
+
         self.backgroundColor = [UIColor clearColor];
         
         // Initialize hast table for all of the points
@@ -78,16 +75,11 @@
             CGContextAddLineToPoint(context, currentPoint.x, currentPoint.y); 
             [self.gridHashTable hashPointToGrid:currentPoint];
             
-    //      calculate total length of the line as we draw it
-    //      float curLength = sqrtf(pow(currentPoint.x-pastPoint.x, 2) + pow(currentPoint.y - pastPoint.y, 2));
-    //      self.pathLength += curLength; 
-    //      pastPoint = currentPoint;
         }
         CGContextStrokePath(context);
           
         maskImage = CGBitmapContextCreateImage(context);
         
-        //NSLog(@"Path Length: %f", self.pathLength);
         CGContextRestoreGState(context);
 
     

@@ -65,8 +65,10 @@
 		156EC34D15EB432800D3EAEA /* 9.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 156EC34115EB432800D3EAEA /* 9.mp3 */; };
 		156EC34E15EB432800D3EAEA /* 10.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 156EC34215EB432800D3EAEA /* 10.mp3 */; };
 		156EC34F15EB432800D3EAEA /* 11.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 156EC34315EB432800D3EAEA /* 11.mp3 */; };
-		156EC35015EB432800D3EAEA /* 12.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 156EC34415EB432800D3EAEA /* 12.mp3 */; };
+		156EC35015EB432800D3EAEA /* 0.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 156EC34415EB432800D3EAEA /* 0.mp3 */; };
 		156EC35215EB62F200D3EAEA /* segmentData.txt in Resources */ = {isa = PBXBuildFile; fileRef = 156EC35115EB62F200D3EAEA /* segmentData.txt */; };
+		156EC35515EB6DAD00D3EAEA /* CoverSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 156EC35415EB6DAC00D3EAEA /* CoverSegment.m */; };
+		156EC35B15EB7CB400D3EAEA /* SegmentAudioUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 156EC35A15EB7CB300D3EAEA /* SegmentAudioUnit.m */; };
 		1577830F15CA76A20029F11A /* ExperimentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1577830E15CA76A20029F11A /* ExperimentView.m */; };
 		1577831115CA78C30029F11A /* florence_machine_cover.png in Resources */ = {isa = PBXBuildFile; fileRef = 1577831015CA78C20029F11A /* florence_machine_cover.png */; };
 		157D3F7B15A7D216009064CF /* choose_song_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 157D3F7A15A7D216009064CF /* choose_song_btn.png */; };
@@ -188,8 +190,12 @@
 		156EC34115EB432800D3EAEA /* 9.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 9.mp3; sourceTree = "<group>"; };
 		156EC34215EB432800D3EAEA /* 10.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 10.mp3; sourceTree = "<group>"; };
 		156EC34315EB432800D3EAEA /* 11.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 11.mp3; sourceTree = "<group>"; };
-		156EC34415EB432800D3EAEA /* 12.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 12.mp3; sourceTree = "<group>"; };
+		156EC34415EB432800D3EAEA /* 0.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 0.mp3; sourceTree = "<group>"; };
 		156EC35115EB62F200D3EAEA /* segmentData.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = segmentData.txt; sourceTree = "<group>"; };
+		156EC35315EB6DAC00D3EAEA /* CoverSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoverSegment.h; sourceTree = "<group>"; };
+		156EC35415EB6DAC00D3EAEA /* CoverSegment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoverSegment.m; sourceTree = "<group>"; };
+		156EC35915EB7CB300D3EAEA /* SegmentAudioUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentAudioUnit.h; sourceTree = "<group>"; };
+		156EC35A15EB7CB300D3EAEA /* SegmentAudioUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentAudioUnit.m; sourceTree = "<group>"; };
 		1577830D15CA76A10029F11A /* ExperimentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExperimentView.h; sourceTree = "<group>"; };
 		1577830E15CA76A20029F11A /* ExperimentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExperimentView.m; sourceTree = "<group>"; };
 		1577831015CA78C20029F11A /* florence_machine_cover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = florence_machine_cover.png; sourceTree = "<group>"; };
@@ -426,7 +432,7 @@
 				156EC34115EB432800D3EAEA /* 9.mp3 */,
 				156EC34215EB432800D3EAEA /* 10.mp3 */,
 				156EC34315EB432800D3EAEA /* 11.mp3 */,
-				156EC34415EB432800D3EAEA /* 12.mp3 */,
+				156EC34415EB432800D3EAEA /* 0.mp3 */,
 				15D77B8F15D95573003162A3 /* life.mp3 */,
 				1596CEE015C1B048001097AE /* hendrix.mp3 */,
 				15C0829B15BA06E40031679E /* Zaz.mp3 */,
@@ -508,6 +514,8 @@
 		15D7FA7115CF3DCF009318C6 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				156EC33215EB1E9500D3EAEA /* ContainerView.h */,
+				156EC33315EB1E9600D3EAEA /* ContainerView.m */,
 				15D77B6A15D4AD41003162A3 /* Constants */,
 				15D77B5E15D4A39A003162A3 /* Managers */,
 				15D77B6915D4AD27003162A3 /* DataStructures */,
@@ -537,8 +545,10 @@
 				15DA9A7515E42F97002FF037 /* SegmentView.m */,
 				1544340D15E49B8200FEBAC0 /* SegmentObject.h */,
 				1544340E15E49B8200FEBAC0 /* SegmentObject.m */,
-				156EC33215EB1E9500D3EAEA /* ContainerView.h */,
-				156EC33315EB1E9600D3EAEA /* ContainerView.m */,
+				156EC35315EB6DAC00D3EAEA /* CoverSegment.h */,
+				156EC35415EB6DAC00D3EAEA /* CoverSegment.m */,
+				156EC35915EB7CB300D3EAEA /* SegmentAudioUnit.h */,
+				156EC35A15EB7CB300D3EAEA /* SegmentAudioUnit.m */,
 			);
 			name = Zheng;
 			sourceTree = "<group>";
@@ -670,7 +680,7 @@
 				156EC34D15EB432800D3EAEA /* 9.mp3 in Resources */,
 				156EC34E15EB432800D3EAEA /* 10.mp3 in Resources */,
 				156EC34F15EB432800D3EAEA /* 11.mp3 in Resources */,
-				156EC35015EB432800D3EAEA /* 12.mp3 in Resources */,
+				156EC35015EB432800D3EAEA /* 0.mp3 in Resources */,
 				156EC35215EB62F200D3EAEA /* segmentData.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -703,6 +713,8 @@
 				15DA9A7615E42F98002FF037 /* SegmentView.m in Sources */,
 				1544340F15E49B8200FEBAC0 /* SegmentObject.m in Sources */,
 				156EC33415EB1E9600D3EAEA /* ContainerView.m in Sources */,
+				156EC35515EB6DAD00D3EAEA /* CoverSegment.m in Sources */,
+				156EC35B15EB7CB400D3EAEA /* SegmentAudioUnit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

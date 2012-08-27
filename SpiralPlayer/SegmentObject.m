@@ -12,4 +12,22 @@
 
 @synthesize image = image_, index = index_, type = type_, audioName = audioName_;
 
+-(id) init {
+    self = [super init];
+    if (self) {
+    }
+    
+    return self;
+}
+
+-(id) initWithAudio:(NSString*)audioName {
+    self = [super init];
+    if (self) {
+        self.audioName = audioName;
+    }
+    return self;
+}
+
+
+
 @end
