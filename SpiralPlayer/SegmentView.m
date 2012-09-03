@@ -34,7 +34,7 @@
                 
         dataPoints_ = [[NSMutableArray alloc] init];
         
-        
+           
         // Initialize hast table for all of the points
         self.gridHashTable = [[GridHashTable alloc] init];
         

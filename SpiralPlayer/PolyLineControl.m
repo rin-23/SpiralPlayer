@@ -57,7 +57,7 @@
         [self.gridHashTable clear];
            
         CGContextSaveGState(context);
-        CGContextSetRGBFillColor (context, 1, 0, 0, 1);
+        CGContextSetRGBFillColor (context, 0, 0, 0, 0);
         CGContextFillRect(context, rect);
      
         CGContextSetRGBStrokeColor(context, 1, 1, 1, 1);    

@@ -19,9 +19,9 @@
 - (CGColorRef) randomColor;
 - (int) toDeg:(double)rad;
 - (double) toRad:(int)deg;
--(void)loadAlbums;
--(void)loadSongs;
--(void)drawSongsWheel;
+- (void)loadAlbums;
+- (void)loadSongs;
+- (void)drawSongsWheel;
 @end
 
 @implementation ZhengControl 
@@ -35,9 +35,9 @@
         [self addSubview:container_];
         [container_ release];
         
-        playlist_  =[[PlayListView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width/3, frame.size.height/3)];
+        playlist_  =[[PlayListView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width/2 + 30, frame.size.height/2 + 30)];
         playlist_.center = CGPointMake(frame.size.width/2, frame.size.height/2);
-        playlist_.backgroundColor = [UIColor clearColor];
+        //playlist_.backgroundColor = [UIColor clearColor];
         [self addSubview:playlist_];
         [playlist_ release];
         
@@ -52,8 +52,7 @@
     
     current_rad = 0.0f;
     total_rad = 0.0f;
-    
-    
+        
     currentLevel_ = 0;
     currentQuarter_ = 0;
         
@@ -153,7 +152,6 @@
 - (void) handleSwipeFrom:(UIGestureRecognizer *)recognizer {
     SegmentView* segView = (SegmentView*)recognizer.view;
     [playlist_ addSong:segView];    
-    
     NSLog(@"Swipe received 2.");
 }
 
@@ -161,7 +159,7 @@
     for (SegmentAudioUnit* unit in self.slidingWindow) {
         [unit.segmentView removeFromSuperview];
     }
-    
+            
     self.slidingWindow = nil;
     self.segmentObjectsArray = nil;
     self.slidingWindow = [[NSMutableArray alloc] initWithCapacity:self.numOfSectionsVisible];
@@ -274,6 +272,7 @@
 }
 
 - (BOOL) beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+    
     CGPoint touchPoint = [touch locationInView:self];
           
     float x = touchPoint.x - container_.center.x;

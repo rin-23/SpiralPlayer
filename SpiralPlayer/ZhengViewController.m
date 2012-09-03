@@ -14,6 +14,7 @@
     self = [super init];
     if (self) {
         // Custom initialization
+        self.title = @"1";
 
     }
     return self;
@@ -28,24 +29,24 @@
 }
 
 #pragma mark - View lifecycle
-
 /*
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView
-{
-}
+- (void)loadView{}
 */
 
-
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+- (void)viewDidLoad {
+    [super viewDidLoad];  
+    
     ZhengControl* control;
+//    ZhengControl* control2;
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         control = [[ZhengControl alloc] initWithFrame:CGRectMake(0, 0, 730, 730)];
         control.center = CGPointMake(768/2, 1024/2);
+        
+//        control2 = [[ZhengControl alloc] initWithFrame:CGRectMake(0, 0, 730/2 + 32, 730/2 + 32)];
+//        control2.center = CGPointMake(768/2, 1024/2);                    
     } else {
         control = [[ZhengControl alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
         control.center = CGPointMake(160, 240); 
@@ -53,6 +54,8 @@
     [self.view addSubview:control];
     [control release];
     
+    //[self.view addSubview:control2];
+    //[control2 release];
 }
 
 

@@ -26,6 +26,24 @@
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
     
+//    UITabBarController* tabBar =[[UITabBarController alloc] init];
+//    
+//    UIViewController* v1 = [[[ViewController alloc] initWithNibName:@"ViewController" bundle:nil] autorelease];
+//
+//    //UIViewController* v2  = [[PolyLineViewController alloc] init];
+//    
+//    UIViewController* v3   = [[PizzaViewController alloc] init];
+//       
+//    UIViewController* v4  = [[SpaceViewController alloc] init];
+//    
+//    UIViewController* v5  = [[ZhengViewController alloc] init];
+//   
+//    NSArray* controllers = [[NSArray alloc] initWithObjects:v1,v3,v4,v5, nil];
+//    tabBar.viewControllers = controllers;
+//    tabBar.selectedViewController = v5;
+    
+    
+    
     //SpiralViewController
     //self.viewController = [[[ViewController alloc] initWithNibName:@"ViewController" bundle:nil] autorelease];
 

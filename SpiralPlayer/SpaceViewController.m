@@ -15,6 +15,7 @@
 {
     self = [super init];
     if (self) {
+        self.title = @"2";
 
     }
     return self;

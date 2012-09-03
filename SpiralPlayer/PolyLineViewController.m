@@ -13,6 +13,7 @@
 - (id) init { 
     self = [super init];
     if (self) {
+        self.title = @"5";
 
        [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(updateProgressBar) userInfo:nil repeats:YES];
                 
