@@ -10,4 +10,6 @@
 
 @interface LyricsManager : NSObject
 
++ (LyricsManager*) sharedInstance;
+- (NSMutableArray*) getCharactersFromFile:(NSString*)filename ofType:(NSString*)type;
 @end
