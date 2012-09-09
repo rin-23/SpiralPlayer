@@ -1,25 +1,26 @@
 //
-//  CoverSegment.m
+//  TextSegment.m
 //  SpiralPlayer
 //
-//  Created by Rinat Abdrashitov on 12-08-27.
+//  Created by Rinat Abdrashitov on 12-09-09.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "CoverSegment.h"
+#import "TextSegment.h"
+#import "Utilities.h"
+@implementation TextSegment
 
-@implementation CoverSegment
 @synthesize bgColor=_bgColor;
 @synthesize unitAngle = _unitAngle;
+@synthesize letter = _letter;
 
-- (id)initWithFrame:(CGRect)frame
-{
+
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-           self.backgroundColor = [UIColor clearColor];
-           self.userInteractionEnabled = NO;
-            self.unitAngle = 0;
+        self.backgroundColor = [UIColor clearColor];
+        self.unitAngle = 0;
     }
     return self;
 }
@@ -43,26 +44,34 @@
     //Start Drawing Segment
     CGContextBeginPath (context);               
     CGContextSetRGBStrokeColor(context, 1, 1, 1, 1);  
-    CGContextSetLineWidth(context, 1);
-    
+    CGContextSetLineWidth(context, 1);    
     CGPoint pT = CGPointMake(rect.size.width/2, 0);
     CGPoint pL = CGPointMake(0, rect.size.height);
     CGPoint pR = CGPointMake(rect.size.width, rect.size.height);
+    
     CGPoint vectorL = CGPointMake(pL.x - pT.x, pL.y- pT.y);
+    double vectorLlength = sqrt(pow(vectorL.x, 2) + pow(vectorL.y, 2));
+    CGPoint vectorLUnit = CGPointMake(vectorL.x/vectorLlength, vectorL.y/vectorLlength);
+    
     CGPoint vectorR = CGPointMake(pR.x - pT.x, pR.y - pT.y);
-    CGPoint halfwayL = CGPointMake(pT.x + 0.5*vectorL.x, pT.y + 0.5*vectorL.y);
-    CGPoint halfwayR = CGPointMake(pT.x + 0.5*vectorR.x, pT.y + 0.5*vectorR.y);
-    
-    CGContextMoveToPoint(context, halfwayR.x, halfwayR.y);
-    CGContextAddLineToPoint(context, pR.x - 0.075*vectorR.x, pR.y - 0.075*vectorR.y);
-    
+    double vectorRlength = sqrt(pow(vectorR.x, 2) + pow(vectorR.y, 2));
+    CGPoint vectorRUnit = CGPointMake(vectorR.x/vectorRlength, vectorR.y/vectorRlength);
+
     CGFloat radius = rect.size.height;
+
+    CGPoint halfwayL = CGPointMake(pT.x + (radius-10)*vectorLUnit.x, pT.y + (radius-10)*vectorLUnit.y);
+    CGPoint halfwayR = CGPointMake(pT.x + (radius-10)*vectorRUnit.x, pT.y + (radius-10)*vectorRUnit.y);
+    CGPoint bottomL = CGPointMake(pT.x + radius*vectorLUnit.x, pT.y + radius*vectorLUnit.y);
+    CGPoint bottomR = CGPointMake(pT.x + radius*vectorRUnit.x, pT.y + radius*vectorRUnit.y);
+
+    CGContextMoveToPoint(context, halfwayR.x, halfwayR.y);
+    CGContextAddLineToPoint(context, bottomR.x , bottomR.y);
+    
     CGFloat radius2 = sqrt(pow(halfwayR.x - pT.x, 2) + pow(halfwayR.y - pT.y, 2));
     
-    if (self.unitAngle == 0) self.unitAngle = 45.0 * (M_PI/180.0);;
     double totalAngle = self.unitAngle;
     CGContextAddArc(context, pT.x, pT.y, radius-2, (M_PI - totalAngle)/2, (M_PI - totalAngle)/2 + totalAngle, 0);
-    CGContextMoveToPoint(context, pL.x - 0.075*vectorL.x, pL.y - 0.075*vectorL.y);
+    CGContextMoveToPoint(context, bottomL.x, bottomL.y);
     CGContextAddLineToPoint(context, halfwayL.x, halfwayL.y);
     CGContextAddArc(context, pT.x, pT.y, radius2, (M_PI - totalAngle)/2 + totalAngle, (M_PI - totalAngle)/2, 1);
     
@@ -72,8 +81,18 @@
     CGContextFillPath(context);
     CGContextStrokePath(context);
     CGContextRestoreGState(context);
-
-
+    
+    CGContextTranslateCTM(context, 0, self.bounds.size.height);
+    CGContextScaleCTM(context, 1, -1);
+    CGContextSelectFont (context, "Helvetica-Light", 10, kCGEncodingMacRoman);
+    CGContextSetTextDrawingMode (context, kCGTextStroke); // 5
+    CGContextSetRGBStrokeColor (context, 1, 1, 1, 1); // 7
+    CGContextShowTextAtPoint (context, rect.size.width/2 - 4, 4, self.letter, 1);
+    
+    
+    
+    
 }
+
 
 @end

@@ -112,6 +112,9 @@
 		15D77B8315D94717003162A3 /* playbutton.gif in Resources */ = {isa = PBXBuildFile; fileRef = 15D77B8215D94717003162A3 /* playbutton.gif */; };
 		15D77B8615D949D9003162A3 /* moveButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 15D77B8515D949D9003162A3 /* moveButton.png */; };
 		15D77B9015D95573003162A3 /* life.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 15D77B8F15D95573003162A3 /* life.mp3 */; };
+		15DA53C715FC516600C3E1B0 /* LyricsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15DA53C615FC516600C3E1B0 /* LyricsViewController.m */; };
+		15DA53CC15FC59CC00C3E1B0 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 15DA53CB15FC59CC00C3E1B0 /* Utilities.m */; };
+		15DA53CF15FC5ED200C3E1B0 /* TextSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 15DA53CE15FC5ED200C3E1B0 /* TextSegment.m */; };
 		15DA9A5815E18EF3002FF037 /* ZhengViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15DA9A5715E18EF3002FF037 /* ZhengViewController.m */; };
 		15DA9A7115E411E6002FF037 /* ZhengControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 15DA9A7015E411E5002FF037 /* ZhengControl.m */; };
 		15DA9A7315E4249E002FF037 /* segment.png in Resources */ = {isa = PBXBuildFile; fileRef = 15DA9A7215E4249E002FF037 /* segment.png */; };
@@ -119,6 +122,7 @@
 		15DA9A7815E443F4002FF037 /* segment_black.png in Resources */ = {isa = PBXBuildFile; fileRef = 15DA9A7715E443F4002FF037 /* segment_black.png */; };
 		15E163F6158B1AD900CC8FAC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15E163F3158B1AD900CC8FAC /* AudioToolbox.framework */; };
 		15E163F8158B1AD900CC8FAC /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15E163F5158B1AD900CC8FAC /* CoreAudio.framework */; };
+		15F9BF0E15F5819E00B8A252 /* LyricsControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 15F9BF0D15F5819D00B8A252 /* LyricsControl.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -252,6 +256,12 @@
 		15D77B8215D94717003162A3 /* playbutton.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = playbutton.gif; sourceTree = "<group>"; };
 		15D77B8515D949D9003162A3 /* moveButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = moveButton.png; sourceTree = "<group>"; };
 		15D77B8F15D95573003162A3 /* life.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = life.mp3; sourceTree = "<group>"; };
+		15DA53C515FC516600C3E1B0 /* LyricsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = LyricsViewController.h; sourceTree = "<group>"; };
+		15DA53C615FC516600C3E1B0 /* LyricsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LyricsViewController.m; sourceTree = "<group>"; };
+		15DA53CA15FC59CC00C3E1B0 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
+		15DA53CB15FC59CC00C3E1B0 /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utilities.m; sourceTree = "<group>"; };
+		15DA53CD15FC5ED200C3E1B0 /* TextSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextSegment.h; sourceTree = "<group>"; };
+		15DA53CE15FC5ED200C3E1B0 /* TextSegment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextSegment.m; sourceTree = "<group>"; };
 		15DA9A5615E18EF3002FF037 /* ZhengViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZhengViewController.h; sourceTree = "<group>"; };
 		15DA9A5715E18EF3002FF037 /* ZhengViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZhengViewController.m; sourceTree = "<group>"; };
 		15DA9A6F15E411E5002FF037 /* ZhengControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZhengControl.h; sourceTree = "<group>"; };
@@ -262,6 +272,8 @@
 		15DA9A7715E443F4002FF037 /* segment_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = segment_black.png; sourceTree = "<group>"; };
 		15E163F3158B1AD900CC8FAC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		15E163F5158B1AD900CC8FAC /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		15F9BF0C15F5819C00B8A252 /* LyricsControl.h */ = {isa = PBXFileReference; fileEncoding = 4; path = LyricsControl.h; sourceTree = "<group>"; };
+		15F9BF0D15F5819D00B8A252 /* LyricsControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LyricsControl.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -320,6 +332,7 @@
 		151A42E815538F9D003BF64A /* SpiralPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				15DA53C915FC518700C3E1B0 /* SeekControl */,
 				15DA9A5115E18D90002FF037 /* Zheng */,
 				15D54C8E15D2F55700A42E87 /* Space */,
 				15D7FA7215CF3DE4009318C6 /* Spiral */,
@@ -522,6 +535,8 @@
 				15D77B6A15D4AD41003162A3 /* Constants */,
 				15D77B5E15D4A39A003162A3 /* Managers */,
 				15D77B6915D4AD27003162A3 /* DataStructures */,
+				15DA53CA15FC59CC00C3E1B0 /* Utilities.h */,
+				15DA53CB15FC59CC00C3E1B0 /* Utilities.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -535,6 +550,19 @@
 				150CC5D21554468200570ACC /* SpiralControl.m */,
 			);
 			name = Spiral;
+			sourceTree = "<group>";
+		};
+		15DA53C915FC518700C3E1B0 /* SeekControl */ = {
+			isa = PBXGroup;
+			children = (
+				15F9BF0C15F5819C00B8A252 /* LyricsControl.h */,
+				15F9BF0D15F5819D00B8A252 /* LyricsControl.m */,
+				15DA53C515FC516600C3E1B0 /* LyricsViewController.h */,
+				15DA53C615FC516600C3E1B0 /* LyricsViewController.m */,
+				15DA53CD15FC5ED200C3E1B0 /* TextSegment.h */,
+				15DA53CE15FC5ED200C3E1B0 /* TextSegment.m */,
+			);
+			name = SeekControl;
 			sourceTree = "<group>";
 		};
 		15DA9A5115E18D90002FF037 /* Zheng */ = {
@@ -721,6 +749,10 @@
 				156EC35515EB6DAD00D3EAEA /* CoverSegment.m in Sources */,
 				156EC35B15EB7CB400D3EAEA /* SegmentAudioUnit.m in Sources */,
 				156EC35E15EBBE6E00D3EAEA /* PlayListView.m in Sources */,
+				15F9BF0E15F5819E00B8A252 /* LyricsControl.m in Sources */,
+				15DA53C715FC516600C3E1B0 /* LyricsViewController.m in Sources */,
+				15DA53CC15FC59CC00C3E1B0 /* Utilities.m in Sources */,
+				15DA53CF15FC5ED200C3E1B0 /* TextSegment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

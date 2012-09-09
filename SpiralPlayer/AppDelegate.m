@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 
 #import "ViewController.h"
+#import "LyricsViewController.h"
 
 @implementation AppDelegate
 
@@ -57,8 +58,11 @@
     //self.viewController = [[SpaceViewController alloc] init];
     
     //Zheng View Controller
-    self.viewController = [[ZhengViewController alloc] init];
-        
+    //self.viewController = [[ZhengViewController alloc] init];
+      
+    //Seek Control
+    self.viewController = [[LyricsViewController alloc] init];
+    
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     return YES;

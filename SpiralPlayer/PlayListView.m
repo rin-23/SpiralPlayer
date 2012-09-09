@@ -84,10 +84,9 @@
         im.layer.anchorPoint = CGPointMake(0.5f, 0.0f);
         im.layer.position = CGPointMake(container_.bounds.size.width/2.0-container_.frame.origin.x, 
                                         container_.bounds.size.height/2.0-container_.frame.origin.y); 
-        
         im.transform = CGAffineTransformMakeRotation(-anglePerSector_*(numOfItemsChosen + 1));
         [container_ addSubview:im]; 
-        [im release];        
+        [im release];          
         
         [slidingWindow_ addObject:audioUnit];   
     }
@@ -104,7 +103,7 @@
     
     numOfItemsChosen+=1;
     self.numOfSectionsTotal = numOfItemsChosen;
- windowAngleSpanRad_ = anglePerSector_ * (self.numOfSectionsTotal - self.numOfSectionsVisible);
+    windowAngleSpanRad_ = anglePerSector_ * (self.numOfSectionsTotal - self.numOfSectionsVisible);
 }
 
 - (double) toRad:(int) deg { return deg*(M_PI/180.0); }

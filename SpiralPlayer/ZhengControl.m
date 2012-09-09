@@ -6,13 +6,13 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "ZhengControl.h"
-#import <QuartzCore/QuartzCore.h>
+#import  "ZhengControl.h"
+#import  <QuartzCore/QuartzCore.h>
 #include <stdlib.h>
-#import "Constants.h"
+#import  "Constants.h"
 #import  "SegmentObject.h"
-#import "SegmentAudioUnit.h"
-#define ARC4RANDOM_MAX      0x100000000
+#import  "SegmentAudioUnit.h"
+#define  ARC4RANDOM_MAX 0x100000000
 
 @interface ZhengControl()
 - (void) drawWheel;
@@ -35,7 +35,12 @@
         [self addSubview:container_];
         [container_ release];
         
-        playlist_  =[[PlayListView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width/2 + 30, frame.size.height/2 + 30)];
+        seekControl_ = [[LyricsControl alloc] initWithFrame:CGRectMake(0, 0, frame.size.width/2 + 22, frame.size.height/2+22)];
+        seekControl_.center = CGPointMake(frame.size.width/2, frame.size.height/2);
+        [self addSubview:seekControl_];
+        [seekControl_ release];
+        
+        playlist_  =[[PlayListView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width/2 - 80, frame.size.height/2 - 80)];
         playlist_.center = CGPointMake(frame.size.width/2, frame.size.height/2);
         //playlist_.backgroundColor = [UIColor clearColor];
         [self addSubview:playlist_];
@@ -77,7 +82,7 @@
     windowEndIndex_ = windowStartIndex_ + windowSize_ - 1;    
     [self drawSongsWheel];  
 }
-
+ 
 - (void) drawSongsWheel {    
     for (SegmentAudioUnit* unit in self.slidingWindow) {
         [unit.segmentView removeFromSuperview];
