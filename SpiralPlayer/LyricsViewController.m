@@ -41,7 +41,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    LyricsControl* seekControl = [[LyricsControl alloc] initWithFrame:CGRectMake(0, 0, 700, 700)];
+    LyricsControl* seekControl = [[LyricsControl alloc] initWithFrame:CGRectMake(0, 0, 387, 387)];
     seekControl.center = CGPointMake(768/2, 1024/2);
     [self.view addSubview:seekControl];
     [seekControl release];

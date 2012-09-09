@@ -12,5 +12,8 @@
 @property (nonatomic, assign) CGColorRef bgColor;
 @property (nonatomic, assign) double unitAngle;
 @property (nonatomic, assign) char* letter;
+@property (nonatomic, assign) int index;
 
+
+- (NSComparisonResult) compareIndexes:(TextSegment*)otherEvenet;
 @end

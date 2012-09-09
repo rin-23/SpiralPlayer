@@ -36,9 +36,10 @@
 }
 @property (nonatomic, assign) CGAffineTransform startTransform;
 @property (nonatomic, retain) NSMutableArray* slidingWindow;
-@property (nonatomic, retain) NSMutableArray* segmentObjectsArray;
+//@property (nonatomic, retain) NSMutableArray* segmentObjectsArray;
 @property (nonatomic, retain) NSMutableArray* audioFilesArray;
 @property (nonatomic, retain) ContainerView* container;
+@property (nonatomic, retain) NSMutableArray* letters;
 
 
 

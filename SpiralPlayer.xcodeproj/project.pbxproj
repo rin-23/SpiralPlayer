@@ -115,6 +115,8 @@
 		15DA53C715FC516600C3E1B0 /* LyricsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15DA53C615FC516600C3E1B0 /* LyricsViewController.m */; };
 		15DA53CC15FC59CC00C3E1B0 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 15DA53CB15FC59CC00C3E1B0 /* Utilities.m */; };
 		15DA53CF15FC5ED200C3E1B0 /* TextSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 15DA53CE15FC5ED200C3E1B0 /* TextSegment.m */; };
+		15DA53D215FD3D7000C3E1B0 /* LyricsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 15DA53D115FD3D7000C3E1B0 /* LyricsManager.m */; };
+		15DA53D415FD47F500C3E1B0 /* lyricsFile.txt in Resources */ = {isa = PBXBuildFile; fileRef = 15DA53D315FD47F500C3E1B0 /* lyricsFile.txt */; };
 		15DA9A5815E18EF3002FF037 /* ZhengViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15DA9A5715E18EF3002FF037 /* ZhengViewController.m */; };
 		15DA9A7115E411E6002FF037 /* ZhengControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 15DA9A7015E411E5002FF037 /* ZhengControl.m */; };
 		15DA9A7315E4249E002FF037 /* segment.png in Resources */ = {isa = PBXBuildFile; fileRef = 15DA9A7215E4249E002FF037 /* segment.png */; };
@@ -256,12 +258,15 @@
 		15D77B8215D94717003162A3 /* playbutton.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = playbutton.gif; sourceTree = "<group>"; };
 		15D77B8515D949D9003162A3 /* moveButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = moveButton.png; sourceTree = "<group>"; };
 		15D77B8F15D95573003162A3 /* life.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = life.mp3; sourceTree = "<group>"; };
-		15DA53C515FC516600C3E1B0 /* LyricsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = LyricsViewController.h; sourceTree = "<group>"; };
+		15DA53C515FC516600C3E1B0 /* LyricsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LyricsViewController.h; sourceTree = "<group>"; };
 		15DA53C615FC516600C3E1B0 /* LyricsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LyricsViewController.m; sourceTree = "<group>"; };
 		15DA53CA15FC59CC00C3E1B0 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
 		15DA53CB15FC59CC00C3E1B0 /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utilities.m; sourceTree = "<group>"; };
 		15DA53CD15FC5ED200C3E1B0 /* TextSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextSegment.h; sourceTree = "<group>"; };
 		15DA53CE15FC5ED200C3E1B0 /* TextSegment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextSegment.m; sourceTree = "<group>"; };
+		15DA53D015FD3D7000C3E1B0 /* LyricsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LyricsManager.h; sourceTree = "<group>"; };
+		15DA53D115FD3D7000C3E1B0 /* LyricsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LyricsManager.m; sourceTree = "<group>"; };
+		15DA53D315FD47F500C3E1B0 /* lyricsFile.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = lyricsFile.txt; sourceTree = "<group>"; };
 		15DA9A5615E18EF3002FF037 /* ZhengViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZhengViewController.h; sourceTree = "<group>"; };
 		15DA9A5715E18EF3002FF037 /* ZhengViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZhengViewController.m; sourceTree = "<group>"; };
 		15DA9A6F15E411E5002FF037 /* ZhengControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZhengControl.h; sourceTree = "<group>"; };
@@ -272,7 +277,7 @@
 		15DA9A7715E443F4002FF037 /* segment_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = segment_black.png; sourceTree = "<group>"; };
 		15E163F3158B1AD900CC8FAC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		15E163F5158B1AD900CC8FAC /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
-		15F9BF0C15F5819C00B8A252 /* LyricsControl.h */ = {isa = PBXFileReference; fileEncoding = 4; path = LyricsControl.h; sourceTree = "<group>"; };
+		15F9BF0C15F5819C00B8A252 /* LyricsControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LyricsControl.h; sourceTree = "<group>"; };
 		15F9BF0D15F5819D00B8A252 /* LyricsControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LyricsControl.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -472,6 +477,7 @@
 		1596CEC715C0C00F001097AE /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				15DA53D315FD47F500C3E1B0 /* lyricsFile.txt */,
 				156EC35115EB62F200D3EAEA /* segmentData.txt */,
 				150AE14515CF2EF100C1ED0F /* sineWaveDataPoints.txt */,
 				1596CEDE15C1ABAA001097AE /* lab1.ma */,
@@ -505,6 +511,8 @@
 			children = (
 				15D77B5F15D4A3B3003162A3 /* DataPointsManager.h */,
 				15D77B6015D4A3B3003162A3 /* DataPointsManager.m */,
+				15DA53D015FD3D7000C3E1B0 /* LyricsManager.h */,
+				15DA53D115FD3D7000C3E1B0 /* LyricsManager.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -715,6 +723,7 @@
 				156EC34F15EB432800D3EAEA /* 11.mp3 in Resources */,
 				156EC35015EB432800D3EAEA /* 0.mp3 in Resources */,
 				156EC35215EB62F200D3EAEA /* segmentData.txt in Resources */,
+				15DA53D415FD47F500C3E1B0 /* lyricsFile.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -753,6 +762,7 @@
 				15DA53C715FC516600C3E1B0 /* LyricsViewController.m in Sources */,
 				15DA53CC15FC59CC00C3E1B0 /* Utilities.m in Sources */,
 				15DA53CF15FC5ED200C3E1B0 /* TextSegment.m in Sources */,
+				15DA53D215FD3D7000C3E1B0 /* LyricsManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

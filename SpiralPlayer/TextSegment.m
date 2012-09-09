@@ -13,12 +13,14 @@
 @synthesize bgColor=_bgColor;
 @synthesize unitAngle = _unitAngle;
 @synthesize letter = _letter;
+@synthesize index = _index;
 
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        self.letter = malloc(2*sizeof(2));
         self.backgroundColor = [UIColor clearColor];
         self.unitAngle = 0;
     }
@@ -28,10 +30,7 @@
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-    
+- (void)drawRect:(CGRect)rect {   
     // Drawing code
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextClearRect(context, rect);
@@ -59,8 +58,9 @@
 
     CGFloat radius = rect.size.height;
 
-    CGPoint halfwayL = CGPointMake(pT.x + (radius-10)*vectorLUnit.x, pT.y + (radius-10)*vectorLUnit.y);
-    CGPoint halfwayR = CGPointMake(pT.x + (radius-10)*vectorRUnit.x, pT.y + (radius-10)*vectorRUnit.y);
+    int segHeight = 20;
+    CGPoint halfwayL = CGPointMake(pT.x + (radius-segHeight)*vectorLUnit.x, pT.y + (radius-segHeight)*vectorLUnit.y);
+    CGPoint halfwayR = CGPointMake(pT.x + (radius-segHeight)*vectorRUnit.x, pT.y + (radius-segHeight)*vectorRUnit.y);
     CGPoint bottomL = CGPointMake(pT.x + radius*vectorLUnit.x, pT.y + radius*vectorLUnit.y);
     CGPoint bottomR = CGPointMake(pT.x + radius*vectorRUnit.x, pT.y + radius*vectorRUnit.y);
 
@@ -84,15 +84,20 @@
     
     CGContextTranslateCTM(context, 0, self.bounds.size.height);
     CGContextScaleCTM(context, 1, -1);
-    CGContextSelectFont (context, "Helvetica-Light", 10, kCGEncodingMacRoman);
+    CGContextSelectFont (context, "Helvetica-Light", 18, kCGEncodingMacRoman);
     CGContextSetTextDrawingMode (context, kCGTextStroke); // 5
     CGContextSetRGBStrokeColor (context, 1, 1, 1, 1); // 7
-    CGContextShowTextAtPoint (context, rect.size.width/2 - 4, 4, self.letter, 1);
-    
-    
-    
-    
+    CGContextShowTextAtPoint (context, rect.size.width/2 - 5, 5, self.letter, 1);
 }
 
+- (NSComparisonResult) compareIndexes:(TextSegment*)otherEvenet {
+    if (self.index < otherEvenet.index) { 
+        return NSOrderedAscending;
+    } else if (self.index > otherEvenet.index) { 
+        return NSOrderedDescending;
+    } else { 
+        return NSOrderedSame;
+    }
+}
 
 @end
