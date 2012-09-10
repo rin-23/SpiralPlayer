@@ -117,6 +117,7 @@
 		15DA53CF15FC5ED200C3E1B0 /* TextSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 15DA53CE15FC5ED200C3E1B0 /* TextSegment.m */; };
 		15DA53D215FD3D7000C3E1B0 /* LyricsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 15DA53D115FD3D7000C3E1B0 /* LyricsManager.m */; };
 		15DA53D415FD47F500C3E1B0 /* lyricsFile.txt in Resources */ = {isa = PBXBuildFile; fileRef = 15DA53D315FD47F500C3E1B0 /* lyricsFile.txt */; };
+		15DA53D615FD70D500C3E1B0 /* lyricsFile2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 15DA53D515FD70D500C3E1B0 /* lyricsFile2.txt */; };
 		15DA9A5815E18EF3002FF037 /* ZhengViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15DA9A5715E18EF3002FF037 /* ZhengViewController.m */; };
 		15DA9A7115E411E6002FF037 /* ZhengControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 15DA9A7015E411E5002FF037 /* ZhengControl.m */; };
 		15DA9A7315E4249E002FF037 /* segment.png in Resources */ = {isa = PBXBuildFile; fileRef = 15DA9A7215E4249E002FF037 /* segment.png */; };
@@ -267,6 +268,7 @@
 		15DA53D015FD3D7000C3E1B0 /* LyricsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LyricsManager.h; sourceTree = "<group>"; };
 		15DA53D115FD3D7000C3E1B0 /* LyricsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LyricsManager.m; sourceTree = "<group>"; };
 		15DA53D315FD47F500C3E1B0 /* lyricsFile.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = lyricsFile.txt; sourceTree = "<group>"; };
+		15DA53D515FD70D500C3E1B0 /* lyricsFile2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = lyricsFile2.txt; sourceTree = "<group>"; };
 		15DA9A5615E18EF3002FF037 /* ZhengViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZhengViewController.h; sourceTree = "<group>"; };
 		15DA9A5715E18EF3002FF037 /* ZhengViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZhengViewController.m; sourceTree = "<group>"; };
 		15DA9A6F15E411E5002FF037 /* ZhengControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZhengControl.h; sourceTree = "<group>"; };
@@ -477,6 +479,7 @@
 		1596CEC715C0C00F001097AE /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				15DA53D515FD70D500C3E1B0 /* lyricsFile2.txt */,
 				15DA53D315FD47F500C3E1B0 /* lyricsFile.txt */,
 				156EC35115EB62F200D3EAEA /* segmentData.txt */,
 				150AE14515CF2EF100C1ED0F /* sineWaveDataPoints.txt */,
@@ -724,6 +727,7 @@
 				156EC35015EB432800D3EAEA /* 0.mp3 in Resources */,
 				156EC35215EB62F200D3EAEA /* segmentData.txt in Resources */,
 				15DA53D415FD47F500C3E1B0 /* lyricsFile.txt in Resources */,
+				15DA53D615FD70D500C3E1B0 /* lyricsFile2.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

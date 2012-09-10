@@ -12,4 +12,5 @@
 
 + (LyricsManager*) sharedInstance;
 - (NSMutableArray*) getCharactersFromFile:(NSString*)filename ofType:(NSString*)type;
+- (NSMutableArray*) getKaraokeFromFile:(NSString*)filename ofType:(NSString*)type;
 @end

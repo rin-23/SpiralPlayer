@@ -24,11 +24,14 @@
 @synthesize audioFilesArray = _audioFilesArray;
 @synthesize container = _container;
 @synthesize letters = _letters;
+@synthesize karaokeData = _karaokeData;
 
 - (id) initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.letters = [[[LyricsManager sharedInstance] getCharactersFromFile:kLYRICS_FILE ofType:@"txt"] retain];
+        NSArray* data = [[LyricsManager sharedInstance] getKaraokeFromFile:kLYRICS_FILE ofType:@"txt"];
+        self.letters = [[data objectAtIndex:0] retain];
+        self.karaokeData = [[data objectAtIndex:1] retain];
         
         numOfSectionsVisible_ = 80;
         numOfSectionsTotal_ = [self.letters count];
@@ -92,7 +95,7 @@
 //        [self.segmentObjectsArray addObject:[NSString stringWithUTF8String:letter]];
 //    }
     
-    for (int i = -4; i < 4; i++) {
+    //for (int i = -4; i < 4; i++) {
               
         TextSegment* im = [[TextSegment alloc] initWithFrame:CGRectMake(0, 0, segmentwidth, segmentheight)];
         im.userInteractionEnabled = YES;
@@ -102,10 +105,11 @@
         im.layer.anchorPoint = CGPointMake(0.5f, 0.0f);
         im.layer.position = CGPointMake(self.bounds.size.width/2.0-self.frame.origin.x, 
                                         self.bounds.size.height/2.0-self.frame.origin.y); 
-        im.transform = CGAffineTransformMakeRotation(-anglePerSector_*(i + 1));
+        //im.transform = CGAffineTransformMakeRotation(-anglePerSector_*(i + 1));
         [self addSubview:im]; 
         [im release]; 
-    }
+    //}
+    //self.layer.transform = CATransform3DMakeRotation(M_PI, 0, 0, 1);
 }
 
 - (BOOL) beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {

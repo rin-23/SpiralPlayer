@@ -65,10 +65,10 @@
     self.segmentView = [[SegmentView alloc] initAlbumTypeWithFrame:rect];
 }
 
-
 -(void) sync {
     self.segmentView.tracklength = self.audioPlayer.player.duration;
 }
+
 -(void) thumbTapped {     
     if (self.audioPlayer.player == nil) return;
     
@@ -77,12 +77,13 @@
     } else {
         [self.audioPlayer.player play];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"PlayClicked" object:self];
-
     }
 }
+
 - (NSComparisonResult) compareIndexes:(SegmentAudioUnit*)otherEvenet {
     return [self.segmentView compareIndexes:otherEvenet.segmentView];
 }
+
 - (void) updateProgressBar {
     self.segmentView.value = self.audioPlayer.player.currentTime;    
 }
@@ -91,8 +92,7 @@
     self.audioPlayer.player.currentTime =  self.segmentView.value;
 }
            
-- (void) dealloc
-{
+- (void) dealloc {
     // If you don't remove yourself as an observer, the Notification Center
     // will continue to try and send notification objects to the deallocated
     // object.

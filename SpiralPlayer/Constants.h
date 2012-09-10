@@ -30,9 +30,13 @@
 #define kX_NUM_OF_CELLS 32
 #define kY_NUM_OF_CELLS 32
 
-
 #define kSegmentTypeAbum 1
 #define kSegmentTypeSong 2
 
 #define kLYRICS_FILE @"lyricsFile"
+#define kLYRICS_FILE2 @"lyricsFile2"
+
+#define kSTART_TIME @"startTime"
+#define kDURATION @"duration"
+#define kCHARS_NUM @"charsNum"
 #endif

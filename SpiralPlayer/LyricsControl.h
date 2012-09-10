@@ -40,6 +40,7 @@
 @property (nonatomic, retain) NSMutableArray* audioFilesArray;
 @property (nonatomic, retain) ContainerView* container;
 @property (nonatomic, retain) NSMutableArray* letters;
+@property (nonatomic, retain) NSMutableDictionary* karaokeData;
 
 
 
