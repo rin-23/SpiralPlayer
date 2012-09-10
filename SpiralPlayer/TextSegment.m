@@ -60,7 +60,7 @@
 
     int segHeight = 20;
     CGPoint halfwayL = CGPointMake(pT.x + (radius-segHeight)*vectorLUnit.x, pT.y + (radius-segHeight)*vectorLUnit.y);
-    CGPoint halfwayR = CGPointMake(pT.x + (radius-segHeight)*vectorRUnit.x, pT.y + (radius-segHeight)*vectorRUnit.y);
+    CGPoint halfwayR = CGPointMake(pT.x + (radius-segHeight)*vectorRUnit.x, pT.y + (radius-segHeight    )*vectorRUnit.y);
     CGPoint bottomL = CGPointMake(pT.x + radius*vectorLUnit.x, pT.y + radius*vectorLUnit.y);
     CGPoint bottomR = CGPointMake(pT.x + radius*vectorRUnit.x, pT.y + radius*vectorRUnit.y);
 

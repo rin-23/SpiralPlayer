@@ -1,49 +1,50 @@
-If I 
-Should stay 
-I would only be in your way 
-So I'll go 
-But I know 
-I'll think of you every step of 
-the way
-And I... 
-Will always 
-Love you, oohh 
-Will always 
-Love you 
-You 
-My darling you 
-Mmm-mm
-Bittersweet 
-Memories 
-That is all I'm taking with me 
-So good-bye 
-Please don't cry 
-We both know I'm not what you 
-You need
-And I... 
-Will always love you 
-I... 
-Will always love you 
-You, ooh
-I hope 
-life treats you kind 
-And I hope 
-you have all you've dreamed of 
-And I wish you joy 
-and happiness 
-But above all this 
-I wish you love 
-And I... 
-Will always love you 
-I... 
-Will always love you 
-I, I will always love 
-You.... 
-You 
-Darling I love you 
-I'll always 
-I'll always 
-Love 
-You.. 
-Oooh 
-Ooohhh
+If /0 1 198 0 2 655
+I /0 2 760 0 4 281
+Should /0 5 923 0 7 299
+stay /0 7 323 0 8 384
+I /0 11 019 0 11 536
+would /0 11 538 0 11 947
+only /0 11 951 0 14 138
+be /0 14 158 0 14 566
+in /0 14 568 0 15 492
+your /0 16 142 0 16 606
+way /0 16 601 0 20 166
+So /0 20 804 0 21 034
+I'll /0 21 035 0 22 502
+go /0 22 579 0 23 923
+But /0 24 657 0 25 125
+I /0 25 129 0 25 868
+know /0 25 868 0 26 759
+I'll /0 28 603 0 29 152
+think /0 29 265 0 29 451
+of /0 29 463 0 29 608
+you /0 29 745 0 30 899
+every /0 30 964 0 31 585
+step /0 31 593 0 32 085
+of /0 32 101 0 33 272
+the way /0 34 087 0 35 402
+And I... /0 43 585 0 49 193
+Will always /0 49 726 0 51 420 
+Love you, oohh /0 52 131 0 55 601 
+Will always /0 57 311 59 184 
+Love /1 0 233 1 0 620
+you /1 0 621 1 7 560
+You /1 7 592 1 9 852
+My darling you /1 10 626 1 13 112  
+Mmm-mm /1 14 371 1 15 823
+Bittersweet /1 17 502 1 19 955
+Memories /1 20 794 1 23 183
+That is all /1 24 668 1 26 605
+I'm taking /1 26 701 1 28 348
+with me /1 28 735 1 31 640 
+So good-bye /1 32 60 1 34 481 
+Please don't cry /1 35 223 1 37 741
+We both know /1 38 903 1 40 904
+I'm not what you /1 40 969 1 42 583 
+You need /1 42 905 1 45 875
+And /1 46 327 1 46 714
+I... /1 46 715 1 51 750
+Will always love you /1 51 685 1 55 236 
+I... /1 56 75 1 58 658 
+Will always love you /1 58 851 2 1 853 
+You, ooh /2 06 437 2 8 374
